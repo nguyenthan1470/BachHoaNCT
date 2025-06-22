@@ -154,10 +154,10 @@ const SummaryApi = {
         url : '/api/order/order-list',
         method : 'get'
     },
-    // vnPayPayment :{
-    //     url: '/api/vnpay/create-payment',
-    //     method: 'post'
-    // }
+    vnPayPayment :{
+        url: '/api/vnpay/create-payment',
+        method: 'post'
+    }
 
 
 }

@@ -82,27 +82,27 @@ const CheckoutPage = () => {
     }
   }
 
-  // const handleVnpayPayment = async () => {
-  //   try {
-  //     toast.loading("Đang tải...")
-  //     const response = await Axios({
-  //       ...SummaryApi.vnPayPayment,
-  //       data: {
-  //         amount: totalPrice,
-  //       }
-  //     });
+  const handleVnpayPayment = async () => {
+    try {
+      toast.loading("Đang tải...")
+      const response = await Axios({
+        ...SummaryApi.vnPayPayment,
+        data: {
+          amount: totalPrice,
+        }
+      });
 
-  //     const { data: responseData } = response;
+      const { data: responseData } = response;
 
-  //     if (responseData.paymentUrl) {
-  //       window.location.href = responseData.paymentUrl;
-  //     } else {
-  //       toast.error("Lỗi khi tạo liên kết thanh toán VNPAY");
-  //     }
-  //   } catch (error) {
-  //     AxiosToastError(error);
-  //   }
-  // };
+      if (responseData.paymentUrl) {
+        window.location.href = responseData.paymentUrl;
+      } else {
+        toast.error("Lỗi khi tạo liên kết thanh toán VNPAY");
+      }
+    } catch (error) {
+      AxiosToastError(error);
+    }
+  };
 
   return (
     <section className='bg-blue-50'>
@@ -202,12 +202,12 @@ const CheckoutPage = () => {
             >
               Thanh toán khi nhận hàng
             </button>
-            {/* <button
+             <button
               className='py-2 px-4 border-2 border-blue-600 font-semibold text-blue-600 hover:bg-blue-600 hover:text-white'
               onClick={handleVnpayPayment}
             >
               Thanh toán qua VNPAY
-            </button> */}
+            </button>
           </div>
         </div>
       </div>

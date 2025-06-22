@@ -14,6 +14,7 @@ import productRouter from './route/product.route.js';
 import cartRouter from './route/cart.route.js';
 import addressRouter from './route/address.route.js';
 import orderRouter from './route/order.route.js';
+import vnpayRouter from './route/vnpay.route.js';
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use('/api/product', productRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/address', addressRouter);
 app.use('/api/order', orderRouter);
+app.use('/api/vnpay', vnpayRouter);
 
 connectDB().then(()=>{
     app.listen(PORT,()=>{
