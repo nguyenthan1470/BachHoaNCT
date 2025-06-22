@@ -1,52 +1,82 @@
-import crypto from 'crypto'
-import qs from 'qs'
+import express from 'express';
+import crypto from 'crypto';
+import qs from 'qs';
+import { vnpayReturn, vnpayIPN } from '../controllers/vnpay.controller.js';
 
-export default function handler(req, res) {
-  const { amount, orderId } = req.body
+const router = express.Router();
 
-  const tmnCode = process.env.VNP_TMN_CODE
-  const secretKey = process.env.VNP_HASH_SECRET
-  const returnUrl = process.env.VNP_RETURN_URL
+// Sắp xếp tham số theo thứ tự alphabet
+function sortObject(obj) {
+  const sorted = {};
+  const keys = Object.keys(obj).sort();
+  for (const key of keys) {
+    sorted[key] = obj[key];
+  }
+  return sorted;
+}
+
+// Format ngày theo YYYYMMDDHHmmss
+function formatDate(date) {
+  const pad = (n) => (n < 10 ? '0' + n : n);
+  return (
+    date.getFullYear().toString() +
+    pad(date.getMonth() + 1) +
+    pad(date.getDate()) +
+    pad(date.getHours()) +
+    pad(date.getMinutes()) +
+    pad(date.getSeconds())
+  );
+}
+
+router.post('/create-payment', (req, res) => {
+  const tmnCode = process.env.VNP_TMN_CODE;
+  const secretKey = process.env.VNP_HASH_SECRET;
+  const vnpUrl = process.env.VNP_URL;
+  const returnUrl = process.env.VNP_RETURN_URL;
+
+  const orderId = Date.now();
+  const amount = req.body.amount || 50000;
+  const bankCode = req.body.bankCode || 'VNBANK';
+
+  const createDate = formatDate(new Date());
+  const ipAddr = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || '127.0.0.1'; // lấy IP thực của client
 
   let vnp_Params = {
     vnp_Version: '2.1.0',
     vnp_Command: 'pay',
     vnp_TmnCode: tmnCode,
-    vnp_Amount: amount * 100, // nhân 100 vì VNPay yêu cầu đơn vị là đồng
+    vnp_Locale: 'vn',
     vnp_CurrCode: 'VND',
     vnp_TxnRef: orderId.toString(),
-    vnp_OrderInfo: 'Thanh toan don hang',
+    vnp_OrderInfo: `Thanh toan don hang #${orderId}`,
     vnp_OrderType: 'other',
-    vnp_Locale: 'vn',
+    vnp_Amount: amount * 100,
     vnp_ReturnUrl: returnUrl,
-    vnp_IpAddr: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
-    vnp_CreateDate: new Date().toISOString().replace(/[-T:\.Z]/g, '').slice(0, 14),
+    vnp_IpAddr: ipAddr,
+    vnp_CreateDate: createDate
+  };
+
+  if (bankCode) {
+    vnp_Params.vnp_BankCode = bankCode;
   }
 
-  // Bước 1: Sắp xếp theo thứ tự alphabet
-  vnp_Params = sortObject(vnp_Params)
+  // Sắp xếp, ký
+  vnp_Params = sortObject(vnp_Params);
+  const signData = qs.stringify(vnp_Params, { encode: false });
+  const hmac = crypto.createHmac('sha512', secretKey);
+  const signed = hmac.update(Buffer.from(signData, 'utf-8')).digest('hex');
+  vnp_Params.vnp_SecureHash = signed;
 
-  // Bước 2: Tạo chuỗi query không encode
-  const signData = qs.stringify(vnp_Params, { encode: false })
+  const paymentUrl = `${vnpUrl}?${qs.stringify(vnp_Params, { encode: true })}`;
 
-  // Bước 3: Tạo hash
-  const hmac = crypto.createHmac('sha512', secretKey)
-  const signed = hmac.update(signData, 'utf-8').digest('hex')
+  // ✅ Trả về URL để client redirect
+  res.json({ paymentUrl });
+});
 
-  // Bước 4: Gắn vnp_SecureHash
-  vnp_Params.vnp_SecureHash = signed
+// Route to handle VNPay return URL
+router.get('/vnpay_return', vnpayReturn);
 
-  // Bước 5: Tạo URL thanh toán
-  const paymentUrl = `https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?${qs.stringify(vnp_Params, { encode: true })}`
+// Route to handle VNPay IPN notifications
+router.post('/vnpay-ipn', vnpayIPN);
 
-  return res.status(200).json({ url: paymentUrl })
-}
-
-function sortObject(obj) {
-  const sorted = {}
-  const keys = Object.keys(obj).sort()
-  for (const key of keys) {
-    sorted[key] = obj[key]
-  }
-  return sorted
-}
+export default router;

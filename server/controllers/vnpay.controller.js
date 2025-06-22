@@ -1,8 +1,8 @@
 import crypto from 'crypto';
 import qs from 'qs';
-import Order from '../models/order.model.js'; 
+import Order from '../models/order.model.js'; // Assuming order model is here
 
-
+// Helper function to sort object keys alphabetically
 function sortObject(obj) {
   const sorted = {};
   const keys = Object.keys(obj).sort();
@@ -12,6 +12,7 @@ function sortObject(obj) {
   return sorted;
 }
 
+// Verify secure hash from VNPay query parameters
 function verifySecureHash(query, secretKey) {
   const vnpSecureHash = query.vnp_SecureHash;
   const vnpSecureHashType = query.vnp_SecureHashType;
@@ -27,13 +28,13 @@ function verifySecureHash(query, secretKey) {
   return signed === vnpSecureHash;
 }
 
-
+// Handle VNPay return URL
 export const vnpayReturn = async (req, res) => {
   try {
     const secretKey = process.env.VNP_HASH_SECRET;
     const query = req.query;
 
-
+    // Verify secure hash
     if (!verifySecureHash(query, secretKey)) {
       return res.status(400).send('Invalid signature');
     }
@@ -41,7 +42,7 @@ export const vnpayReturn = async (req, res) => {
     const vnpResponseCode = query.vnp_ResponseCode;
     const orderId = query.vnp_TxnRef;
 
-  
+    // Find order by orderId (assuming orderId is stored as string in order model)
     const order = await Order.findOne({ orderId: orderId });
 
     if (!order) {
