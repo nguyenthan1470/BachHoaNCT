@@ -2,26 +2,18 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 
-
-if(!process.env.MONGODB_URI){
- throw new Error(
-    "Please  provide a MONGODB_URL in the .env file"
- )   
+if (!process.env.MONGODB_URI) {
+    throw new Error("Please provide a MONGODB_URI in the .env file");
 }
 
-async function connectDB(){
+const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI)
-        console.log("connect DB")
+        await mongoose.connect(process.env.MONGODB_URI);
+        console.log("MongoDB connected successfully");
     } catch (error) {
-        console.log("MongoDB connect error", error)
-        process.exit(1)
+        console.error("MongoDB connection error:", error.message);
+        throw error; // Ném lỗi để cấp cao hơn xử lý
     }
-}
+};
+
 export default connectDB;
-
-
-
-
-
-

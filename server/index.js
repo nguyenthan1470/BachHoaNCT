@@ -11,18 +11,15 @@ import categoryRouter from './route/category.route.js';
 import uploadRouter from './route/upload.route.js';
 import subCategoryRouter from './route/subCategory.route.js';
 import productRouter from './route/product.route.js';
-import cartRouter from './route/cart.route.js'
+import cartRouter from './route/cart.route.js';
 import addressRouter from './route/address.route.js';
 import orderRouter from './route/order.route.js';
-// import vnpayRouter from './route/vnpay.route.js';
 
 const app = express();
 
-
-
 app.use(cors({
     credentials: true,
-    origin: process.env.FRONTEND_URL
+    origin: process.env.NODE_ENV === 'production' ? process.env.FRONTEND_URL_PROD : process.env.FRONTEND_URL
 }));
 
 app.use(express.json());
@@ -32,28 +29,28 @@ app.use(helmet({
     crossOriginResourcePolicy: false
 }));
 
-const PORT = 8080 || process.env.PORT
+const PORT = process.env.PORT || 8080;
 
 app.get("/", (req, res) => {
-    //Server to client
     res.json({
         message: "Server is running " + PORT
-    })
-})
+    });
+});
 
-app.use('/api/user', userRouter)
-app.use('/api/category', categoryRouter)
-app.use('/api/file', uploadRouter)
-app.use('/api/subcategory', subCategoryRouter)
-app.use('/api/product', productRouter)
-app.use("/api/cart", cartRouter)
-app.use("/api/address", addressRouter)
-app.use('/api/order', orderRouter)
-// app.use('/api/vnpay', vnpayRouter)
+app.use('/api/user', userRouter);
+app.use('/api/category', categoryRouter);
+app.use('/api/file', uploadRouter);
+app.use('/api/subcategory', subCategoryRouter);
+app.use('/api/product', productRouter);
+app.use('/api/cart', cartRouter);
+app.use('/api/address', addressRouter);
+app.use('/api/order', orderRouter);
 
 connectDB().then(() => {
     app.listen(PORT, () => {
-        console.log("Server is running ", PORT)
-    })
+        console.log("Server is running ", PORT);
+    });
+}).catch((err) => {
+    console.error("Failed to connect to MongoDB:", err);
+    process.exit(1); // Thoát nếu kết nối thất bại
 });
-
