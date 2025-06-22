@@ -1,4 +1,3 @@
-import AxiosToastError from "../../client/src/utils/AxiosToastError.js";
 import SubCategoryModel from "../models/subCategory.model.js";
 
 export const AddSubCategoryController = async (request, response) => {
