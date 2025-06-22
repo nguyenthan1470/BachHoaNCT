@@ -118,46 +118,54 @@ const SummaryApi = {
         url: '/api/cart/get',
         method: 'get'
     },
-    updateCartItemQty :{
+    updateCartItemQty: {
         url: '/api/cart/update-qty',
         method: 'put'
     },
-    deleteCartItem : {
+    deleteCartItem: {
         url: '/api/cart/delete-cart-item',
         method: 'delete'
     },
     createAddress: {
         url: '/api/address/create',
-        method: 'post'    
+        method: 'post'
     },
-    getAddress:{
+    getAddress: {
         url: '/api/address/get',
         method: 'get'
     },
-    updateAddress:{
+    updateAddress: {
         url: '/api/address/update',
         method: 'put'
     },
-    disableAddress:{
+    disableAddress: {
         url: '/api/address/disable',
         method: 'delete'
     },
-    CashOnDeliveryOrder :{
+    CashOnDeliveryOrder: {
         url: "/api/order/cash-on-delivery",
         method: "post"
     },
-   payment_url : {
-        url : "/api/order/checkout",
-        method : 'post'
-    },
-    getOrderItems : {
-        url : '/api/order/order-list',
-        method : 'get'
-    },
-    vnPayPayment :{
-        url: '/api/vnpay/create-payment',
+    payment_url: {
+        url: "/api/order/checkout",
         method: 'post'
-    }
+    },
+    getOrderItems: {
+        url: '/api/order/order-list',
+        method: 'get'
+    },
+    // vnPayCreatePayment: {
+    //     url: '/api/vnpay/create-payment',
+    //     method: 'post'
+    // },
+    // vnPayReturn: {
+    //     url: '/api/vnpay/vnpay_return',
+    //     method: 'get'
+    // },
+    // vnPayIpn: {
+    //     url: '/api/vnpay/vnpay-ipn',
+    //     method: 'post'
+    // }
 
 
 }
