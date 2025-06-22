@@ -18,9 +18,9 @@ import orderRouter from './route/order.route.js';
 const app = express();
 
 app.use(cors({
-    credentials: true,
-    origin: process.env.NODE_ENV === 'production' ? process.env.FRONTEND_URL_PROD : process.env.FRONTEND_URL
-}));
+    credentials : true,
+    origin : process.env.FRONTEND_URL
+}))
 
 app.use(express.json());
 app.use(cookieParser());
@@ -29,7 +29,7 @@ app.use(helmet({
     crossOriginResourcePolicy: false
 }));
 
-const PORT = process.env.PORT || 8080;
+const PORT = 8080 || process.env.PORT 
 
 app.get("/", (req, res) => {
     res.json({
@@ -46,11 +46,8 @@ app.use('/api/cart', cartRouter);
 app.use('/api/address', addressRouter);
 app.use('/api/order', orderRouter);
 
-connectDB().then(() => {
-    app.listen(PORT, () => {
-        console.log("Server is running ", PORT);
-    });
-}).catch((err) => {
-    console.error("Failed to connect to MongoDB:", err);
-    process.exit(1); // Thoát nếu kết nối thất bại
+connectDB().then(()=>{
+    app.listen(PORT,()=>{
+        console.log("Server is running",PORT)
+    })
 });
