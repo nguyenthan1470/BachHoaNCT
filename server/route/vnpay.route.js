@@ -79,4 +79,8 @@ router.get('/vnpay_return', vnpayReturn);
 // Route to handle VNPay IPN notifications
 router.post('/vnpay-ipn', vnpayIPN);
 
+router.get("/test-env", (req, res) => {
+  res.json({ secret: process.env.VNP_HASH_SECRET || "undefined" });
+})
+
 export default router;
