@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { DisplayPriceInVietnamDong } from '../utils/DisplayPriceInVietnamDong'
 import { Link } from 'react-router-dom'
-import { valideURLConvert } from '../utils/ValideURLConvert'
+import { valideURLConvert } from '../utils/valideURLConvert'; 
 import { pricewithDiscount } from '../utils/PriceWithDiscount'
 import SummaryApi from "../common/SummaryApi"
 import AxiosToastError from '../utils/AxiosToastError.js'
