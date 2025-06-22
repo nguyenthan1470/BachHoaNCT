@@ -1,18 +1,16 @@
-        
-        
 {
-  "version": 2,
-  "name": "BachHoaNCT",
-  "builds": [
-    {
-      "src": "./index.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "./index.js"
-    }
-  ]
-}
+    "version" : 2,
+    "name" : "BachHoaNCT",
+    "builds" : [
+        {
+            "src" : "./index.js",
+            "use" : "@vercel/node"
+        }
+    ],
+    "routes" : [
+        {
+            "src" : "/(.*)",
+            "dest" : "/"
+        }
+    ]
+}     
