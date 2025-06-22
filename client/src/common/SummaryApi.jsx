@@ -1,6 +1,5 @@
 
-export const baseURL = import.meta.env.VITE_API_URL
-
+export const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
 const SummaryApi = {
     register: {
         url: '/api/user/register',
