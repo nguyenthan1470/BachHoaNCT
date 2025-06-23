@@ -98,7 +98,8 @@ const Home = () => {
                 </button>
 
                 <button className="bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold py-4 px-8 rounded-full hover:bg-white/20 transition-all duration-300">
-                  Khám phá thêm
+                 <Link to={"/new"}>Khám phá thêm</Link> 
+                 
                 </button>
               </div>
             </div>

@@ -154,6 +154,14 @@ const SummaryApi = {
         url: '/api/order/order-list',
         method: 'get'
     },
+    // login: {
+    //     url: '/api/login',
+    //     method: 'post',
+    // },
+    // googleLogin: {
+    //     url: '/api/google-login',
+    //     method: 'post',
+    // },
     // vnPayCreatePayment: {
     //     url: '/api/vnpay/create-payment',
     //     method: 'post'

@@ -23,6 +23,7 @@ import CartMobile from "../pages/CartMobile";
 import CheckoutPage from "../pages/CheckoutPage";
 import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
+import GroceryNewsPage from "../pages/GroceryNewsPage";
 
 const router = createBrowserRouter([
     {
@@ -124,7 +125,11 @@ const router = createBrowserRouter([
             {
                 path: 'cancel',
                 element: <Cancel />
-            }
+            },
+            {
+                path: 'new',
+                element: <GroceryNewsPage/> 
+            },
 
         ]
     }
