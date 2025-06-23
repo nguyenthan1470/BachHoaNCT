@@ -164,7 +164,6 @@ const getOrderProductItems = async({
 
     return productList
 }
-//mở terminal cd vào stripe_1.27.0_windows_x86_64 và tiếp theo => stripe login => stripe listen --forward-to localhost:8080/api/order/webhook
 
 
 export async function webhookStripe(request,response){

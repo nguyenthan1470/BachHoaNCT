@@ -1,9 +1,9 @@
 {
     "version" : 2,
-    "name" : "BachHoaNCT",
+    "name" : "BachHoaNCT",   
     "builds" : [
         {
-            "src" : "./index.js",
+            "src" : "index.js",
             "use" : "@vercel/node"
         }
     ],
