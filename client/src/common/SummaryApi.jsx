@@ -154,26 +154,22 @@ const SummaryApi = {
         url: '/api/order/order-list',
         method: 'get'
     },
-    // login: {
-    //     url: '/api/login',
-    //     method: 'post',
-    // },
-    // googleLogin: {
-    //     url: '/api/google-login',
-    //     method: 'post',
-    // },
-    // vnPayCreatePayment: {
-    //     url: '/api/vnpay/create-payment',
-    //     method: 'post'
-    // },
-    // vnPayReturn: {
-    //     url: '/api/vnpay/vnpay_return',
-    //     method: 'get'
-    // },
-    // vnPayIpn: {
-    //     url: '/api/vnpay/vnpay-ipn',
-    //     method: 'post'
-    // }
+    getAllOrders: {
+        url: '/api/admin/orders/all-orders',
+        method: 'get'
+    },
+    updateOrderStatus: {
+        url: '/api/admin/orders/update-order-status',
+        method: 'put'
+    },
+    vnpayCreatePayment: {
+        url: "/api/vnpay/create_payment",
+        method: "get"
+    },
+    vnpayCheckPayment: {
+        url: "/api/vnpay/check_payment",
+        method: "get"
+    }
 
 
 }

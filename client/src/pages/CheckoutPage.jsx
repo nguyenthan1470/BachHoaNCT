@@ -109,6 +109,32 @@ const CheckoutPage = () => {
     }
   };
 
+  const handleVnpayPayment = async () => {
+  if (!selectAddress) return toast.error('Vui lòng chọn địa chỉ');
+
+  try {
+    toast.loading("Đang chuyển hướng...");
+    const response = await Axios({
+      ...SummaryApi.vnpayCreatePayment, // trỏ tới /create_payment
+      params: {
+        amount: totalPrice,   // truyền tổng tiền cần thanh toán
+        bankCode: "NCB",      // nếu có chọn ngân hàng
+        language: "vn"        // ngôn ngữ giao diện VNPay
+      }
+    });
+
+    const { paymentUrl } = response.data;
+
+    if (paymentUrl) {
+      // 🔁 Redirect tới VNPay
+      window.location.href = paymentUrl;
+    } else {
+      toast.error("Không tạo được liên kết thanh toán VNPay");
+    }
+  } catch (error) {
+    AxiosToastError(error);
+  }
+};
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
       {/* Header Steps */}
@@ -265,6 +291,15 @@ const CheckoutPage = () => {
               >
                 Thanh toán trực tuyến
               </button>
+
+              <button
+                onClick={handleVnpayPayment}
+                disabled={!selectAddress}
+                className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl transition"
+              >
+                Thanh toán VNPAY
+              </button>
+
               <button
                 onClick={handleCashOnDelivery}
                 disabled={!selectAddress}
