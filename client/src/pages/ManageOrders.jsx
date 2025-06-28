@@ -139,10 +139,10 @@ const ManageOrders = () => {
                     <option key={status} value={status}>{status}</option>
                   ))}
                 </select>
-                <button className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl shadow-md">
+                {/* <button className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl shadow-md">
                   <Download className="w-4 h-4" />
                   <span className="hidden sm:inline">Xuất Excel</span>
-                </button>
+                </button> */}
               </div>
             </div>
           </div>

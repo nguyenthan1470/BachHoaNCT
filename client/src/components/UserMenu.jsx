@@ -79,9 +79,7 @@ const UserMenu = ({ close }) => {
             <Link onClick={handleClose} to="/dashboard/manage-orders" className="block px-3 py-2 rounded hover:bg-green-100">
               Quản lý đơn hàng
             </Link>
-            <Link onClick={handleClose} to="/dashboard/shipping-tracking" className="block px-3 py-2 rounded hover:bg-green-100">
-              Theo dõi vận chuyển
-            </Link>
+            
             <Link onClick={handleClose} to="/dashboard/sales-report" className="block px-3 py-2 rounded hover:bg-green-100">
               Báo cáo doanh số
             </Link>
@@ -90,14 +88,12 @@ const UserMenu = ({ close }) => {
             <Link onClick={handleClose} to="/dashboard/customer-accounts" className="block px-3 py-2 rounded hover:bg-green-100">
               Tài khoản khách hàng
             </Link>
+              
             <Link onClick={handleClose} to="/dashboard/staff-accounts" className="block px-3 py-2 rounded hover:bg-green-100">
               Tài khoản nhân viên
             </Link>
 
-            {/* Kiểm duyệt đánh giá */}
-            <Link onClick={handleClose} to="/dashboard/review-moderation" className="block px-3 py-2 rounded hover:bg-green-100">
-              Kiểm duyệt đánh giá
-            </Link>
+           
           </>
         )}
 

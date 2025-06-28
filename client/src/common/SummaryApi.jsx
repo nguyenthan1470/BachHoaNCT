@@ -169,7 +169,34 @@ const SummaryApi = {
     vnpayCheckPayment: {
         url: "/api/vnpay/check_payment",
         method: "get"
+    },
+    getSalesStatistics: {
+        url: '/api/order/statistics',
+        method: 'get'
+    },
+    getAllStaff: {
+        url: "/api/staff",
+        method: "get",
+    },
+    addStaff: {
+        url: "/api/staff",
+        method: "post",
+
+    },
+    updateStaff: (id) => ({
+        method: "PUT",
+        url: `/api/staff/${id}`
+    }),
+    deleteStaff: (id) => ({
+        method: "DELETE",
+        url: `/api/staff/${id}`
+    }),
+   
+    chatbot: {
+        method: 'POST',
+        url: '/api/chat'
     }
+
 
 
 }

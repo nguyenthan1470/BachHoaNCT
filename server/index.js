@@ -16,9 +16,8 @@ import addressRouter from './route/address.route.js';
 import orderRouter from './route/order.route.js';
 import adminOrderRouter from './route/adminOrder.route.js';
 import vnpayRoutes from './route/vnpay.route.js';
-
-
-
+import staffRouter from './route/staff.route.js';
+import chatRoutes from './route/chatbot.route.js';
 
 const app = express();
 
@@ -52,6 +51,8 @@ app.use('/api/address', addressRouter);
 app.use('/api/order', orderRouter);
 app.use('/api/admin/orders', adminOrderRouter);
 app.use('/api/vnpay', vnpayRoutes);
+app.use('/api/staff', staffRouter);
+app.use('/api', chatRoutes);
 
 connectDB().then(()=>{
     app.listen(PORT,()=>{

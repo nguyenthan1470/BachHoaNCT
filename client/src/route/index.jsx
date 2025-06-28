@@ -25,10 +25,10 @@ import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
 import GroceryNewsPage from "../pages/GroceryNewsPage";
 import ManageOrders from "../pages/ManageOrders";
-import ShippingTracking from "../pages/ShippingTracking";
+
 import SalesReport from "../pages/SalesReport";
 import CustomerAccounts from "../pages/CustomerAccounts";
-import ReviewModeration from "../pages/ReviewModeration";
+
 import StaffAccounts from "../pages/StaffAccounts";
 import VnpayPaymentResult from "../pages/VnpayPaymentResult";
 
@@ -107,10 +107,7 @@ const router = createBrowserRouter([
                         path: "manage-orders",
                         element: <AdminPermission> <ManageOrders /></AdminPermission>
                     },
-                    {
-                        path: "shipping-tracking",
-                        element: <AdminPermission> <ShippingTracking /></AdminPermission>
-                    },
+                    
                     {
                         path: "sales-report",
                         element: <AdminPermission> <SalesReport /></AdminPermission>
@@ -119,11 +116,6 @@ const router = createBrowserRouter([
                         path: "customer-accounts",
                         element: <AdminPermission> <CustomerAccounts /></AdminPermission>
                     },
-                    {
-                        path: "review-moderation",
-                        element: <AdminPermission> <ReviewModeration /></AdminPermission>
-                    },
-
                     {
                         path: "staff-accounts",
                         element: <AdminPermission> <StaffAccounts /></AdminPermission>

@@ -14,6 +14,7 @@ import { handleAddItemCart } from './store/cartProduct.js'
 import GlobalProvider from './provider/GlobalProvider.jsx'
 import CartMobileLink from './components/CartMobile.jsx'
 
+
 function App() { 
   const dispatch = useDispatch()
   const location = useLocation()
@@ -84,7 +85,7 @@ function App() {
       <main className='min-h-[78vh]' >
         <Outlet />
       </main>
-    
+   
        <Footer  />
     
       <Toaster />

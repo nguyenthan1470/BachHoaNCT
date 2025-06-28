@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Result, Button } from 'antd';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import Axios from '../utils/Axios';
 import SummaryApi from '../common/SummaryApi';
+import { useGlobalContext } from '../provider/GlobalProvider';
 
 const VnpayPaymentResult = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [status, setStatus] = useState('info');
-  const [title, setTitle] = useState('Đang xử lý thanh toán...');
+  const { fetchCartItem, fetchOrder } = useGlobalContext();
 
   useEffect(() => {
     const checkPayment = async () => {
@@ -18,16 +17,17 @@ const VnpayPaymentResult = () => {
           params: Object.fromEntries([...searchParams])
         });
 
-        if (res.data?.data?.vnp_ResponseCode === '00') {
-          setStatus('success');
-          setTitle('Thanh toán thành công');
+        const responseCode = res.data?.data?.vnp_ResponseCode;
+
+        if (responseCode === '00') {
+          await fetchCartItem(); // reset giỏ hàng
+          await fetchOrder();    // load lại đơn hàng
+          navigate('/success', { state: { text: 'Thanh toán VNPay' } });
         } else {
-          setStatus('error');
-          setTitle('Thanh toán thất bại hoặc bị hủy');
+          navigate('/cancel', { state: { text: 'Thanh toán thất bại hoặc bị huỷ' } });
         }
       } catch (err) {
-        setStatus('error');
-        setTitle('Lỗi khi xác minh thanh toán');
+        navigate('/cancel', { state: { text: 'Lỗi xác minh thanh toán' } });
       }
     };
 
@@ -35,14 +35,9 @@ const VnpayPaymentResult = () => {
   }, []);
 
   return (
-    <Result
-      status={status}
-      title={title}
-      subTitle="Cảm ơn bạn đã sử dụng dịch vụ."
-      extra={[
-        <Button type="primary" onClick={() => navigate('/')}>Quay về trang chủ</Button>
-      ]}
-    />
+    <div className="flex items-center justify-center h-screen">
+      <p className="text-gray-600 text-lg">Đang xác minh kết quả thanh toán...</p>
+    </div>
   );
 };
 
