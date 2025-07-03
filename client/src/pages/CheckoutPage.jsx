@@ -126,7 +126,7 @@ const CheckoutPage = () => {
     const { paymentUrl } = response.data;
 
     if (paymentUrl) {
-      // 🔁 Redirect tới VNPay
+      //Redirect tới VNPay
       window.location.href = paymentUrl;
     } else {
       toast.error("Không tạo được liên kết thanh toán VNPay");
@@ -289,13 +289,13 @@ const CheckoutPage = () => {
                 disabled={!selectAddress}
                 className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl transition"
               >
-                Thanh toán trực tuyến
+                Thanh toán thẻ tín dụng
               </button>
 
               <button
                 onClick={handleVnpayPayment}
                 disabled={!selectAddress}
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl transition"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-xl transition"
               >
                 Thanh toán VNPAY
               </button>

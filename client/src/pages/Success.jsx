@@ -4,7 +4,6 @@ import { Link, useLocation } from 'react-router-dom'
 import { useGlobalContext } from '../provider/GlobalProvider';
 
 const Success = () => {
-  // Simulated location state - in real app this would come from react-router
   const locationState = { text: "Thanh toán" }
 
   const [showConfetti, setShowConfetti] = useState(true)
@@ -12,24 +11,20 @@ const Success = () => {
   const { fetchCartItem, fetchOrder } = useGlobalContext();
 
   useEffect(() => {
-    // Trigger animations after component mounts
     setTimeout(() => setAnimateElements(true), 100)
 
-    // Hide confetti after 3 seconds
     setTimeout(() => setShowConfetti(false), 3000)
   
   }, [])
 
   const paymentText = Boolean(locationState?.text) ? locationState.text : "Thanh toán"
 
-  // Simulated navigation function
   const handleNavigation = (path) => {
     console.log(`Navigating to: ${path}`)
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-4 -left-4 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
         <div className="absolute -bottom-8 -right-4 w-72 h-72 bg-teal-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse" style={{ animationDelay: '1s' }}></div>
@@ -56,7 +51,6 @@ const Success = () => {
       <div className={`relative bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center border border-white/20 transition-all duration-1000 transform ${animateElements ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-8 opacity-0 scale-95'
         }`}>
 
-        {/* Success Icon */}
         <div className={`mx-auto mb-6 transition-all duration-1000 delay-300 transform ${animateElements ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-4 opacity-0 scale-90'
           }`}>
           <div className="relative">
@@ -98,7 +92,6 @@ const Success = () => {
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className={`space-y-4 transition-all duration-1000 delay-900 transform ${animateElements ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
           }`}>
 
@@ -111,7 +104,7 @@ const Success = () => {
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
 
-          {/* Home Button */}
+
           <button
             onClick={() => handleNavigation('/')}
             className="group w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-6 rounded-2xl border-2 border-gray-200 hover:border-gray-300 transition-all duration-300 flex items-center justify-center space-x-2"
@@ -121,7 +114,6 @@ const Success = () => {
           </button>
         </div>
 
-        {/* Footer Note */}
         <div className={`mt-8 text-xs text-gray-400 transition-all duration-1000 delay-1100 transform ${animateElements ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
           }`}>
           <p>Cảm ơn bạn vì đã tin tưởng và mua sắm sản phẩm tại chúng tôi</p>

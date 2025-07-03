@@ -18,6 +18,7 @@ import adminOrderRouter from './route/adminOrder.route.js';
 import vnpayRoutes from './route/vnpay.route.js';
 import staffRouter from './route/staff.route.js';
 import chatRoutes from './route/chatbot.route.js';
+import googleRouter from './route/google.route.js';
 
 const app = express();
 
@@ -53,6 +54,7 @@ app.use('/api/admin/orders', adminOrderRouter);
 app.use('/api/vnpay', vnpayRoutes);
 app.use('/api/staff', staffRouter);
 app.use('/api', chatRoutes);
+app.use('/api', googleRouter);
 
 connectDB().then(()=>{
     app.listen(PORT,()=>{

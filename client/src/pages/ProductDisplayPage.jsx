@@ -5,7 +5,6 @@ import Axios from '../utils/Axios'
 import AxiosToastError from '../utils/AxiosToastError'
 import { DisplayPriceInVietnamDong } from '../utils/DisplayPriceInVietnamDong'
 import Divider from '../components/Divider'
-
 import { pricewithDiscount } from '../utils/PriceWithDiscount'
 import AddToCartButton from '../components/AddToCartButton'
 import { ChevronLeft, ChevronRight,  Star,  StarHalf,  Shield,   Truck,   RotateCcw,   Award,  Package,   Timer,   TrendingUp,  Heart,   Share2, } from 'lucide-react'
@@ -210,7 +209,7 @@ const ProductDisplayPage = () => {
                 </span>
               </div>
               
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">{data.name}</h1>
+              <h1 className="text-xl lg:text-3xl font-bold text-gray-900">{data.name}</h1>
               <p className="text-gray-600">{data.unit}</p>
               
               {/* Rating */}
@@ -228,8 +227,8 @@ const ProductDisplayPage = () => {
             <div className="space-y-3">
               <h3 className="text-lg font-semibold text-gray-900">Giá</h3>
               <div className="flex items-center gap-4">
-                <div className="bg-green-50 border-2 border-green-200 rounded-xl px-4 py-3">
-                  <span className="text-2xl lg:text-3xl font-bold text-green-600">
+                <div className=" border-2 border-green-500 rounded-xl px-4 py-3">
+                  <span className="text-xl lg:text-2xl font-bold text-green-600">
                     {DisplayPriceInVietnamDong(pricewithDiscount(data.price, data.discount))}
                   </span>
                 </div>

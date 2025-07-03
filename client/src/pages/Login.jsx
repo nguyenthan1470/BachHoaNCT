@@ -8,6 +8,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import fetchUserDetails from '../utils/fetchUserDetails';
 import { useDispatch } from 'react-redux';
 import { setUserDetails } from '../store/userSlice';
+import { GoogleLogin } from '@react-oauth/google';
+import GoogleLoginButton from '../components/GoogleLoginButton';
 
 const Login = () => {
   const [data, setData] = useState({ email: '', password: '' });
@@ -47,21 +49,56 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
-    console.log('Google login clicked');
-    // Thêm logic đăng nhập Google (ví dụ: sử dụng @react-oauth/google)
+  const handleSuccess = async (credentialResponse) => {
+    setIsLoading(true);
+    try {
+      const tokenId = credentialResponse.credential;
+
+      // Gửi tokenId lên backend thông qua SummaryApi
+      const res = await Axios({
+        ...SummaryApi.googleLogin,
+        data: { tokenId },
+        withCredentials: true
+      });
+
+      if (res.data.success) {
+        toast.success("Đăng nhập Google thành công");
+
+        // Lưu accessToken và refreshToken nếu có
+        const { accessToken, refreshToken } = res.data.data;
+        if (accessToken) localStorage.setItem("accessToken", accessToken);
+        if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
+
+        // Gọi API lấy thông tin người dùng
+        const userDetails = await fetchUserDetails();
+        dispatch(setUserDetails(userDetails.data));
+        navigate("/");
+      } else {
+        toast.error(res.data.message || "Đăng nhập thất bại");
+      }
+    } catch (error) {
+      AxiosToastError(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  const handleError = () => {
+    toast.error("Đăng nhập Google thất bại. Vui lòng thử lại sau.");
+  };
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-yellow-50 to-orange-50 flex">
       {/* Left Side - Hero Section */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80")' }}
         ></div>
         <div className="absolute inset-0 bg-gradient-to-br from-green-600/50 via-orange-500/50 to-yellow-500/50"></div>
-        
+
         <div className="relative z-10 flex flex-col justify-center items-start p-12 text-white">
           <div className="mb-8">
             <h1 className="text-4xl font-bold mb-4 leading-tight">
@@ -83,7 +120,7 @@ const Login = () => {
                 <p className="text-yellow-100 text-sm">Nguồn gốc rõ ràng, chất lượng đảm bảo</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-white/20 rounded-full backdrop-blur-sm">
                 <Truck className="w-5 h-5 text-yellow-200" />
@@ -93,7 +130,7 @@ const Login = () => {
                 <p className="text-yellow-100 text-sm">Đặt hôm nay, nhận ngay trong ngày</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-white/20 rounded-full backdrop-blur-sm">
                 <ShoppingCart className="w-5 h-5 text-yellow-200" />
@@ -120,24 +157,17 @@ const Login = () => {
         <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
           {/* Logo/Brand */}
           <div className="text-center mb-6">
-            {/* <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-r from-green-500 to-yellow-500 rounded-xl mb-3">
-              <Leaf className="w-7 h-7 text-white" />
-            </div> */}
             <h2 className="text-2xl font-bold text-gray-900 mb-1">Đăng nhập</h2>
             <p className="text-gray-600 text-sm">Chào mừng bạn đến với cửa hàng thực phẩm tươi sạch!</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Google Login Button */}
-            <button
-              type="button"
-              onClick={handleGoogleLogin}
-              className="w-full flex items-center justify-center space-x-2 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-            >
-              <Chrome className="w-4 h-4 text-gray-600" />
-              <span className="text-gray-700 text-sm font-medium">Đăng nhập với Google</span>
-            </button>
 
+            <GoogleLoginButton
+              onSuccess={handleSuccess}
+              onError={handleError}
+              isLoading={isLoading}
+            />
             {/* Divider */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
@@ -220,27 +250,27 @@ const Login = () => {
             </div>
 
             {/* Login Button */}
-            <button
-              type="submit"
-              disabled={!valideValue || isLoading}
-              className={`w-full flex items-center justify-center space-x-2 py-2 px-4 rounded-lg text-white text-sm font-medium transition-all duration-200 ${
-                valideValue && !isLoading
-                  ? 'bg-gradient-to-r from-green-500 to-yellow-500 hover:from-green-600 hover:to-yellow-600 shadow-md hover:shadow-lg transform hover:-translate-y-0.5'
-                  : 'bg-gray-300 cursor-not-allowed'
-              }`}
-            >
-              {isLoading ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                  <span>Đang đăng nhập...</span>
-                </>
-              ) : (
-                <>
-                  <span>Đăng nhập</span>
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
+           <button
+  type="submit"
+  disabled={!valideValue || isLoading}
+  className={`w-full flex items-center justify-center space-x-2 py-2 px-4 rounded-lg text-white text-sm font-medium transition-all duration-200 ${
+    valideValue && !isLoading
+      ? 'bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg transform hover:-translate-y-0.5'
+      : 'bg-gray-300 cursor-not-allowed'
+  }`}
+>
+  {isLoading ? (
+    <>
+      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+      <span>Đang đăng nhập...</span>
+    </>
+  ) : (
+    <>
+      <span>Đăng nhập</span>
+      <ArrowRight className="w-4 h-4" />
+    </>
+  )}
+</button>
 
             {/* Sign up link */}
             <p className="text-center text-xs text-gray-600">
@@ -260,6 +290,14 @@ const Login = () => {
               <Link to="/privacy" className="text-green-600 hover:underline">Chính sách bảo mật</Link>
             </p>
           </div>
+          {/* <GoogleLogin
+                onSuccess={credentialResponse => {
+                  console.log(credentialResponse);
+                }}
+                onError={() => {
+                  console.log('Login Failed');
+                }}
+              />; */}
         </div>
       </div>
     </div>

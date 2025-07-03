@@ -5,6 +5,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import SummaryApi from '../common/SummaryApi';
 import Axios from '../utils/Axios';
 import AxiosToastError from '../utils/AxiosToastError';
+import { GoogleLogin } from '@react-oauth/google';
+import fetchUserDetails from '../utils/fetchUserDetails';
+import { useDispatch } from 'react-redux';
+import { setUserDetails } from '../store/userSlice';
 
 const Register = () => {
   const [data, setData] = useState({
@@ -17,6 +21,7 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,6 +59,41 @@ const Register = () => {
       setIsLoading(false);
     }
   };
+
+  // const handleGoogleSuccess = async (credentialResponse) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const tokenId = credentialResponse.credential;
+
+  //     const res = await Axios({
+  //       ...SummaryApi.googleLogin,
+  //       data: { tokenId },
+  //       withCredentials: true,
+  //     });
+
+  //     if (res.data.success) {
+  //       toast.success('Đăng ký Google thành công');
+
+  //       const { accessToken, refreshToken } = res.data.data;
+  //       if (accessToken) localStorage.setItem('accessToken', accessToken);
+  //       if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
+
+  //       const userDetails = await fetchUserDetails();
+  //       dispatch(setUserDetails(userDetails.data));
+  //       navigate('/');
+  //     } else {
+  //       toast.error(res.data.message || 'Đăng ký thất bại');
+  //     }
+  //   } catch (error) {
+  //     AxiosToastError(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  // const handleGoogleError = () => {
+  //   toast.error('Đăng ký Google thất bại. Vui lòng thử lại sau.');
+  // };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-yellow-50 to-orange-50 flex">
@@ -123,11 +163,8 @@ const Register = () => {
         <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
           {/* Logo/Brand */}
           <div className="text-center mb-6">
-            {/* <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-r from-green-500 to-yellow-500 rounded-xl mb-3">
-              <Leaf className="w-7 h-7 text-white" />
-            </div> */}
             <h2 className="text-2xl font-bold text-gray-900 mb-1">Đăng ký</h2>
-            <p className="text-gray-600 text-sm">Tạo tài khoản để bắt đầu mua sắm thực phẩm tươi sạch!</p>
+            <p className="text-gray-600 text-sm">Tạo tài khoản để bắt đầu mua sắm thôi nào</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -242,7 +279,7 @@ const Register = () => {
               type="submit"
               disabled={!valideValue || isLoading}
               className={`w-full flex items-center justify-center space-x-2 py-2 px-4 rounded-lg text-white text-sm font-medium transition-all duration-200 ${valideValue && !isLoading
-                  ? 'bg-gradient-to-r from-green-500 to-yellow-500 hover:from-green-600 hover:to-yellow-600 shadow-md hover:shadow-lg transform hover:-translate-y-0.5'
+                  ? 'bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg transform hover:-translate-y-0.5'
                   : 'bg-gray-300 cursor-not-allowed'
                 }`}
             >
@@ -258,15 +295,11 @@ const Register = () => {
                 </>
               )}
             </button>
-            <button
-              type="button"
-              // onClick={handleGoogleLogin}
+            {/* <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleError}
               className="w-full flex items-center justify-center space-x-2 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-            >
-              <Chrome className="w-4 h-4 text-gray-600" />
-              <span className="text-gray-700 text-sm font-medium">Đăng kí với Google</span>
-            </button>
-
+            /> */}
             {/* Login link */}
             <p className="text-center text-xs text-gray-600">
               Bạn đã có tài khoản?{' '}

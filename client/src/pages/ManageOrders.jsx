@@ -6,7 +6,7 @@ import { Select, SelectItem } from '@nextui-org/react'
 import {
   Package, ShoppingCart, Clock, Truck, CheckCircle, XCircle,
   RotateCcw, User, Mail, Phone, DollarSign, Hash, Calendar,
-  Search, Download
+  Search, Download, Filter, ArrowUpDown
 } from 'lucide-react'
 
 const orderStatuses = ['Thanh Toán Khi Nhận', 'Chờ xử lý', 'Đang giao', 'Đã giao', 'Đã hủy', 'Hoàn trả']
@@ -69,6 +69,8 @@ const ManageOrders = () => {
     }
   }
 
+
+
   const filteredOrders = orders.filter(order => {
     const matchesSearch =
       order.orderId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -79,8 +81,8 @@ const ManageOrders = () => {
   })
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4 md:p-6">
+      <div className="max-w-7xl mx-auto space-y-6">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-3 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-lg">
@@ -139,55 +141,153 @@ const ManageOrders = () => {
                     <option key={status} value={status}>{status}</option>
                   ))}
                 </select>
-                {/* <button className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl shadow-md">
-                  <Download className="w-4 h-4" />
-                  <span className="hidden sm:inline">Xuất Excel</span>
-                </button> */}
+
               </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl shadow-sm overflow-hidden">
+        {/* Orders Table */}
+        <div className="bg-white/80 backdrop-blur-xl border border-white/30 rounded-3xl shadow-xl overflow-hidden">
           {loading ? (
-            <div className="flex items-center justify-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            <div className="flex flex-col items-center justify-center py-20">
+              <div className="relative">
+                <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200"></div>
+                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 absolute top-0 left-0"></div>
+              </div>
+              <p className="text-gray-600 mt-4 text-lg">Đang tải dữ liệu...</p>
             </div>
           ) : filteredOrders.length === 0 ? (
             <div className="text-center py-20">
-              <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-600 mb-2">Không có đơn hàng</h3>
-              <p className="text-gray-500">Chưa có đơn hàng nào để hiển thị</p>
+              <div className="relative inline-block mb-6">
+                <div className="absolute inset-0 bg-gray-200 rounded-full blur opacity-50"></div>
+                <div className="relative p-6 bg-gray-100 rounded-full">
+                  <Package className="w-16 h-16 text-gray-400" />
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-700 mb-2">Không có đơn hàng</h3>
+              <p className="text-gray-500 text-lg">Chưa có đơn hàng nào phù hợp với tiêu chí tìm kiếm</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="p-4 text-left">Mã đơn</th>
-                    <th className="p-4 text-left">Khách hàng</th>
-                    <th className="p-4 text-left">Email</th>
-                    <th className="p-4 text-left">SĐT</th>
-                    <th className="p-4 text-left">Tổng tiền</th>
-                    <th className="p-4 text-left">Trạng thái</th>
-                    <th className="p-4 text-center">Thao tác</th>
+                <thead>
+                  <tr className="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200/50">
+                    <th className="p-6 text-left font-semibold text-gray-700">
+                      <div className="flex items-center gap-2">
+                        <Hash className="w-4 h-4" />
+                        Mã đơn
+                      </div>
+                    </th>
+                    <th className="p-6 text-left font-semibold text-gray-700">
+                      <div className="flex items-center gap-2">
+                        <User className="w-4 h-4" />
+                        Thông tin khách hàng
+                      </div>
+                    </th>
+
+                    <th className="p-6 text-left font-semibold text-gray-700">
+                      <div className="flex items-center gap-2">
+                        <Package className="w-4 h-4" />
+                        Sản phẩm
+                      </div>
+                    </th>
+
+                    <th className="p-6 text-left font-semibold text-gray-700">Trạng thái</th>
+                    <th className="p-6 text-center font-semibold text-gray-700">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredOrders.map(order => (
-                    <tr key={order._id} className="border-t hover:bg-blue-50/30">
-                      <td className="p-4 font-mono text-blue-600">{order.orderId || order._id.slice(-6).toUpperCase()}</td>
-                      <td className="p-4">{order.userId?.name || "Không rõ"}</td>
-                      <td className="p-4">{order.userId?.email || "Không rõ"}</td>
-                      <td className="p-4">{order.userId?.mobile ? `0${order.userId.mobile}` : "Không rõ"}</td>
-                      <td className="p-4 text-red-600 font-semibold">{order.totalAmt?.toLocaleString() || 0}₫</td>
-                      <td className="p-4">
-                        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(order.payment_status || 'Chờ xử lý')}`}>
+                  {filteredOrders.map((order, index) => (
+                    <tr key={order._id} className={`border-b border-gray-100/50 hover:bg-blue-50/30 transition-all duration-300 ${index % 2 === 0 ? 'bg-white/40' : 'bg-gray-50/40'}`}>
+                      <td className="p-2">
+                        <div className="flex flex-col">
+                          <span className="font-mono text-blue-600 font-semibold text-sm">
+                            {order.orderId || order._id.slice(-6).toUpperCase()}
+                          </span>
+                          <span className="text-gray-500 text-sm mt-1">
+                            {new Date(order.createdAt).toLocaleDateString('vi-VN')}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="p-6">
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <User className="w-4 h-4 text-gray-400" />
+                            <span className="font-medium text-gray-800">{order.userId?.name || "Không rõ"}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Mail className="w-4 h-4 text-gray-400" />
+                            <span className="text-gray-600 text-sm">{order.userId?.email || "Không rõ"}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Phone className="w-4 h-4 text-gray-400" />
+                            <span className="text-gray-600 text-sm">{order.userId?.mobile ? `0${order.userId.mobile}` : "Không rõ"}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-6">
+                        <div className="space-y-3 max-w-sm">
+                          {Array.isArray(order.product_details) ? (
+                            order.product_details.slice(0, 2).map((product, idx) => (
+                              <div key={idx} className="flex items-center gap-3 p-3 bg-white/60 rounded-xl border border-gray-100/50">
+                                <div className="relative">
+                                  <img
+                                    src={product.image?.[0] || "/assets/placeholder.jpg"}
+                                    alt={product.name}
+                                    className="w-16 h-16 object-cover rounded-lg shadow-sm"
+                                  />
+                                  <div className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-semibold">
+                                    {product.quantity || 1}
+                                  </div>
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <p className="font-medium text-gray-800 truncate">{product.name || "Không rõ"}</p>
+                                  <p className="text-sm text-gray-500">SL: {product.quantity || 1}</p>
+                                  <p className="text-sm font-bold text-red-500 mt-1">
+                                    Tổng: {order.totalAmt?.toLocaleString() || 0}₫
+                                  </p>
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="flex items-center gap-3 p-3 bg-white/60 rounded-xl border border-gray-100/50">
+                              <div className="relative">
+                                <img
+                                  src={order.product_details?.image?.[0] || "/assets/placeholder.jpg"}
+                                  alt={order.product_details?.name}
+                                  className="w-16 h-16 object-cover rounded-lg shadow-sm"
+                                />
+                                <div className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-semibold">
+                                  {order.product_details?.quantity || 1}
+                                </div>
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium text-gray-800 truncate">{order.product_details?.name || "Không rõ"}</p>
+                                <p className="text-sm text-gray-500">SL: {order.product_details?.quantity || 1}</p>
+                                <p className="text-sm font-bold text-red-500 mt-1">
+                                  Tổng: {order.totalAmt?.toLocaleString() || 0}₫
+                                </p>
+                              </div>
+                            </div>
+                          )}
+                          {Array.isArray(order.product_details) && order.product_details.length > 2 && (
+                            <div className="text-center">
+                              <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                                +{order.product_details.length - 2} sản phẩm khác
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </td>
+
+                      <td className="p-2">
+                        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-semibold border shadow-sm ${getStatusColor(order.payment_status || 'Chờ xử lý')}`}>
                           {getStatusIcon(order.payment_status)}
                           {order.payment_status || 'Chờ xử lý'}
                         </div>
                       </td>
-                      <td className="p-4 text-center">
+                      <td className="p-11 text-center">
                         <Select
                           size="sm"
                           className="w-40 min-w-[180px] max-w-[200px] bg-white shadow-md border border-gray-200 rounded-lg"
@@ -207,9 +307,12 @@ const ManageOrders = () => {
                             <SelectItem
                               key={status}
                               value={status}
-                              className="hover:bg-primary-100 rounded-md transition-colors flex items-center justify-center text-center"
+                              className="flex items-center justify-center text-center hover:bg-blue-50 rounded-md transition-colors p-3"
                             >
-                              {status}
+                              <div className="flex items-center justify-center gap-2">
+                                {getStatusIcon(status)}
+                                {status}
+                              </div>
                             </SelectItem>
                           ))}
                         </Select>

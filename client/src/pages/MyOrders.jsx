@@ -40,10 +40,10 @@ const MyOrders = () => {
 
             <p>
               <span className='font-semibold'>Trạng thái thanh toán:</span>{" "}
-              <span className={order?.payment_status === "paid" ? 'text-green-600' : 'text-yellow-600'}>
-                {order?.payment_status === "paid"
+              <span className={order?.payment_status === "Đã thanh toán" ? 'text-green-600' : 'text-yellow-600'}>
+                {order?.payment_status === "Đã thanh toán"
                   ? "Đã thanh toán"
-                  : order?.payment_status === "unpaid"
+                  : order?.payment_status === "Chưa thanh toán"
                     ? "Chưa thanh toán"
                     : order?.payment_status === "cancelled"
                       ? "Đã hủy"

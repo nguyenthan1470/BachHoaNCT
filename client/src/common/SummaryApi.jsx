@@ -191,11 +191,18 @@ const SummaryApi = {
         method: "DELETE",
         url: `/api/staff/${id}`
     }),
-   
+
     chatbot: {
         method: 'POST',
         url: '/api/chat'
-    }
+    },
+googleLogin: {
+  url: "/api/auth/google-login",
+  method: "POST"
+},
+
+
+
 
 
 

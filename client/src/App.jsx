@@ -13,11 +13,12 @@ import Axios from './utils/Axios.js'
 import { handleAddItemCart } from './store/cartProduct.js'
 import GlobalProvider from './provider/GlobalProvider.jsx'
 import CartMobileLink from './components/CartMobile.jsx'
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
-
-function App() { 
+function App() {
   const dispatch = useDispatch()
   const location = useLocation()
+  const clientId = import.meta.env.VITE_GG_CLIENT_ID
 
   const fetchUser = async () => {
     const userData = await fetchUserDetails()
@@ -67,9 +68,6 @@ function App() {
     }
   }
 
-
-
-
   useEffect(() => {
     fetchUser()
     fetchCategory()
@@ -80,21 +78,23 @@ function App() {
 
   return (
     // ở đây là nơi chứa bố cục trang web
-    <GlobalProvider>
-      <Header />
-      <main className='min-h-[78vh]' >
-        <Outlet />
-      </main>
-   
-       <Footer  />
-    
-      <Toaster />
-      {
-        location.pathname !== '/checkout' && (
-          <CartMobileLink />
-        )
-      }
-    </GlobalProvider>
+    <GoogleOAuthProvider clientId={clientId}>
+      <GlobalProvider>
+        <Header />
+        <main className='min-h-[78vh]' >
+          <Outlet />
+        </main>
+
+        <Footer />
+
+        <Toaster />
+        {
+          location.pathname !== '/checkout' && (
+            <CartMobileLink />
+          )
+        }
+      </GlobalProvider>
+     </GoogleOAuthProvider>
   )
 }
 

@@ -23,49 +23,26 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* Thông tin công ty */}
-                <div>
-                    <p className='text-lg text-gray-800'>VỀ CHÚNG TÔI</p>
-                    <ul className='mt-3 flex flex-col gap-2 text-sm'>
-                        <li><a href="#">Giới thiệu cửa hàng</a></li>
-                        <li><a href="#">Tin tức & sự kiện</a></li>
-                        <li><a href="#">Hợp tác nhà cung cấp</a></li>
-                        <li><a href="#">Tuyển dụng</a></li>
-                        <li><a href="#">Liên hệ</a></li>
-                    </ul>
-                </div>
-
-                {/* Hỗ trợ khách hàng */}
-                <div>
-                    <p className='text-lg text-gray-800'>HỖ TRỢ KHÁCH HÀNG</p>
-                    <ul className='mt-3 flex flex-col gap-2 text-sm'>
-                        <li><a href="#">Hướng dẫn mua hàng</a></li>
-                        <li><a href="#">Chính sách giao hàng</a></li>
-                        <li><a href="#">Chính sách đổi trả</a></li>
-                        <li><a href="#">Thanh toán & hoàn tiền</a></li>
-                        <li><a href="#">Câu hỏi thường gặp</a></li>
-                    </ul>
-                </div>
-
-                {/* Đăng ký nhận tin */}
-                <div className='max-w-80'>
-                    <p className='text-lg text-gray-800'>ĐĂNG KÝ NHẬN ƯU ĐÃI</p>
-                    <p className='mt-3 text-sm'>
-                        Nhận thông tin khuyến mãi, mã giảm giá và tin tức sản phẩm mới nhất từ chúng tôi.
-                    </p>
-                    <div className='flex items-center mt-4'>
-                        <input
-                            type="text"
-                            className='bg-white rounded-l border border-gray-300 h-9 px-3 outline-none'
-                            placeholder='Nhập email của bạn'
-                        />
-                        <button className='flex items-center justify-center bg-green-600 hover:bg-green-700 h-9 w-9 aspect-square rounded-r'>
-                            <svg className="w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
-                            </svg>
-                        </button>
+                {/* Liên kết và thông tin liên hệ */}
+                <div class="flex-1 flex items-start md:justify-end gap-20">
+                    <div>
+                        <h2 class="font-semibold mb-2 text-gray-800">VỀ CHÚNG TÔI</h2>
+                        <ul class="text-sm space-y-2">
+                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="#">Giới thiệu cửa hàng</a></li>
+                            <li><a href="#">Liên hệ với chúng tôi</a></li>
+                            <li><a href="#">Tin tức & sự kiện</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2 class="font-semibold mb-2 text-gray-800">Liên hệ</h2>
+                        <div class="text-sm space-y-2">
+                            <p>+84-21-4653-783</p>
+                            <p>BachHoaNCT@gmail.com</p>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
             <hr className='border-gray-300 mt-8' />

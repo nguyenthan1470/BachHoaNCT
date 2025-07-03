@@ -25,12 +25,11 @@ import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
 import GroceryNewsPage from "../pages/GroceryNewsPage";
 import ManageOrders from "../pages/ManageOrders";
-
 import SalesReport from "../pages/SalesReport";
-import CustomerAccounts from "../pages/CustomerAccounts";
-
 import StaffAccounts from "../pages/StaffAccounts";
 import VnpayPaymentResult from "../pages/VnpayPaymentResult";
+import  Contact from "../pages/Contact";
+
 
 const router = createBrowserRouter([
     {
@@ -112,10 +111,7 @@ const router = createBrowserRouter([
                         path: "sales-report",
                         element: <AdminPermission> <SalesReport /></AdminPermission>
                     },
-                    {
-                        path: "customer-accounts",
-                        element: <AdminPermission> <CustomerAccounts /></AdminPermission>
-                    },
+                   
                     {
                         path: "staff-accounts",
                         element: <AdminPermission> <StaffAccounts /></AdminPermission>
@@ -160,7 +156,12 @@ const router = createBrowserRouter([
             {
                 path:"vnpay-result",
                 element: <VnpayPaymentResult />
+            },
+            {
+                path:"contact",
+                element:<Contact/>
             }
+            
 
         ]
     }
