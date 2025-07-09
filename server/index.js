@@ -19,6 +19,7 @@ import vnpayRoutes from './route/vnpay.route.js';
 import staffRouter from './route/staff.route.js';
 import chatRoutes from './route/chatbot.route.js';
 import googleRouter from './route/google.route.js';
+import reviewRouter from './route/review.route.js'
 
 const app = express();
 
@@ -55,6 +56,9 @@ app.use('/api/vnpay', vnpayRoutes);
 app.use('/api/staff', staffRouter);
 app.use('/api', chatRoutes);
 app.use('/api', googleRouter);
+app.use('/api/review', reviewRouter)
+
+
 
 connectDB().then(()=>{
     app.listen(PORT,()=>{

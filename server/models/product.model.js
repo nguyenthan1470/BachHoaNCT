@@ -12,7 +12,6 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: "category"
     }],
-
     subCategory: [{
         type: mongoose.Schema.ObjectId,
         ref: "subCategory"
@@ -44,10 +43,14 @@ const productSchema = new mongoose.Schema({
     publish: {
         type: Boolean,
         default: true
+    },
+    sold: {  
+        type: Number,
+        default: 0
     }
 }, { timestamps: true })
 
-//create a text index
+
 productSchema.index(
   {
     name: "text",
@@ -64,4 +67,3 @@ productSchema.index(
 const ProductModel = mongoose.model('product', productSchema)
 
 export default ProductModel;
-

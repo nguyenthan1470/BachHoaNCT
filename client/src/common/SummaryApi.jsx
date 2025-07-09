@@ -196,10 +196,18 @@ const SummaryApi = {
         method: 'POST',
         url: '/api/chat'
     },
-googleLogin: {
-  url: "/api/auth/google-login",
-  method: "POST"
-},
+    googleLogin: {
+        url: "/api/auth/google-login",
+        method: "POST"
+    },
+    addReview: {
+        url: '/api/review/add-review',
+        method: 'post'
+    },
+    getReviews: {
+        url: '/api/review/get-review',
+        method: 'post'
+    }
 
 
 

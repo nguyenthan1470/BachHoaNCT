@@ -1,6 +1,7 @@
 import Stripe from "../config/stripe.js";
 import CartProductModel from "../models/cartproduct.model.js";
 import OrderModel from "../models/order.model.js";
+import ProductModel from "../models/product.model.js"; // Thêm import này
 import UserModel from "../models/user.model.js";
 import mongoose from "mongoose";
 
@@ -37,9 +38,16 @@ export async function CashOnDeliveryOrderController(request, response) {
 
         const generatedOrder = await OrderModel.insertMany(payload)
 
+        // Cập nhật số lượng đã bán cho từng sản phẩm
+        for (const el of list_items) {
+            await ProductModel.findByIdAndUpdate(el.productId._id, {
+                $inc: { sold: el.quantity }
+            })
+        }
+
         ///remove from the cart
-        const removeCartItems = await CartProductModel.deleteMany({ userId: userId })
-        const updateInUser = await UserModel.updateOne({ _id: userId }, { shopping_cart: [] })
+        await CartProductModel.deleteMany({ userId: userId })
+        await UserModel.updateOne({ _id: userId }, { shopping_cart: [] })
 
         return response.json({
             message: "Đặt hàng thành công",
@@ -172,7 +180,6 @@ export async function webhookStripe(request, response) {
 
     console.log("event", event)
 
-
     switch (event.type) {
         case 'checkout.session.completed':
             const session = event.data.object;
@@ -189,18 +196,24 @@ export async function webhookStripe(request, response) {
 
             const order = await OrderModel.insertMany(orderProduct)
 
+            // Cập nhật số lượng đã bán cho từng sản phẩm
+            for (const item of order) {
+                await ProductModel.findByIdAndUpdate(item.productId, {
+                    $inc: { sold: item.product_details.quantity }
+                })
+            }
+
             console.log(order)
             if (Boolean(order[0])) {
-                const removeCartItems = await UserModel.findByIdAndUpdate(userId, {
+                await UserModel.findByIdAndUpdate(userId, {
                     shopping_cart: []
                 })
-                const removeCartProductDB = await CartProductModel.deleteMany({ userId: userId })
+                await CartProductModel.deleteMany({ userId: userId })
             }
             break;
         default:
             console.log(`Unhandled event type ${event.type}`);
     }
-
 
     response.json({ received: true });
 }
