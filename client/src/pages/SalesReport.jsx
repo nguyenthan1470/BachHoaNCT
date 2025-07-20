@@ -180,7 +180,7 @@ const SalesReport = () => {
         </div>
 
         <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Top 8 sản phẩm bán chạy</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-6">Top những sản phẩm bán chạy</h2>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>

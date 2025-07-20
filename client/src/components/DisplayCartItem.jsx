@@ -86,7 +86,7 @@ const DisplayCartItem = ({ close }) => {
                                                             {DisplayPriceInVietnamDong(item?.productId?.price)}
                                                         </span>
                                                     )}
-                                                    <span className="font-bold text-green-600">
+                                                    <span className="font-bold ">
                                                         {DisplayPriceInVietnamDong(pricewithDiscount(item?.productId?.price, item?.productId?.discount))}
                                                     </span>
                                                     {item?.productId?.discount > 0 && (

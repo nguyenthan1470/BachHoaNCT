@@ -31,6 +31,9 @@ const CheckoutPage = () => {
   const [OpenEdit, setOpenEdit] = useState(false);
   const [editData, setEditData] = useState({});
   const navigate = useNavigate();
+  const [isFastDelivery, setIsFastDelivery] = useState(false);
+  const finalTotalPrice = isFastDelivery ? totalPrice + 30000 : totalPrice;
+
 
   useEffect(() => {
     // Đảm bảo chọn địa chỉ mặc định khi danh sách thay đổi
@@ -71,7 +74,8 @@ const CheckoutPage = () => {
           list_items: cartItemsList,
           addressId: selectAddress,
           subTotalAmt: totalPrice,
-          totalAmt: totalPrice
+          totalAmt: finalTotalPrice,
+
         }
       });
 
@@ -97,7 +101,8 @@ const CheckoutPage = () => {
           list_items: cartItemsList,
           addressId: selectAddress,
           subTotalAmt: totalPrice,
-          totalAmt: totalPrice
+          totalAmt: finalTotalPrice,
+
         }
       });
 
@@ -110,31 +115,31 @@ const CheckoutPage = () => {
   };
 
   const handleVnpayPayment = async () => {
-  if (!selectAddress) return toast.error('Vui lòng chọn địa chỉ');
+    if (!selectAddress) return toast.error('Vui lòng chọn địa chỉ');
 
-  try {
-    toast.loading("Đang chuyển hướng...");
-    const response = await Axios({
-      ...SummaryApi.vnpayCreatePayment, // trỏ tới /create_payment
-      params: {
-        amount: totalPrice,   // truyền tổng tiền cần thanh toán
-        bankCode: "NCB",      // nếu có chọn ngân hàng
-        language: "vn"        // ngôn ngữ giao diện VNPay
+    try {
+      toast.loading("Đang chuyển hướng...");
+      const response = await Axios({
+        ...SummaryApi.vnpayCreatePayment, // trỏ tới /create_payment
+        params: {
+          amount: finalTotalPrice,   // truyền tổng tiền cần thanh toán
+          bankCode: "NCB",      // nếu có chọn ngân hàng
+          language: "vn"        // ngôn ngữ giao diện VNPay
+        }
+      });
+
+      const { paymentUrl } = response.data;
+
+      if (paymentUrl) {
+        //Redirect tới VNPay
+        window.location.href = paymentUrl;
+      } else {
+        toast.error("Không tạo được liên kết thanh toán VNPay");
       }
-    });
-
-    const { paymentUrl } = response.data;
-
-    if (paymentUrl) {
-      //Redirect tới VNPay
-      window.location.href = paymentUrl;
-    } else {
-      toast.error("Không tạo được liên kết thanh toán VNPay");
+    } catch (error) {
+      AxiosToastError(error);
     }
-  } catch (error) {
-    AxiosToastError(error);
-  }
-};
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
       {/* Header Steps */}
@@ -178,11 +183,10 @@ const CheckoutPage = () => {
               {addressList.filter(addr => addr.status !== false).map((address) => (
                 <label key={address._id}>
                   <div
-                    className={`border-2 rounded-xl p-4 cursor-pointer transition ${
-                      selectAddress === address._id
-                        ? 'border-green-500 bg-green-50 shadow-md'
-                        : 'border-gray-200 hover:border-green-300'
-                    }`}
+                    className={`border-2 rounded-xl p-4 cursor-pointer transition ${selectAddress === address._id
+                      ? 'border-green-500 bg-green-50 shadow-md'
+                      : 'border-gray-200 hover:border-green-300'
+                      }`}
                   >
                     <div className="grid grid-cols-12 gap-4 items-start">
                       <div className="col-span-1">
@@ -249,14 +253,39 @@ const CheckoutPage = () => {
             </div>
             <div className="border-2 border-green-500 bg-green-50 rounded-xl p-4">
               <div className="flex items-center gap-4">
-                <input type="radio" name="delivery" defaultChecked className="w-5 h-5 text-green-600" />
+                <input
+                  type="radio"
+                  name="delivery"
+                  checked={!isFastDelivery}
+                  onChange={() => setIsFastDelivery(false)}
+                  className="w-5 h-5 text-green-600"
+                />
                 <div>
                   <h4 className="font-semibold text-gray-900">Giao hàng tiêu chuẩn</h4>
                   <p className="text-sm text-gray-600">Miễn phí • Giao trong 2-3 ngày làm việc</p>
                 </div>
               </div>
+
+              <div className="flex items-center gap-4 pt-6">
+                <input
+                  type="radio"
+                  name="delivery"
+                  checked={isFastDelivery}
+                  onChange={() => setIsFastDelivery(true)}
+                  className="w-5 h-5 text-green-600"
+                />
+                <div>
+                  <h4 className="font-semibold text-gray-900">Giao hàng hỏa tốc</h4>
+                  <p className="text-sm text-gray-600">Giao trong 24h • +30.000₫</p>
+                </div>
+              </div>
+
+
+
             </div>
           </div>
+
+
         </div>
 
         {/* RIGHT SIDE */}
@@ -273,14 +302,25 @@ const CheckoutPage = () => {
                 <span>Tạm tính ({totalQty} sản phẩm)</span>
                 <span className="line-through">{DisplayPriceInVietnamDong(notDiscountTotalPrice)}</span>
               </div>
+
               <div className="flex justify-between text-sm text-green-600 font-medium">
                 <span>Giảm giá</span>
                 <span>-{DisplayPriceInVietnamDong(notDiscountTotalPrice - totalPrice)}</span>
               </div>
+
+              {isFastDelivery && (
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>Phí giao hàng hỏa tốc</span>
+                  <span>{DisplayPriceInVietnamDong(30000)}</span>
+                </div>
+              )}
+             
+
               <div className="flex justify-between font-bold text-lg text-gray-900 border-t pt-4">
                 <span>Tổng cộng</span>
-                <span>{DisplayPriceInVietnamDong(totalPrice)}</span>
+                <span>{DisplayPriceInVietnamDong(finalTotalPrice)}</span>
               </div>
+
             </div>
 
             <div className="space-y-3">
