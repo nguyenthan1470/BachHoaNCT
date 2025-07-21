@@ -144,186 +144,167 @@ const CheckoutPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
       {/* Header Steps */}
       <div className="bg-white border-b border-green-100 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 py-6 flex items-center gap-4">
+        <div className="max-w-6xl mx-auto px-2 sm:px-4 py-4 sm:py-6 flex items-center gap-2 sm:gap-4 overflow-x-auto">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-green-600 rounded-full flex justify-center items-center">
               <CheckCircle className="w-5 h-5 text-white" />
             </div>
-            <span className="text-green-600 font-semibold">Trang chủ</span>
+            <span className="text-green-600 font-semibold text-sm sm:text-base">Trang chủ</span>
           </div>
-          <div className="w-12 h-px bg-green-200" />
+          <div className="w-8 sm:w-12 h-px bg-green-200" />
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-green-600 rounded-full flex justify-center items-center">
               <span className="text-white font-bold text-sm">2</span>
             </div>
-            <span className="text-green-600 font-semibold">Thanh toán</span>
+            <span className="text-green-600 font-semibold text-sm sm:text-base">Thanh toán</span>
           </div>
-          <div className="w-12 h-px bg-gray-200" />
+          <div className="w-8 sm:w-12 h-px bg-gray-200" />
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-gray-200 rounded-full flex justify-center items-center">
               <span className="text-gray-400 font-bold text-sm">3</span>
             </div>
-            <span className="text-gray-400 font-medium">Hoàn thành</span>
+            <span className="text-gray-400 font-medium text-sm sm:text-base">Hoàn thành</span>
           </div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="max-w-6xl mx-auto px-2 sm:px-4 py-6 sm:py-8 grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8">
         {/* LEFT SIDE */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Địa chỉ */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-green-100">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-green-100 rounded-full flex justify-center items-center">
+          {/* Address Section */}
+          <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 border border-green-100">
+            <div className="flex items-center gap-3 mb-4 sm:mb-6">
+              <div className="w-9 h-9 bg-green-100 rounded-full flex justify-center items-center">
                 <MapPin className="w-5 h-5 text-green-600" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Địa chỉ giao hàng</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900">Địa chỉ giao hàng</h3>
             </div>
             <div className="space-y-4">
               {addressList.filter(addr => addr.status !== false).map((address) => (
                 <label key={address._id}>
-                  <div
-                    className={`border-2 rounded-xl p-4 cursor-pointer transition ${selectAddress === address._id
-                      ? 'border-green-500 bg-green-50 shadow-md'
-                      : 'border-gray-200 hover:border-green-300'
-                      }`}
-                  >
-                    <div className="grid grid-cols-12 gap-4 items-start">
-                      <div className="col-span-1">
+                  <div className={`border-2 rounded-xl p-4 cursor-pointer transition ${selectAddress === address._id ? 'border-green-500 bg-green-50 shadow-md' : 'border-gray-200 hover:border-green-300'}`}>
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-start">
+                      <div className="sm:col-span-1">
                         <input
                           type="radio"
                           name="address"
                           value={address._id}
                           onChange={(e) => setSelectAddress(e.target.value)}
                           checked={selectAddress === address._id}
-                          className="w-5 h-5 text-green-600 border-green-300 mt-1"
+                          className="w-5 h-5 text-green-600 border-green-300"
                         />
                       </div>
-                      <div className="col-span-10 space-y-1 text-sm">
-                        <p><span className="font-semibold text-gray-900">Họ tên: </span>{address.fullname}</p>
-                        <p><span className="font-semibold text-gray-600">Số điện thoại: </span>{address.mobile}</p>
-                        <p><span className="font-semibold text-gray-600">Email: </span>{address.email}</p>
-                        <p><span className="font-semibold text-gray-600">Mã bưu điện: </span>{address.pincode}</p>
-                        <p><span className="font-semibold text-gray-600">Địa chỉ cụ thể: </span>
-                          {address.address_line}, {address.state}, {address.district}, {address.city}, {address.country}
-                        </p>
+                      <div className="sm:col-span-10 space-y-1 text-sm">
+                        <p><span className="font-semibold">Họ tên: </span>{address.fullname}</p>
+                        <p><span className="font-semibold">SĐT: </span>{address.mobile}</p>
+                        <p><span className="font-semibold">Email: </span>{address.email}</p>
+                        <p><span className="font-semibold">Mã bưu điện: </span>{address.pincode}</p>
+                        <p><span className="font-semibold">Địa chỉ: </span>{address.address_line}, {address.state}, {address.district}, {address.city}, {address.country}</p>
                       </div>
-                      <div className="col-span-1 flex flex-col gap-2 items-end">
+                      <div className="sm:col-span-1 flex gap-2 justify-end">
                         <button
                           onClick={() => {
                             setOpenEdit(true);
                             setEditData(address);
                           }}
-                          className="bg-green-200 p-1 rounded hover:text-white hover:bg-green-600"
+                          className="bg-green-200 p-1.5 rounded hover:text-white hover:bg-green-600"
                         >
                           <MdEdit size={16} />
                         </button>
                         <button
                           onClick={() => handleDisableAddress(address._id)}
-                          className="bg-red-200 p-1 rounded hover:text-white hover:bg-red-600"
+                          className="bg-red-200 p-1.5 rounded hover:text-white hover:bg-red-600"
                         >
-                          <MdDelete size={18} />
+                          <MdDelete size={16} />
                         </button>
                       </div>
                     </div>
                   </div>
                 </label>
               ))}
-
               <button
                 onClick={() => setOpenAddress(true)}
-                className="w-full border-2 border-dashed border-green-300 rounded-xl p-6 text-green-600 hover:border-green-500 hover:bg-green-50 transition-all"
+                className="w-full border-2 border-dashed border-green-300 rounded-xl p-4 sm:p-6 text-green-600 hover:border-green-500 hover:bg-green-50 transition-all"
               >
                 <div className="flex items-center justify-center gap-3">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex justify-center items-center">
+                  <div className="w-9 h-9 bg-green-100 rounded-full flex justify-center items-center">
                     <Plus className="w-5 h-5" />
                   </div>
-                  <span className="font-semibold">Thêm địa chỉ mới</span>
+                  <span className="font-semibold text-sm sm:text-base">Thêm địa chỉ mới</span>
                 </div>
               </button>
             </div>
           </div>
-          {/* Giao hàng */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-green-100">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-green-100 rounded-full flex justify-center items-center">
+
+          {/* Delivery Method */}
+          <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 border border-green-100">
+            <div className="flex items-center gap-3 mb-4 sm:mb-6">
+              <div className="w-9 h-9 bg-green-100 rounded-full flex justify-center items-center">
                 <Clock className="w-5 h-5 text-green-600" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Phương thức giao hàng</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900">Phương thức giao hàng</h3>
             </div>
-            <div className="border-2 border-green-500 bg-green-50 rounded-xl p-4">
-              <div className="flex items-center gap-4">
+            <div className="border-2 border-green-500 bg-green-50 rounded-xl p-4 space-y-4">
+              <div className="flex items-start gap-4">
                 <input
                   type="radio"
                   name="delivery"
                   checked={!isFastDelivery}
                   onChange={() => setIsFastDelivery(false)}
-                  className="w-5 h-5 text-green-600"
+                  className="mt-1 w-5 h-5 text-green-600"
                 />
                 <div>
-                  <h4 className="font-semibold text-gray-900">Giao hàng tiêu chuẩn</h4>
+                  <h4 className="font-semibold">Giao hàng tiêu chuẩn</h4>
                   <p className="text-sm text-gray-600">Miễn phí • Giao trong 2-3 ngày làm việc</p>
                 </div>
               </div>
-
-              <div className="flex items-center gap-4 pt-6">
+              <div className="flex items-start gap-4">
                 <input
                   type="radio"
                   name="delivery"
                   checked={isFastDelivery}
                   onChange={() => setIsFastDelivery(true)}
-                  className="w-5 h-5 text-green-600"
+                  className="mt-1 w-5 h-5 text-green-600"
                 />
                 <div>
-                  <h4 className="font-semibold text-gray-900">Giao hàng hỏa tốc</h4>
+                  <h4 className="font-semibold">Giao hàng hỏa tốc</h4>
                   <p className="text-sm text-gray-600">Giao trong 24h • +30.000₫</p>
                 </div>
               </div>
-
-
-
             </div>
           </div>
-
-
         </div>
 
-        {/* RIGHT SIDE */}
+        {/* RIGHT SIDE (Tóm tắt) */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-green-100 sticky top-4">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+          <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 border border-green-100 lg:sticky top-4">
+            <div className="flex items-center gap-3 mb-4 sm:mb-6">
+              <div className="w-9 h-9 bg-green-100 rounded-full flex items-center justify-center">
                 <Package className="w-5 h-5 text-green-600" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Tóm tắt đơn hàng</h3>
+              <h3 className="text-lg sm:text-xl font-bold">Tóm tắt đơn hàng</h3>
             </div>
-            <div className="space-y-4 mb-6">
-              <div className="flex justify-between text-sm text-gray-600">
+            <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6 text-sm">
+              <div className="flex justify-between text-gray-600">
                 <span>Tạm tính ({totalQty} sản phẩm)</span>
                 <span className="line-through">{DisplayPriceInVietnamDong(notDiscountTotalPrice)}</span>
               </div>
-
-              <div className="flex justify-between text-sm text-green-600 font-medium">
+              <div className="flex justify-between text-green-600 font-medium">
                 <span>Giảm giá</span>
                 <span>-{DisplayPriceInVietnamDong(notDiscountTotalPrice - totalPrice)}</span>
               </div>
-
               {isFastDelivery && (
-                <div className="flex justify-between text-sm text-gray-600">
+                <div className="flex justify-between text-gray-600">
                   <span>Phí giao hàng hỏa tốc</span>
                   <span>{DisplayPriceInVietnamDong(30000)}</span>
                 </div>
               )}
-             
-
-              <div className="flex justify-between font-bold text-lg text-gray-900 border-t pt-4">
+              <div className="flex justify-between font-bold text-base sm:text-lg text-gray-900 border-t pt-4">
                 <span>Tổng cộng</span>
                 <span>{DisplayPriceInVietnamDong(finalTotalPrice)}</span>
               </div>
-
             </div>
-
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               <button
                 onClick={handleOnlinePayment}
                 disabled={!selectAddress}
@@ -331,7 +312,6 @@ const CheckoutPage = () => {
               >
                 Thanh toán thẻ tín dụng
               </button>
-
               <button
                 onClick={handleVnpayPayment}
                 disabled={!selectAddress}
@@ -339,7 +319,6 @@ const CheckoutPage = () => {
               >
                 Thanh toán VNPAY
               </button>
-
               <button
                 onClick={handleCashOnDelivery}
                 disabled={!selectAddress}

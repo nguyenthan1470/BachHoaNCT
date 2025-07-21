@@ -318,7 +318,7 @@ export async function forgotPasswordController(req, res) {
 
         await sendEmail({
             sendTo: email,
-            subject: " Quên mật khẩu từ Binkeyit",
+            subject: " Quên mật khẩu từ Bách Hóa NCT",
             html: forgotPasswordTemplate({
                 name: user.name,
                 otp: otp

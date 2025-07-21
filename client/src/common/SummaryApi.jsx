@@ -1,4 +1,3 @@
-
 export const baseURL = import.meta.env.VITE_API_URL;
 
 const SummaryApi = {
@@ -207,13 +206,24 @@ const SummaryApi = {
     getReviews: {
         url: '/api/review/get-review',
         method: 'post'
-    }
-
-
-
-
-
+    },
+    sendContactMessage: {
+        url: '/api/contact/submit',
+        method: 'post'
+    },
+    sendContactMessage: {
+        url: '/api/contact/submit-feedback',
+        method: 'POST',
+    },
+    getFeedbacks: {
+        url: '/api/contact/feedbacks',
+        method: 'GET',
+    },
+    sendReply: {
+        url: '/api/contact/reply',
+        method: 'POST',
+    },
 
 }
 
-export default SummaryApi
+export default SummaryApi;

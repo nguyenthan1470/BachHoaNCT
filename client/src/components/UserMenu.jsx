@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import AxiosToastError from '../utils/AxiosToastError';
 import { FiExternalLink, FiX } from 'react-icons/fi';
 import isAdmin from '../utils/isAdmin';
-import { List, Package, Upload, ShoppingBag, Truck, BarChart, Users, MapPin, LogOut, Layers, Phone } from 'lucide-react';
+import { List, Package, Upload, ShoppingBag, Truck, BarChart, Users, MapPin, LogOut, Layers, Phone,Mail  } from 'lucide-react';
 
 const UserMenu = ({ close }) => {
   const user = useSelector((state) => state.user);
@@ -153,6 +153,14 @@ const UserMenu = ({ close }) => {
               <span>Quản lí tài khoản nhân viên</span>
             </Link>
 
+            <Link onClick={handleClose} to="/dashboard/feedback"
+              className={`flex items-center gap-2 px-3 py-2 rounded transition text-gray-700 ${isActive('/dashboard/feedback') ? 'bg-green-100 border-l-4 border-green-600' : 'hover:bg-green-100'
+                }`}
+              aria-label="Nhận phản hồi từ khách hàng" aria-current={isActive('/dashboard/feedback') ? 'page' : undefined}
+            >
+              <Mail className="w-4 h-4" />
+              <span>Nhận phản hồi từ khách hàng</span>
+            </Link>
           </>
         )}
 

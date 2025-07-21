@@ -8,52 +8,27 @@ import EditCategory from '../components/EditCategory'
 import ConfirmBox from '../components/ConfirmBox'
 import AxiosToastError from '../utils/AxiosToastError'
 import toast from 'react-hot-toast'
-import { useSelector } from 'react-redux'
-
-
 
 const CategoryPage = () => {
-
     const [openUploadCategory, setOpenUploadCategory] = useState(false)
     const [loading, setLoading] = useState(false)
     const [categoryData, setCategoryData] = useState([])
     const [openEdit, setOpenEdit] = useState(false)
-    const [editData, setEditData] = useState({
-        name: "",
-        image: ""
-    })
-
+    const [editData, setEditData] = useState({ name: "", image: "" })
     const [openConfirmBoxDelete, setOpenConfirmBoxDelete] = useState(false)
-
-    const [deleteCategory, setDeleteCategory] = useState({
-        _id: ""
-    })
-
-    // const allCategory = useSelector(state => state.product.allCategory)
-
-    // useEffect(()=>{
-    //     setCategoryData(allCategory)
-    // },[allCategory])
+    const [deleteCategory, setDeleteCategory] = useState({ _id: "" })
 
     const fetchCategory = async () => {
         try {
-
             setLoading(true)
-            const response = await Axios({
-                ...SummaryApi.getCategory
-            })
-
-            const { data: responseData } = response
-
-            if (responseData.success) {
-                setCategoryData(responseData.data)
+            const response = await Axios({ ...SummaryApi.getCategory })
+            if (response.data.success) {
+                setCategoryData(response.data.data)
             }
-
         } catch (error) {
-
+            AxiosToastError(error)
         } finally {
             setLoading(false)
-
         }
     }
 
@@ -67,11 +42,8 @@ const CategoryPage = () => {
                 ...SummaryApi.deleteCategory,
                 data: deleteCategory
             })
-
-            const { data: responseData } = response
-
-            if (responseData.success) {
-                toast.success(responseData.message)
+            if (response.data.success) {
+                toast.success(response.data.message)
                 fetchCategory()
                 setOpenConfirmBoxDelete(false)
             }
@@ -82,89 +54,85 @@ const CategoryPage = () => {
 
     return (
         <section>
-            <div className='p-2 bg-white shadow-md items-center flex justify-between'>
-                <h2 className='font-semibold'>Danh mục sản phẩm</h2>
-                <button onClick={() => setOpenUploadCategory(true)} className='text-sm border border-primary-200
-             hover:bg-primary-200 px-3 py-2 rounded'>Thêm sản phẩm </button>
-
+            <div className='p-3 bg-white shadow-md flex items-center justify-between flex-wrap gap-2'>
+                <h2 className='font-semibold text-base md:text-lg'>Danh mục sản phẩm</h2>
+                <button
+                    onClick={() => setOpenUploadCategory(true)}
+                    className='text-sm md:text-base border border-primary-200 hover:bg-primary-200 px-3 py-1.5 rounded'
+                >
+                    Thêm danh mục
+                </button>
             </div>
 
-            {
-                !categoryData[0] && !loading && (
+            {!categoryData.length && !loading && (
+                <div className='py-6 flex flex-col items-center'>
                     <NoData />
-                )
-            }
+                    <button
+                        onClick={() => setOpenUploadCategory(true)}
+                        className='mt-4 bg-primary-500 hover:bg-primary-600 text-white text-sm px-3 py-2 rounded'
+                    >
+                        Thêm danh mục đầu tiên
+                    </button>
+                </div>
+            )}
 
-            <div className='p-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4'>
-                {
-                    categoryData.map((category, index) => {
-                        return (
-                            <div className='w-full shadow-md rounded overflow-hidden border' key={category._id}>
-                                <div className='h-36 flex justify-center items-center bg-white p-2'>
-                                    <img
-                                        src={category.image}
-                                        alt={category.name}
-                                        className='max-h-full object-contain'
-                                    />
-                                </div>
+            <div className='p-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3'>
+                {categoryData.map((category) => (
+                    <div className='w-full shadow-md rounded overflow-hidden border' key={category._id}>
+                        <div className='h-28 md:h-36 flex justify-center items-center bg-white p-2'>
+                            <img
+                                src={category.image}
+                                alt={category.name}
+                                className='max-h-full object-contain'
+                            />
+                        </div>
 
-                                <div className='text-center text-sm font-medium p-2 truncate'>
-                                    {category.name}
-                                </div>
+                        <div className='text-center text-sm font-medium p-2 truncate'>
+                            {category.name}
+                        </div>
 
-                                <div className='flex gap-1 p-2'>
-                                    <button
-                                        onClick={() => {
-                                            setOpenEdit(true)
-                                            setEditData(category)
-                                        }}
-                                        className='flex-1 bg-green-100 text-green-600 text-sm font-medium py-1 rounded hover:bg-green-200 transition-all duration-200'
-                                    >
-                                        Cập nhật
-                                    </button>
+                        <div className='flex gap-1 p-2'>
+                            <button
+                                onClick={() => {
+                                    setOpenEdit(true)
+                                    setEditData(category)
+                                }}
+                                className='flex-1 bg-green-100 text-green-600 text-xs md:text-sm font-medium py-1 rounded hover:bg-green-200'
+                            >
+                                Cập nhật
+                            </button>
 
-                                    <button
-                                        onClick={() => {
-                                            setOpenConfirmBoxDelete(true)
-                                            setDeleteCategory(category)
-                                        }}
-                                        className='flex-1 bg-red-100 text-red-600 text-sm font-medium py-1 rounded hover:bg-red-200 transition-all duration-200'
-                                    >
-                                        Xóa
-                                    </button>
-                                </div>
-                            </div>
-                        )
-                    })
-                }
+                            <button
+                                onClick={() => {
+                                    setOpenConfirmBoxDelete(true)
+                                    setDeleteCategory(category)
+                                }}
+                                className='flex-1 bg-red-100 text-red-600 text-xs md:text-sm font-medium py-1 rounded hover:bg-red-200'
+                            >
+                                Xóa
+                            </button>
+                        </div>
+                    </div>
+                ))}
             </div>
 
-            {
-                loading && (
-                    <Loading />
-                )
-            }
+            {loading && <Loading />}
 
+            {openUploadCategory && (
+                <UploadCategoryModel fetchData={fetchCategory} close={() => setOpenUploadCategory(false)} />
+            )}
 
-            {
-                openUploadCategory && (
-                    <UploadCategoryModel fetchData={fetchCategory} close={() => setOpenUploadCategory(false)} />
-                )
-            }
+            {openEdit && (
+                <EditCategory data={editData} close={() => setOpenEdit(false)} fetchData={fetchCategory} />
+            )}
 
-            {
-                openEdit && (
-                    <EditCategory data={editData} close={() => setOpenEdit(false)} fetchData={fetchCategory} />
-                )
-            }
-
-            {
-                openConfirmBoxDelete && (
-                    <ConfirmBox close={() => setOpenConfirmBoxDelete(false)} cancel={() => setOpenConfirmBoxDelete(false)} confirm={handleDeleteCategory} />
-                )
-            }
-
-
+            {openConfirmBoxDelete && (
+                <ConfirmBox
+                    close={() => setOpenConfirmBoxDelete(false)}
+                    cancel={() => setOpenConfirmBoxDelete(false)}
+                    confirm={handleDeleteCategory}
+                />
+            )}
         </section>
     )
 }
