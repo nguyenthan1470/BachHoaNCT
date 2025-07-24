@@ -23,13 +23,13 @@ import CartMobile from "../pages/CartMobile";
 import CheckoutPage from "../pages/CheckoutPage";
 import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
-import GroceryNewsPage from "../pages/GroceryNewsPage";
 import ManageOrders from "../pages/ManageOrders";
 import SalesReport from "../pages/SalesReport";
 import StaffAccounts from "../pages/StaffAccounts";
 import VnpayPaymentResult from "../pages/VnpayPaymentResult";
 import Contact from "../pages/Contact";
 import FeedbackPage from "../pages/FeedBackPage";
+import MyOrdersDetail from "../pages/MyOrdersDetail";
 
 
 const router = createBrowserRouter([
@@ -80,6 +80,10 @@ const router = createBrowserRouter([
                     {
                         path: "myorders",
                         element: <MyOrders />
+                    },
+                    {
+                        path: "myordersdetail/:orderId",
+                        element: <MyOrdersDetail />,
                     },
                     {
                         path: "address",
@@ -155,10 +159,7 @@ const router = createBrowserRouter([
                 path: 'cancel',
                 element: <Cancel />
             },
-            {
-                path: 'new',
-                element: <GroceryNewsPage />
-            },
+            
             {
                 path: "vnpay-result",
                 element: <VnpayPaymentResult />

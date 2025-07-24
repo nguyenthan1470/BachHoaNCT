@@ -281,23 +281,7 @@ const Login = () => {
             </p>
           </form>
 
-          {/* Footer */}
-          <div className="mt-6 text-center text-xs text-gray-500">
-            <p>
-              Bằng việc đăng nhập, bạn đồng ý với{' '}
-              <Link to="/terms" className="text-green-600 hover:underline">Điều khoản sử dụng</Link>
-              {' '}và{' '}
-              <Link to="/privacy" className="text-green-600 hover:underline">Chính sách bảo mật</Link>
-            </p>
-          </div>
-          {/* <GoogleLogin
-                onSuccess={credentialResponse => {
-                  console.log(credentialResponse);
-                }}
-                onError={() => {
-                  console.log('Login Failed');
-                }}
-              />; */}
+        
         </div>
       </div>
     </div>

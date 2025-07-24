@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import banner from '../assets/banner1.jpg';
-import bannerMobile from '../assets/banner-mobile.jpg';
 import { useSelector } from 'react-redux';
 import { valideURLConvert } from '../utils/valideURLConvert';
 import { Link, useNavigate } from 'react-router-dom';
@@ -129,12 +127,7 @@ const Home = () => {
                   </Link>
                 </button>
 
-                <button className="bg-white/15 backdrop-blur-md border-2 border-lime-300/30 text-white font-semibold py-4 px-8 rounded-2xl hover:bg-white/25 hover:border-lime-300/50 transition-all duration-300 transform hover:scale-105">
-                  <Link to={"/new"} className="flex items-center justify-center">
-                    <Leaf className="w-5 h-5 mr-2" />
-                    Khám phá thêm
-                  </Link>
-                </button>
+               
               </div>
             </div>
 

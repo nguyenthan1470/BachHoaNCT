@@ -295,11 +295,7 @@ const Register = () => {
                 </>
               )}
             </button>
-            {/* <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onError={handleGoogleError}
-              className="w-full flex items-center justify-center space-x-2 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-            /> */}
+            
             {/* Login link */}
             <p className="text-center text-xs text-gray-600">
               Bạn đã có tài khoản?{' '}
@@ -309,15 +305,7 @@ const Register = () => {
             </p>
           </form>
 
-          {/* Footer */}
-          <div className="mt-6 text-center text-xs text-gray-500">
-            <p>
-              Bằng việc đăng ký, bạn đồng ý với{' '}
-              <Link to="/terms" className="text-green-600 hover:underline">Điều khoản sử dụng</Link>
-              {' '}và{' '}
-              <Link to="/privacy" className="text-green-600 hover:underline">Chính sách bảo mật</Link>
-            </p>
-          </div>
+         
         </div>
       </div>
     </div>

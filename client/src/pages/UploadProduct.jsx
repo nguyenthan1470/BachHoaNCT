@@ -48,7 +48,6 @@ const UploadProduct = () => {
       ...prev,
       [name]: value,
     }));
-    // Clear error for the field being edited
     setErrors((prev) => ({ ...prev, [name]: '' }));
   };
 
@@ -175,28 +174,27 @@ const UploadProduct = () => {
     return (
       <div className={`flex items-center ${step.number !== 4 ? 'flex-1' : ''}`}>
         <div
-          className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 ${isCompleted ? 'bg-green-500 text-white' : isActive ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-500'
-            }`}
+          className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 ${isCompleted ? 'bg-green-600 text-white' : isActive ? 'bg-yellow-500 text-white' : 'bg-gray-200 text-gray-500'}`}
         >
           <IconComponent size={20} />
         </div>
         <div className="ml-3">
-          <p className={`text-sm font-medium ${isActive ? 'text-blue-600' : 'text-gray-500'}`}>
+          <p className={`text-sm font-medium ${isActive ? 'text-green-600' : 'text-gray-500'}`}>
             Bước {step.number}
           </p>
-          <p className={`text-xs ${isActive ? 'text-blue-600' : 'text-gray-400'}`}>
+          <p className={`text-xs ${isActive ? 'text-green-600' : 'text-gray-400'}`}>
             {step.title}
           </p>
         </div>
         {step.number !== 4 && (
-          <div className={`flex-1 h-0.5 ml-4 ${isCompleted ? 'bg-green-500' : 'bg-gray-200'}`} />
+          <div className={`flex-1 h-0.5 ml-4 ${isCompleted ? 'bg-green-600' : 'bg-gray-200'}`} />
         )}
       </div>
     );
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-yellow-50 p-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
@@ -205,8 +203,8 @@ const UploadProduct = () => {
               <h1 className="text-2xl font-bold text-gray-800">Tải lên sản phẩm mới</h1>
               <p className="text-gray-600">Thêm sản phẩm vào cửa hàng của bạn</p>
             </div>
-            <div className="bg-blue-100 p-3 rounded-full">
-              <Upload className="text-blue-600" size={24} />
+            <div className="bg-green-100 p-3 rounded-full">
+              <Upload className="text-green-600" size={24} />
             </div>
           </div>
 
@@ -236,7 +234,7 @@ const UploadProduct = () => {
                       <Package size={20} />
                       Thông tin cơ bản
                     </h3>
-                    <div className=" space-y-4">
+                    <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Tên sản phẩm
@@ -247,7 +245,7 @@ const UploadProduct = () => {
                           value={data.name}
                           onChange={handleChange}
                           placeholder="Nhập tên sản phẩm"
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all"
                           required
                         />
                         {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
@@ -262,7 +260,7 @@ const UploadProduct = () => {
                           onChange={handleChange}
                           placeholder="Nhập mô tả chi tiết sản phẩm..."
                           rows={4}
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none"
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all resize-none"
                           required
                         />
                         {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
@@ -296,7 +294,7 @@ const UploadProduct = () => {
                               setSelectCategory('');
                             }
                           }}
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
                         >
                           <option value="">Chọn danh mục</option>
                           {allCategory.map((c) => (
@@ -311,12 +309,12 @@ const UploadProduct = () => {
                             {data.category.map((c, index) => (
                               <span
                                 key={c._id + index}
-                                className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
+                                className="inline-flex items-center gap-1 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm"
                               >
                                 {c.name}
                                 <button
                                   onClick={() => handleRemoveCategory(index)}
-                                  className="hover:bg-blue-200 rounded-full p-1"
+                                  className="hover:bg-green-200 rounded-full p-1"
                                 >
                                   <IoClose size={14} />
                                 </button>
@@ -343,7 +341,7 @@ const UploadProduct = () => {
                             }
                           }}
                           disabled={data.category.length === 0}
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none disabled:bg-gray-100"
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none disabled:bg-gray-100"
                         >
                           <option value="">Chọn danh mục phụ</option>
                           {filteredSubCategories.map((c) => (
@@ -357,12 +355,12 @@ const UploadProduct = () => {
                             {data.subCategory.map((c, index) => (
                               <span
                                 key={c._id + index}
-                                className="inline-flex items-center gap-1 bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm"
+                                className="inline-flex items-center gap-1 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm"
                               >
                                 {c.name}
                                 <button
                                   onClick={() => handleRemoveSubCategory(index)}
-                                  className="hover:bg-purple-200 rounded-full p-1"
+                                  className="hover:bg-yellow-200 rounded-full p-1"
                                 >
                                   <IoClose size={14} />
                                 </button>
@@ -393,7 +391,7 @@ const UploadProduct = () => {
                           value={data.unit}
                           onChange={handleChange}
                           placeholder="VD: Cái, Kg, Hộp"
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
                           required
                         />
                         {errors.unit && <p className="text-red-500 text-sm mt-1">{errors.unit}</p>}
@@ -408,7 +406,7 @@ const UploadProduct = () => {
                           value={data.stock}
                           onChange={handleChange}
                           placeholder="0"
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
                           required
                         />
                         {errors.stock && <p className="text-red-500 text-sm mt-1">{errors.stock}</p>}
@@ -423,7 +421,7 @@ const UploadProduct = () => {
                           value={data.price}
                           onChange={handleChange}
                           placeholder="0"
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
                           required
                         />
                         {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price}</p>}
@@ -439,7 +437,7 @@ const UploadProduct = () => {
                           onChange={handleChange}
                           placeholder="0"
                           max="100"
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
                           required
                         />
                         {errors.discount && <p className="text-red-500 text-sm mt-1">{errors.discount}</p>}
@@ -474,13 +472,13 @@ const UploadProduct = () => {
                                 },
                               }));
                             }}
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
                           />
                         </div>
                       ))}
                       <button
                         onClick={() => setOpenAddField(true)}
-                        className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
+                        className="flex items-center gap-2 text-green-600 hover:text-green-700 font-medium"
                       >
                         <Plus size={16} />
                         Thêm thông tin mới
@@ -490,14 +488,14 @@ const UploadProduct = () => {
                 )}
               </div>
 
-              {/* Right Column - Image Upload and Quick Stats (Visible in all steps) */}
+              {/* Right Column - Image Upload and Quick Stats */}
               <div className="space-y-6">
                 <div className="bg-gray-50 rounded-xl p-6">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
                     <ImagePlus size={20} />
                     Hình ảnh sản phẩm
                   </h3>
-                  <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-blue-500 transition-colors">
+                  <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-green-500 transition-colors">
                     <label className="cursor-pointer block">
                       <input
                         type="file"
@@ -548,7 +546,7 @@ const UploadProduct = () => {
                 </div>
 
                 {/* Quick Stats */}
-                <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-6 text-white">
+                <div className="bg-gradient-to-r from-green-600 to-yellow-500 rounded-xl p-6 text-white">
                   <h3 className="text-lg font-semibold mb-4">Thống kê nhanh</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-white/10 rounded-lg p-3">
@@ -579,8 +577,7 @@ const UploadProduct = () => {
                   type="button"
                   onClick={handlePreviousStep}
                   disabled={currentStep === 1}
-                  className={`px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium transition-colors ${currentStep === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
-                    }`}
+                  className={`px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium transition-colors ${currentStep === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'}`}
                 >
                   Quay lại
                 </button>
@@ -588,14 +585,14 @@ const UploadProduct = () => {
                   <button
                     type="button"
                     onClick={handleNextStep}
-                    className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors flex items-center gap-2"
+                    className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium transition-colors flex items-center gap-2"
                   >
                     Tiếp theo
                   </button>
                 ) : (
                   <button
                     onClick={handleSubmit}
-                    className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors flex items-center gap-2"
+                    className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium transition-colors flex items-center gap-2"
                   >
                     <Save size={16} />
                     Tải lên sản phẩm
@@ -639,7 +636,7 @@ const UploadProduct = () => {
                   value={fieldName}
                   onChange={(e) => setFieldName(e.target.value)}
                   placeholder="VD: Kích thước, Màu sắc, Chất liệu..."
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
                 />
               </div>
               <div className="flex gap-3 p-4 border-t">
@@ -651,15 +648,15 @@ const UploadProduct = () => {
                 </button>
                 <button
                   onClick={handleAddField}
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+                  className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
                 >
                   Thêm
-              </button>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
     </div>
   );
 };
