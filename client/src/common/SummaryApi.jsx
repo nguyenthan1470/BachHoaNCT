@@ -163,7 +163,7 @@ const SummaryApi = {
     },
     vnpayCreatePayment: {
         url: "/api/vnpay/create_payment",
-        method: "get"
+        method: "post"
     },
     vnpayCheckPayment: {
         url: "/api/vnpay/check_payment",

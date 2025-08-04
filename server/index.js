@@ -5,6 +5,7 @@ dotenv.config();
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import session from 'express-session';
 import connectDB from './config/connectDB.js';
 import userRouter from './route/user.route.js';
 import categoryRouter from './route/category.route.js';
@@ -19,28 +20,38 @@ import vnpayRoutes from './route/vnpay.route.js';
 import staffRouter from './route/staff.route.js';
 import chatRoutes from './route/chatbot.route.js';
 import googleRouter from './route/google.route.js';
-import reviewRouter from './route/review.route.js'
+import reviewRouter from './route/review.route.js';
 import contactRoutes from './route/contact.route.js';
 
 const app = express();
 
 app.use(cors({
-    credentials : true,
-    origin : process.env.FRONTEND_URL
-}))
+    credentials: true, 
+    origin: process.env.FRONTEND_URL,
+}));
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('combined'));
 app.use(helmet({
-    crossOriginResourcePolicy: false
+    crossOriginResourcePolicy: false,
 }));
 
-const PORT = 8080 || process.env.PORT 
+// Cấu hình session
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false, // false cho dev (HTTP), true cho prod (HTTPS)
+        sameSite: 'lax', // Changed from 'none' to 'lax' for localhost dev
+        maxAge: 24 * 60 * 60 * 1000, 
+    },
+}));
 
-app.get("/", (req, res) => {
+app.get('/', (req, res) => {
     res.json({
-        message: "Server is running " + PORT
+        message: `Server is running on port ${PORT}`,
     });
 });
 
@@ -57,12 +68,15 @@ app.use('/api/vnpay', vnpayRoutes);
 app.use('/api/staff', staffRouter);
 app.use('/api', chatRoutes);
 app.use('/api', googleRouter);
-app.use('/api/review', reviewRouter)
+app.use('/api/review', reviewRouter);
 app.use('/api/contact', contactRoutes);
 
+const PORT = process.env.PORT || 8080;
 
-connectDB().then(()=>{
-    app.listen(PORT,()=>{
-        console.log("Server is running",PORT)
-    })
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+}).catch((error) => {
+    console.error('Failed to connect to database:', error);
 });

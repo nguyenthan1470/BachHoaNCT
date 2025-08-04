@@ -19,6 +19,9 @@ export async function CashOnDeliveryOrderController(request, response) {
         }
 
         const payload = list_items.map(el => {
+            // Calculate discounted price per product
+            const discountedPrice = pricewithDiscount(el.productId.price, el.productId.discount) * el.quantity;
+
             return ({
                 userId: userId,
                 orderId: `ORD-${new mongoose.Types.ObjectId()}`,
@@ -26,7 +29,8 @@ export async function CashOnDeliveryOrderController(request, response) {
                 product_details: {
                     name: el.productId.name,
                     image: el.productId.image,
-                    quantity: el.quantity
+                    quantity: el.quantity,
+                    price: discountedPrice,
                 },
                 paymentId: "",
                 payment_status: "Thanh toán khi nhận",
@@ -239,6 +243,7 @@ export async function getOrderDetailsController(req, res) {
         })
     }
 }
+
 
 
 

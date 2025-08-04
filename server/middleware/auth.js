@@ -1,43 +1,52 @@
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 
-const auth = async (request, response, next) => {
-    try {
-        const token = request.cookies.accessToken || request?.headers?.authorization?.split(" ")[1]
+const auth = (req, res, next) => {
+  try {
+    // Lấy token từ cookie hoặc header
+    const token = req.cookies.accessToken || req?.headers?.authorization?.split(' ')[1];
 
-
-        if (!token) {
-            return response.status(401).json({
-                message: "Bạn cần đăng nhập "
-            })
-        }
-
-        const decode = await jwt.verify(token, process.env.SECRET_KEY_ACCESS_TOKEN)
-
-   
-
-        if (!decode) {
-            return response.status(401).json({
-                message: "unauthorized access ",
-                error : true ,
-                success :false
-            })
-        }
-
-        request.userId = decode.id
-
-        next()
-    } catch (error) {
-        return response.status(500).json({
-            message:  error.message || error, 
-            error: true,
-            success: false
-        })
+    if (!token) {
+      return res.status(401).json({
+        message: 'Bạn cần đăng nhập',
+        error: true,
+        success: false,
+      });
     }
-}
 
+    // Xác minh token (không cần await vì jwt.verify là đồng bộ)
+    let decode;
+    try {
+      decode = jwt.verify(token, process.env.SECRET_KEY_ACCESS_TOKEN);
+    } catch (jwtError) {
+      return res.status(401).json({
+        message: 'Token không hợp lệ hoặc đã hết hạn',
+        error: true,
+        success: false,
+        details: jwtError.message,
+      });
+    }
 
-export default auth
+    if (!decode || !decode.id) {
+      return res.status(401).json({
+        message: 'Thông tin người dùng không hợp lệ trong token',
+        error: true,
+        success: false,
+      });
+    }
 
+    // Gán userId vào request
+    req.userId = decode.id;
+    console.log('Authenticated userId:', req.userId); // Debug
 
+    next();
+  } catch (error) {
+    console.error('Authentication error:', error.message); // Log lỗi server
+    return res.status(500).json({
+      message: error.message || 'Lỗi máy chủ nội bộ',
+      error: true,
+      success: false,
+    });
+  }
+};
 
-
+export default auth;

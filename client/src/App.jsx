@@ -2,7 +2,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import './App.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import toast, { Toaster } from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
 import fetchUserDetails from './utils/fetchUserDetails.js'
 import { useEffect } from 'react'
 import { setUserDetails } from './store/userSlice.js'
@@ -10,7 +10,7 @@ import { setAllCategory, setAllSubCategory, setLoadingCategory } from "./store/p
 import { useDispatch } from 'react-redux'
 import SummaryApi from './common/SummaryApi.jsx'
 import Axios from './utils/Axios.js'
-import { handleAddItemCart } from './store/cartProduct.js'
+
 import GlobalProvider from './provider/GlobalProvider.jsx'
 import CartMobileLink from './components/CartMobile.jsx'
 import { GoogleOAuthProvider } from '@react-oauth/google';

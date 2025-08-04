@@ -1,38 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import Axios from '../utils/Axios';
-import SummaryApi from '../common/SummaryApi';
-import { useGlobalContext } from '../provider/GlobalProvider';
+import React, { useEffect } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import Axios from "../utils/Axios";
+import SummaryApi from "../common/SummaryApi";
+import { useGlobalContext } from "../provider/GlobalProvider";
+import { toast } from "react-hot-toast";
 
 const VnpayPaymentResult = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { fetchCartItem, fetchOrder } = useGlobalContext();
+  const { fetchCartItem, fetchOrder, refreshOrder } = useGlobalContext();
 
   useEffect(() => {
     const checkPayment = async () => {
       try {
         const res = await Axios({
           ...SummaryApi.vnpayCheckPayment,
-          params: Object.fromEntries([...searchParams])
+          params: Object.fromEntries([...searchParams]),
         });
 
-        const responseCode = res.data?.data?.vnp_ResponseCode;
-
-        if (responseCode === '00') {
-          await fetchCartItem(); // reset giỏ hàng
-          await fetchOrder();    // load lại đơn hàng
-          navigate('/success', { state: { text: 'Thanh toán VNPay' } });
+        console.log("Response from checkPayment:", res.data);
+        if (res.data.success) {
+          await fetchCartItem();
+          await refreshOrder();
+          setTimeout(() => navigate("/success", { state: { text: "Thanh toán VNPay" } }), 1000);
         } else {
-          navigate('/cancel', { state: { text: 'Thanh toán thất bại hoặc bị huỷ' } });
+          toast.error(res.data.message || "Thanh toán thất bại hoặc bị hủy");
+          navigate("/cancel", {
+            state: { text: res.data.message || "Thanh toán thất bại hoặc bị hủy" },
+          });
         }
       } catch (err) {
-        navigate('/cancel', { state: { text: 'Lỗi xác minh thanh toán' } });
+        console.error(
+          "Error in checkPayment:",
+          err.response ? err.response.data : err.message
+        );
+        toast.error("Lỗi xác minh thanh toán");
+        navigate("/cancel", { state: { text: "Lỗi xác minh thanh toán" } });
       }
     };
 
     checkPayment();
-  }, []);
+  }, [fetchCartItem, fetchOrder, refreshOrder, navigate, searchParams]);
 
   return (
     <div className="flex items-center justify-center h-screen">

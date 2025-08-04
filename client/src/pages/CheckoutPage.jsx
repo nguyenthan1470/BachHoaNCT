@@ -20,7 +20,7 @@ const CheckoutPage = () => {
     totalQty,
     fetchCartItem,
     fetchOrder,
-    fetchAddress
+    fetchAddress,
   } = useGlobalContext();
 
   const addressList = useSelector((state) => state.addresses.addressList);
@@ -34,9 +34,7 @@ const CheckoutPage = () => {
   const [isFastDelivery, setIsFastDelivery] = useState(false);
   const finalTotalPrice = isFastDelivery ? totalPrice + 30000 : totalPrice;
 
-
   useEffect(() => {
-    // Đảm bảo chọn địa chỉ mặc định khi danh sách thay đổi
     if (addressList.length > 0) {
       const activeAddresses = addressList.filter((addr) => addr.status !== false);
       if (activeAddresses.length > 0) {
@@ -51,14 +49,12 @@ const CheckoutPage = () => {
     try {
       const response = await Axios({
         ...SummaryApi.disableAddress,
-        data: {
-          _id: id,
-        },
+        data: { _id: id },
       });
 
       if (response.data.success) {
-        toast.success("Đã xóa địa chỉ");
-        await fetchAddress(); // cập nhật lại store
+        toast.success('Đã xóa địa chỉ');
+        await fetchAddress();
       }
     } catch (error) {
       AxiosToastError(error);
@@ -75,8 +71,7 @@ const CheckoutPage = () => {
           addressId: selectAddress,
           subTotalAmt: totalPrice,
           totalAmt: finalTotalPrice,
-
-        }
+        },
       });
 
       if (res?.data?.success) {
@@ -102,8 +97,7 @@ const CheckoutPage = () => {
           addressId: selectAddress,
           subTotalAmt: totalPrice,
           totalAmt: finalTotalPrice,
-
-        }
+        },
       });
 
       stripePromise?.redirectToCheckout({ sessionId: res.data.id });
@@ -116,33 +110,39 @@ const CheckoutPage = () => {
 
   const handleVnpayPayment = async () => {
     if (!selectAddress) return toast.error('Vui lòng chọn địa chỉ');
-
     try {
-      toast.loading("Đang chuyển hướng...");
+      const token = localStorage.getItem('token');
+      toast.loading('Đang chuyển hướng...');
       const response = await Axios({
-        ...SummaryApi.vnpayCreatePayment, // trỏ tới /create_payment
-        params: {
-          amount: finalTotalPrice,   // truyền tổng tiền cần thanh toán
-          bankCode: "NCB",      // nếu có chọn ngân hàng
-          language: "vn"        // ngôn ngữ giao diện VNPay
-        }
+        ...SummaryApi.vnpayCreatePayment,
+        method: 'post',
+        headers: { Authorization: `Bearer ${token}` },
+        data: {
+          amount: finalTotalPrice,
+          bankCode: 'NCB',
+          language: 'vn',
+          list_items: cartItemsList,
+          addressId: selectAddress,
+          subTotalAmt: totalPrice,
+        },
       });
 
+      console.log('Response from createPayment:', response.data);
       const { paymentUrl } = response.data;
 
       if (paymentUrl) {
-        //Redirect tới VNPay
         window.location.href = paymentUrl;
       } else {
-        toast.error("Không tạo được liên kết thanh toán VNPay");
+        toast.error('Không tạo được liên kết thanh toán VNPay');
       }
     } catch (error) {
+      console.error('Error in handleVnpayPayment:', error.response ? error.response.data : error.message);
       AxiosToastError(error);
     }
   };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
-      {/* Header Steps */}
       <div className="bg-white border-b border-green-100 shadow-sm">
         <div className="max-w-6xl mx-auto px-2 sm:px-4 py-4 sm:py-6 flex items-center gap-2 sm:gap-4 overflow-x-auto">
           <div className="flex items-center gap-2">
@@ -169,9 +169,7 @@ const CheckoutPage = () => {
       </div>
 
       <div className="max-w-6xl mx-auto px-2 sm:px-4 py-6 sm:py-8 grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8">
-        {/* LEFT SIDE */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Address Section */}
           <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 border border-green-100">
             <div className="flex items-center gap-3 mb-4 sm:mb-6">
               <div className="w-9 h-9 bg-green-100 rounded-full flex justify-center items-center">
@@ -180,9 +178,13 @@ const CheckoutPage = () => {
               <h3 className="text-lg sm:text-xl font-bold text-gray-900">Địa chỉ giao hàng</h3>
             </div>
             <div className="space-y-4">
-              {addressList.filter(addr => addr.status !== false).map((address) => (
+              {addressList.filter((addr) => addr.status !== false).map((address) => (
                 <label key={address._id}>
-                  <div className={`border-2 rounded-xl p-4 cursor-pointer transition ${selectAddress === address._id ? 'border-green-500 bg-green-50 shadow-md' : 'border-gray-200 hover:border-green-300'}`}>
+                  <div
+                    className={`border-2 rounded-xl p-4 cursor-pointer transition ${
+                      selectAddress === address._id ? 'border-green-500 bg-green-50 shadow-md' : 'border-gray-200 hover:border-green-300'
+                    }`}
+                  >
                     <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-start">
                       <div className="sm:col-span-1">
                         <input
@@ -203,10 +205,7 @@ const CheckoutPage = () => {
                       </div>
                       <div className="sm:col-span-1 flex gap-2 justify-end">
                         <button
-                          onClick={() => {
-                            setOpenEdit(true);
-                            setEditData(address);
-                          }}
+                          onClick={() => { setOpenEdit(true); setEditData(address); }}
                           className="bg-green-200 p-1.5 rounded hover:text-white hover:bg-green-600"
                         >
                           <MdEdit size={16} />
@@ -236,7 +235,6 @@ const CheckoutPage = () => {
             </div>
           </div>
 
-          {/* Delivery Method */}
           <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 border border-green-100">
             <div className="flex items-center gap-3 mb-4 sm:mb-6">
               <div className="w-9 h-9 bg-green-100 rounded-full flex justify-center items-center">
@@ -275,7 +273,6 @@ const CheckoutPage = () => {
           </div>
         </div>
 
-        {/* RIGHT SIDE (Tóm tắt) */}
         <div className="lg:col-span-1">
           <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 border border-green-100 lg:sticky top-4">
             <div className="flex items-center gap-3 mb-4 sm:mb-6">

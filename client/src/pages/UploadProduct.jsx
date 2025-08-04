@@ -203,9 +203,9 @@ const UploadProduct = () => {
               <h1 className="text-2xl font-bold text-gray-800">Tải lên sản phẩm mới</h1>
               <p className="text-gray-600">Thêm sản phẩm vào cửa hàng của bạn</p>
             </div>
-            <div className="bg-green-100 p-3 rounded-full">
+            {/* <div className="bg-green-100 p-3 rounded-full">
               <Upload className="text-green-600" size={24} />
-            </div>
+            </div> */}
           </div>
 
           {/* Progress Steps */}
