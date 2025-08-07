@@ -22,6 +22,7 @@ import chatRoutes from './route/chatbot.route.js';
 import googleRouter from './route/google.route.js';
 import reviewRouter from './route/review.route.js';
 import contactRoutes from './route/contact.route.js';
+import recommendationRouter from './route/recommendation.route.js';
 
 const app = express();
 
@@ -70,6 +71,7 @@ app.use('/api', chatRoutes);
 app.use('/api', googleRouter);
 app.use('/api/review', reviewRouter);
 app.use('/api/contact', contactRoutes);
+app.use('/api/recommendation', recommendationRouter);
 
 const PORT = process.env.PORT || 8080;
 

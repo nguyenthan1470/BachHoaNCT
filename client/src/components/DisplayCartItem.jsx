@@ -46,7 +46,7 @@ const DisplayCartItem = ({ close }) => {
                 </div>
 
                 {/* Content */}
-                <div className='min-h-[75vh] h-full max-h-[calc(100vh-200px)] bg-gradient-to-br from-blue-50 via-gray-50 to-green-50 p-4 flex flex-col gap-6 overflow-auto scrollbar-hide'>
+<div className='min-h-[75vh] h-full max-h-[calc(100vh-200px)] p-4 flex flex-col gap-6 overflow-auto hide-scrollbar'>
 
                     {cartItem.length > 0 ? (
                         <>
@@ -164,7 +164,7 @@ const DisplayCartItem = ({ close }) => {
                     </div>
                 )}
             </div>
-            
+
         </section>
     )
 }

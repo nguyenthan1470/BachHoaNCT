@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { valideURLConvert } from '../utils/valideURLConvert';
 import { pricewithDiscount } from '../utils/PriceWithDiscount'
 import AddToCartButton from '../components/AddToCartButton.jsx'
+import { MdRemoveShoppingCart } from "react-icons/md";
 
 const CardProduct = ({ data }) => {
   const url = `/product/${valideURLConvert(data.name)}-${data._id}`
@@ -50,39 +51,44 @@ const CardProduct = ({ data }) => {
         </div>
 
         {/* Product Name */}
-        <h3 className="text-gray-900 font-medium text-sm lg:text-base line-clamp-2 mb-1 group-hover:text-green-600 transition-colors">
-          {data.name}
-        </h3>
-
-        {/* Unit */}
-        <p className="text-gray-500 text-xs lg:text-sm mb-3">{data.unit}</p>
+        <div className="mb-2">
+          <h3 className="text-gray-900 font-medium text-sm lg:text-base line-clamp-2 group-hover:text-green-600 transition-colors">
+            {data.name}
+          </h3>
+          <p className="text-gray-500 text-xs lg:text-sm mt-1">{data.unit}</p>
+        </div>
 
         {/* Price and AddToCart */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col   ">
+          {/* Giá */}
           <div className="flex flex-col">
             {hasDiscount && (
-              <span className="text-xs text-gray-400 line-through">
+              <span className="text-xs text-gray-400 line-through ">
                 {DisplayPriceInVietnamDong(data.price)}
               </span>
             )}
-            <span className="font-semibold text-gray-900 text-base">
+            <span className="font-semibold text-gray-900   text-red-700 text-base ">
               {DisplayPriceInVietnamDong(discountedPrice)}
             </span>
           </div>
 
+          {/* Nút thêm vào giỏ */}
           <div>
             {data.stock === 0 ? (
               <button
                 disabled
-                className="cursor-not-allowed px-3 py-1 text-xs border border-gray-300 rounded text-red-500"
-              >
-                Hết hàng
+                className="font-semibold w-full cursor-not-allowed px-3 py-2 text-sm rounded border-gray-300 text-white bg-red-600 flex items-center justify-between"
+              >  <MdRemoveShoppingCart className="text-lg" />
+                <span>Hết hàng</span>
+              
               </button>
+
             ) : (
-              <AddToCartButton data={data} />
+              <AddToCartButton data={data} className="w-full" />
             )}
           </div>
         </div>
+
       </div>
     </Link>
   )

@@ -1,103 +1,93 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-html{
-    scroll-behavior: smooth;
+html {
+  scroll-behavior: smooth;
 }
 
-body{
-    font-family: "Poppins", sans-serif;
-    font-weight: 100;
-    font-style: normal;
-    @apply bg-blue-50 text-neutral-700 scroll-smooth
+body {
+  font-family: "Poppins", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+  @apply bg-blue-50 text-neutral-700 scroll-smooth;
 }
 
-.scrollbar-none::-webkit-scrollbar{
-    display: none;
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
 
-.scrollbarCustom::-webkit-scrollbar{
-    width: 10px;
-    @apply bg-slate-100
-}
-.scrollbarCustom::-webkit-scrollbar-thumb{
-    @apply bg-blue-100 rounded-full
-}
-.scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none;    /* Firefox */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
- @keyframes fade-in {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animate-fade-in {
-          animation: fade-in 0.6s ease-out;
-        }
-
-/* animation login & register */
-
-/* .flip-enter {
-  transform: rotateY(90deg);
-  opacity: 0;
-  position: absolute;
-  width: 100%;
-  backface-visibility: hidden;
+.scrollbarCustom::-webkit-scrollbar {
+  width: 10px;
+  @apply bg-slate-100;
 }
 
-.flip-enter-active {
-  transform: rotateY(0deg);
-  opacity: 1;
-  transition: all 700ms ease-in-out;
+.scrollbarCustom::-webkit-scrollbar-thumb {
+  @apply bg-blue-100 rounded-full;
 }
 
-.flip-exit {
-  transform: rotateY(0deg);
-  opacity: 1;
-  position: absolute;
-  width: 100%;
-  backface-visibility: hidden;
-  z-index: 2; 
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.flip-exit-active {
-  transform: rotateY(90deg); 
-  opacity: 0;
-  transition: all 700ms ease-in-out;
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out;
 }
 
-
-.curtain-enter {
-  clip-path: inset(0 50% 0 50%);
-  opacity: 0;
-  position: absolute;
-  width: 100%;
-  z-index: 1; 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.curtain-enter-active {
-  clip-path: inset(0 0% 0 0%);
-  opacity: 1;
-  transition: all 900ms ease-in-out;
+.category-grid {
+  position: relative;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-.curtain-exit {
-  clip-path: inset(0 0% 0 0%);
-  opacity: 1;
-  position: absolute;
-  width: 100%;
-  z-index: 2; 
+.category-item {
+  position: relative;
+  padding: 0.5rem;
+  background: white;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.5s ease-out backwards;
 }
 
-.curtain-exit-active {
-  clip-path: inset(0 50% 0 50%);
-  opacity: 0;
-  transition: all 900ms ease-in-out;
-} */
+.category-item:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 0 15px rgba(183, 255, 0, 0.693), 0 0 25px rgba(183, 255, 0, 0.693);
+}
 
+.hover:shadow-neon {
+  box-shadow: 0 0 10px #d4ff00, 0 0 20px #d4ff00, 0 0 30px #d4ff00;
+}
+
+.text-shadow {
+  text-shadow: 0 0 5px rgba(183, 255, 0, 0.693), 0 0 10px rgba(183, 255, 0, 0.693);
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; 
+  scrollbar-width: none;     
+}

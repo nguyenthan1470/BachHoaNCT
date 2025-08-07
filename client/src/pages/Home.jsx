@@ -3,9 +3,11 @@ import { useSelector } from 'react-redux';
 import { valideURLConvert } from '../utils/valideURLConvert';
 import { Link, useNavigate } from 'react-router-dom';
 import CategoryWiseProductDisplay from '../components/CategoryWiseProductDisplay';
-import { ShoppingBag, Star, TrendingUp, Zap, Gift, Truck, Shield, Leaf, Heart, Award,RefreshCw } from 'lucide-react';
+import { ShoppingBag, Star, TrendingUp, Zap, Gift, Truck, Shield, Leaf, Heart, Award, RefreshCw } from 'lucide-react';
 import bgBanner from '../assets/banner001.webp';
 import Chatbot from '../components/Chatbot'
+import RecommendedProducts from '../components/RecommendedProducts';
+import { FaStar } from 'react-icons/fa6';
 
 const Home = () => {
 
@@ -72,8 +74,8 @@ const Home = () => {
               </div>
 
               <h1 className="text-4xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-                <span className="block">Bách Hóa</span>
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-lime-300 via-green-300 to-emerald-300 animate-gradient">
+                <span className="block text-yellow-300">Bách Hóa</span>
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-lime-500 via-green-400 to-emerald-400 animate-gradient">
                   NCT
                 </span>
               </h1>
@@ -127,7 +129,7 @@ const Home = () => {
                   </Link>
                 </button>
 
-               
+
               </div>
             </div>
 
@@ -185,88 +187,124 @@ const Home = () => {
             <p className="text-green-600">Giao dịch an toàn, thanh toán tiện lợi, sản phẩm chất lượng</p>
           </div>
 
-         <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-green-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-      <div className="flex items-center mb-4">
-        <div className="bg-gradient-to-r from-lime-500 via-green-500 to-emerald-500 rounded-full p-3 mr-4 relative overflow-hidden animate-pulse-slow">
-          <RefreshCw className="w-6 h-6 text-white relative z-10" />
-          <Shield className="w-4 h-4 text-white absolute -top-1 -right-1 opacity-50" />
-        </div>
-        <div>
-          <h3 className="text-lg font-bold text-green-800 transition-colors group-hover:text-lime-600">
-            Cam kết đổi trả
-          </h3>
-          
-        </div>
-      </div>
-      <p className="text-green-600 mt-2 leading-relaxed">
-        Đổi trả trong 7 ngày với quy trình nhanh chóng, miễn phí vận chuyển đổi trả.
-      </p>
-     
-    </div>
-        </div>
-      </div>
-      <div className="mb-6">
-        <h2 className="text-3xl font-bold text-center text-green-800 mb-2">
-          Danh mục sản phẩm
-        </h2>
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-green-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+            <div className="flex items-center mb-4">
+              <div className="bg-gradient-to-r from-lime-500 via-green-500 to-emerald-500 rounded-full p-3 mr-4 relative overflow-hidden animate-pulse-slow">
+                <RefreshCw className="w-6 h-6 text-white relative z-10" />
+                <Shield className="w-4 h-4 text-white absolute -top-1 -right-1 opacity-50" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-green-800 transition-colors group-hover:text-lime-600">
+                  Cam kết đổi trả
+                </h3>
 
+              </div>
+            </div>
+            <p className="text-green-600 mt-2 leading-relaxed">
+              Đổi trả trong 7 ngày với quy trình nhanh chóng, miễn phí vận chuyển đổi trả.
+            </p>
+
+          </div>
+        </div>
+      </div>
+      {/* phân hiển thị danh mục sản phẩm */}
+      <div className="container mx-auto px-4 ">
+        <div className="relative bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 rounded-3xl shadow-xl overflow-hidden mb-12">
+          <div className="absolute inset-0 bg-gradient-to-r from-green-600/10 to-emerald-600/10"></div>
+          <div className="absolute -top-20 -right-20 w-40 h-40 bg-green-200/30 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-emerald-200/30 rounded-full blur-2xl"></div>
+
+          {/* Nội dung tiêu đề */}
+          <div className="relative p-8 text-center">
+            <div>
+
+            </div>
+            <div className="flex items-center justify-center mb-6">
+              <div className="bg-green-100 p-2 rounded-full mr-3 animate-pulse">
+
+              </div>
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                Danh mục sản phẩm
+              </h2>
+              <div className="bg-green-100 p-2 rounded-full ml-3 animate-pulse">
+
+              </div>
+            </div>
+            <div className="w-24 h-1 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full mx-auto"></div>
+          </div>
+        </div>
       </div>
 
       <div className='container mx-auto px-4 my-2'>
-
         {/* Hiển thị sub-category cho mobile dạng scroll ngang */}
         <div className="lg:hidden mb-4 overflow-x-auto whitespace-nowrap scrollbar-hide">
           <div className="inline-flex gap-3">
-            {
-              SubCategoryData.map((sub) => (
-                <div
-                  key={sub._id}
-                  className="flex-shrink-0 bg-green-100 text-green-800 font-medium text-sm px-4 py-2 rounded-full shadow cursor-pointer hover:bg-green-200 transition"
-                  onClick={() => {
-                    const parentCat = sub.category[0];
-                    const url = `/${valideURLConvert(parentCat.name)}-${parentCat._id}/${valideURLConvert(sub.name)}-${sub._id}`;
-                    navigate(url);
-                  }}
-                >
-                  {sub.name}
-                </div>
-              ))
-            }
+            {SubCategoryData.map((sub) => (
+              <div
+                key={sub._id}
+                className="flex-shrink-0 bg-green-100 text-green-800 font-medium text-sm px-4 py-2 rounded-full shadow cursor-pointer hover:bg-green-200 hover:shadow-neon transition-all duration-300"
+                onClick={() => {
+                  const parentCat = sub.category[0];
+                  const url = `/${valideURLConvert(parentCat.name)}-${parentCat._id}/${valideURLConvert(sub.name)}-${sub._id}`;
+                  navigate(url);
+                }}
+              >
+                {sub.name}
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Hiển thị danh mục chính dạng lưới */}
-        <div className='grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-2'>
-          {
-            loadingCategory ? (
-              new Array(12).fill(null).map((_, index) => (
-                <div key={index + "loadingcategory"} className='bg-white rounded p-4 min-h-36 grid gap-2 shadow animate-pulse'>
-                  <div className='bg-blue-100 min-h-20 rounded'></div>
-                  <div className='bg-blue-100 h-8 rounded'></div>
+        <div className='category-grid grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-2 bg-white/60 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-green-100'>
+          {loadingCategory ? (
+            new Array(12).fill(null).map((_, index) => (
+              <div
+                key={index + "loadingcategory"}
+                className='bg-white rounded p-4 min-h-36 grid gap-2 shadow animate-pulse'
+              >
+                <div className='bg-blue-100 min-h-20 rounded'></div>
+                <div className='bg-blue-100 h-8 rounded'></div>
+              </div>
+            ))
+          ) : (
+            categoryData.map((cat, index) => (
+              <div
+                key={cat._id + "displayCategory"}
+                className={`category-item w-full h-full cursor-pointer group relative overflow-hidden rounded-xl transition-all duration-300 hover:shadow-neon hover:scale-105 hover:bg-green-50/80`}
+                style={{ animationDelay: `${index * 0.1}s` }}
+                onClick={() => handleRedirectProductListPage(cat._id, cat.name)}
+              >
+                <div className="relative">
+                  <img
+                    src={cat.image}
+                    alt={cat.name}
+                    className='w-full h-full object-scale-down transition-transform duration-300 group-hover:scale-110'
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-green-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
-              ))
-            ) : (
-              categoryData.map((cat) => (
-                <div key={cat._id + "displayCategory"} className='w-full h-full cursor-pointer' onClick={() => handleRedirectProductListPage(cat._id, cat.name)}>
-                  <div>
-                    <img
-                      src={cat.image}
-                      alt={cat.name}
-                      className='w-full h-full object-scale-down'
-                    />
-                  </div>
-                  <div className='text-sm mt-1 text-gray-700 truncate text-center font-semibold'>
-                    {cat.name}
-                  </div>
+                <div className='text-sm mt-1 text-gray-700 truncate text-center font-semibold group-hover:text-green-600 group-hover:text-shadow'>
+                  {cat.name}
                 </div>
-              ))
-            )
-          }
+              </div>
+            ))
+          )}
         </div>
+      </div>
+
+      <div className="mb-12 fade-in">
+        <RecommendedProducts />
       </div>
 
 
       {/* Hiển thị sản phẩm theo từng danh mục */}
+<div className="flex items-center justify-center mb-4">
+                            <div className="flex items-center">
+                                <div className="w-8 h-0.5 bg-gradient-to-r from-transparent to-gray-400 mr-3"></div>
+                                <span className="text-gray-800 font-semibold text-3xl">Khám phá thêm</span>
+                                <div className="w-8 h-0.5 bg-gradient-to-l from-transparent to-gray-400 ml-3"></div>
+                            </div>
+                        </div> 
       {
         categoryData.map((c) => (
           <CategoryWiseProductDisplay

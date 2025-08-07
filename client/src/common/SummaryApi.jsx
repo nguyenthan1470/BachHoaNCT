@@ -223,6 +223,14 @@ const SummaryApi = {
         url: '/api/contact/reply',
         method: 'POST',
     },
+    getRecommendations: {
+        url: '/api/recommendation/recommendations',
+        method: 'post'
+    },
+    getTrendingProducts: {
+        url: '/api/recommendation/trending',
+        method: 'post'
+    },
 
 }
 

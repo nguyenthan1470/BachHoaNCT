@@ -7,6 +7,8 @@ import AxiosToastError from '../utils/AxiosToastError'
 import Loading from "../components/Loading"
 import { useSelector } from 'react-redux'
 import { FaMinus, FaPlus } from "react-icons/fa6"
+import { FaShoppingCart } from "react-icons/fa"
+
 const AddToCartButton = ({ data }) => {
 
     const { fetchCartItem, updateCartItem, deleteCartItem } = useGlobalContext()
@@ -72,22 +74,22 @@ const AddToCartButton = ({ data }) => {
         }
     }
 
-    const decreaseQty = async(e) => {
+    const decreaseQty = async (e) => {
         e.preventDefault()
         e.stopPropagation()
         if (qty === 1) {
             deleteCartItem(cartItemDetails?._id)
         } else {
-          const response = await updateCartItem(cartItemDetails?._id, qty - 1)
+            const response = await updateCartItem(cartItemDetails?._id, qty - 1)
 
             if (response.success) {
-            toast.success(" Đã giảm số lượng sản phẩm")
-        }
+                toast.success(" Đã giảm số lượng sản phẩm")
+            }
         }
 
     }
     return (
-        <div className='w-full max-w-[150px]'>
+        <div className='w-full flex justify-center'>
             {
                 isAvailableCart ? (
                     <div className='flex w-full h-full'>
@@ -97,8 +99,16 @@ const AddToCartButton = ({ data }) => {
                         <button onClick={increaseQty} className='bg-green-600 hover:bg-green-700 text-white flex-1 w-full p-1 rounded flex items-center justify-center'><FaPlus /></button>
                     </div>
                 ) : (
-                    <button onClick={handleAddToCart} className='bg-green-600 hover:bg-green-700 text-white px-2 lg:px-4 py-1 rounded'>
-                        {loading ? <Loading /> : "Thêm"}
+                    <button
+                        onClick={handleAddToCart}
+                        className='w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded font-semibold text-sm flex items-center justify-center gap-2'
+                    >
+                        {loading ? <Loading /> : (
+                            <>
+                                <FaShoppingCart className="text-base" />
+                                Thêm vào giỏ
+                            </>
+                        )}
                     </button>
                 )
             }

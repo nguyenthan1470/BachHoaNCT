@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import AxiosToastError from '../utils/AxiosToastError';
 import { FiExternalLink, FiX } from 'react-icons/fi';
 import isAdmin from '../utils/isAdmin';
-import { List, Package, Upload, ShoppingBag, Truck, BarChart, Users, MapPin, LogOut, Layers, Phone,Mail  } from 'lucide-react';
+import { List, Package, Upload, ShoppingBag, Truck, BarChart, Users, MapPin, LogOut, Layers, Phone,Mail,User  } from 'lucide-react';
 
 const UserMenu = ({ close }) => {
   const user = useSelector((state) => state.user);
@@ -200,6 +200,16 @@ const UserMenu = ({ close }) => {
             >
               <Phone className="w-4 h-4" />
               <span>Liên hệ </span>
+            </Link>
+            <Link
+              onClick={handleClose}
+              to="/dashboard/profile"
+              className={`flex items-center gap-2 px-3 py-2 rounded transition text-gray-700 ${isActive('/contact') ? 'bg-green-100 border-l-4 border-green-600' : 'hover:bg-green-100'}`}
+              aria-label="Hồ sơ "
+              aria-current={isActive('/profile') ? 'page' : undefined}
+            >
+              <User className="w-4 h-4" />
+              <span>Hồ sơ</span>
             </Link>
           </>
         )}

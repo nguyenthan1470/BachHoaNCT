@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Lock, User, ArrowRight, Leaf, Truck, ShoppingCart, Eye, Chrome } from 'lucide-react';
+import { Mail, Lock, User, ArrowRight, Leaf, Truck, ShoppingCart, Eye, Chrome, EyeOff} from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import SummaryApi from '../common/SummaryApi';
