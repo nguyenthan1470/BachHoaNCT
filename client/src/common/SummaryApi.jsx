@@ -231,6 +231,10 @@ const SummaryApi = {
         url: '/api/recommendation/trending',
         method: 'post'
     },
+    cancelOrder: {
+        url: '/api/order/cancel-order',
+        method: 'POST'
+    },
 
 }
 

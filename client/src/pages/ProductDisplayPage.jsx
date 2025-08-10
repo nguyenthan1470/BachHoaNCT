@@ -144,8 +144,7 @@ const ProductDisplayPage = () => {
           <nav className="flex items-center space-x-2 text-sm text-gray-600">
             <span>Trang chủ</span>
             <ChevronRight className="w-4 h-4" />
-            <span>Trái cây</span>
-            <ChevronRight className="w-4 h-4" />
+
             <span className="text-gray-900 font-medium">{data.name}</span>
           </nav>
         </div>
@@ -289,18 +288,33 @@ const ProductDisplayPage = () => {
             </div>
 
             {/* Stock & Add to Cart */}
-            {data.stock === 0 ? (
-              <div className="text-center py-4">
-                <p className="text-xl text-red-500 font-semibold">Hết hàng</p>
-                <p className="text-sm text-gray-600 mt-1">Sản phẩm sẽ có hàng trở lại sớm</p>
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  data.stock > 10 ? 'bg-green-100 text-green-800' :
+                  data.stock > 0 ? 'bg-yellow-100 text-yellow-800' :
+                  'bg-red-100 text-red-800'
+                }`}>
+                  {data.stock > 0 ? `Còn ${data.stock} sản phẩm` : 'Tạm hết hàng'}
+                </span>
+                {data.stock > 0 && data.stock <= 10 && (
+                  <span className="text-sm text-orange-600">Sắp hết hàng</span>
+                )}
               </div>
-            ) : (
-              <div className="flex gap-3">
-                <div className="my-4">
-                  <AddToCartButton data={data} />
+              
+              {data.stock > 0 ? (
+                <div className="flex gap-3">
+                  <div className="my-4">
+                    <AddToCartButton data={data} />
+                  </div>
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="text-center py-4">
+                  <p className="text-xl text-red-500 font-semibold">Hết hàng</p>
+                  <p className="text-sm text-gray-600 mt-1">Sản phẩm sẽ có hàng trở lại sớm</p>
+                </div>
+              )}
+            </div>
 
             {/* Features */}
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200">

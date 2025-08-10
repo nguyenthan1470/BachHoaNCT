@@ -101,7 +101,7 @@ const AddToCartButton = ({ data }) => {
                 ) : (
                     <button
                         onClick={handleAddToCart}
-                        className='w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded font-semibold text-sm flex items-center justify-center gap-2'
+                        className='w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded font-semibold text-sm flex items-center justify-center gap-3 p-4'
                     >
                         {loading ? <Loading /> : (
                             <>

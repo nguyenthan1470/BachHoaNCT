@@ -18,6 +18,18 @@ export async function CashOnDeliveryOrderController(request, response) {
             });
         }
 
+        // Kiểm tra tồn kho trước khi đặt hàng
+        for (const item of list_items) {
+            const product = await ProductModel.findById(item.productId._id);
+            if (!product || product.stock < item.quantity) {
+                return response.status(400).json({
+                    message: `Sản phẩm ${product?.name || 'không tồn tại'} chỉ còn ${product?.stock || 0} sản phẩm`,
+                    error: true,
+                    success: false
+                });
+            }
+        }
+
         const payload = list_items.map(el => {
             // Calculate discounted price per product
             const discountedPrice = pricewithDiscount(el.productId.price, el.productId.discount) * el.quantity;
@@ -42,10 +54,13 @@ export async function CashOnDeliveryOrderController(request, response) {
 
         const generatedOrder = await OrderModel.insertMany(payload)
 
-        // Cập nhật số lượng đã bán cho từng sản phẩm
+        // Cập nhật số lượng đã bán và giảm tồn kho cho từng sản phẩm
         for (const el of list_items) {
             await ProductModel.findByIdAndUpdate(el.productId._id, {
-                $inc: { sold: el.quantity }
+                $inc: { 
+                    sold: el.quantity,
+                    stock: -el.quantity 
+                }
             })
         }
 
@@ -200,10 +215,13 @@ export async function webhookStripe(request, response) {
 
             const order = await OrderModel.insertMany(orderProduct)
 
-            // Cập nhật số lượng đã bán cho từng sản phẩm
+            // Cập nhật số lượng đã bán và giảm tồn kho cho từng sản phẩm
             for (const item of order) {
                 await ProductModel.findByIdAndUpdate(item.productId, {
-                    $inc: { sold: item.product_details.quantity }
+                    $inc: { 
+                        sold: item.product_details.quantity,
+                        stock: -item.product_details.quantity 
+                    }
                 })
             }
 
@@ -373,5 +391,68 @@ export const getSalesStatistics = async (req, res) => {
         console.error("getSalesStatistics error:", err)
         res.status(500).json({ success: false, message: "Lỗi server", err })
     }
-    
+
+}
+    // xử lí chức năng hủy đơn hàng
+    export const cancelOrderController = async (req, res) => {
+    // Kiểm tra xem người dùng có quyền hủy đơn hàng hay không
+    try {
+        const { orderId, status } = req.body;
+
+        if (!orderId || !status) {
+            return res.status(400).json({
+                message: "Thiếu orderId hoặc trạng thái",
+                success: false,
+                error: true,
+            });
+        }
+
+        // Check if order is in a cancellable state
+        const order = await OrderModel.findById(orderId);
+        if (!order) {
+            return res.status(404).json({
+                message: "Không tìm thấy đơn hàng",
+                success: false,
+                error: true,
+            });
+        }
+
+        if (order.payment_status !== 'Chờ xử lý') {
+            return res.status(400).json({
+                message: "Không thể hủy đơn hàng vì đơn hàng đã được xử lý",
+                success: false,
+                error: true,
+            });
+        }
+
+        const updated = await OrderModel.findByIdAndUpdate(
+            orderId,
+            {
+                payment_status: status,
+                cancelledAt: new Date()
+            },
+            { new: true }
+        );
+
+        if (!updated) {
+            return res.status(404).json({
+                message: "Không tìm thấy đơn hàng",
+                success: false,
+                error: true,
+            });
+        }
+
+        return res.json({
+            message: "Hủy đơn hàng thành công",
+            data: updated,
+            success: true,
+            error: false,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || "Lỗi server",
+            success: false,
+            error: true,
+        });
+    }
 }
