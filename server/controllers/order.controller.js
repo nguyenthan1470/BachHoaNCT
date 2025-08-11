@@ -394,65 +394,97 @@ export const getSalesStatistics = async (req, res) => {
 
 }
     // xử lí chức năng hủy đơn hàng
-    export const cancelOrderController = async (req, res) => {
-    // Kiểm tra xem người dùng có quyền hủy đơn hàng hay không
-    try {
-        const { orderId, status } = req.body;
+  export const cancelOrderController = async (req, res) => {
+  try {
+    const { orderId, cancellationReason } = req.body;
+    const userId = req.userId;
+    console.log('Cancel request:', { orderId, userId, cancellationReason }); 
 
-        if (!orderId || !status) {
-            return res.status(400).json({
-                message: "Thiếu orderId hoặc trạng thái",
-                success: false,
-                error: true,
-            });
-        }
-
-        // Check if order is in a cancellable state
-        const order = await OrderModel.findById(orderId);
-        if (!order) {
-            return res.status(404).json({
-                message: "Không tìm thấy đơn hàng",
-                success: false,
-                error: true,
-            });
-        }
-
-        if (order.payment_status !== 'Chờ xử lý') {
-            return res.status(400).json({
-                message: "Không thể hủy đơn hàng vì đơn hàng đã được xử lý",
-                success: false,
-                error: true,
-            });
-        }
-
-        const updated = await OrderModel.findByIdAndUpdate(
-            orderId,
-            {
-                payment_status: status,
-                cancelledAt: new Date()
-            },
-            { new: true }
-        );
-
-        if (!updated) {
-            return res.status(404).json({
-                message: "Không tìm thấy đơn hàng",
-                success: false,
-                error: true,
-            });
-        }
-
-        return res.json({
-            message: "Hủy đơn hàng thành công",
-            data: updated,
-            success: true,
-            error: false,
-        });
-    } catch (error) {
-        return res.status(500).json({
-            message: error.message || "Lỗi server",
-            success: false,
-            error: true,
-        });
+    if (!orderId) {
+      return res.status(400).json({
+        message: 'Vui lòng cung cấp mã đơn hàng',
+        error: true,
+        success: false,
+      });
     }
-}
+
+    const orders = await OrderModel.find({ orderId: orderId });
+    console.log('Found orders:', orders); 
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({
+        message: 'Không tìm thấy đơn hàng',
+        error: true,
+        success: false,
+      });
+    }
+
+    if (orders[0].userId.toString() !== userId) {
+      return res.status(403).json({
+        message: 'Bạn không có quyền hủy đơn hàng này',
+        error: true,
+        success: false,
+      });
+    }
+
+    const canCancel = orders.every(order =>
+      order.payment_status === 'Thanh toán khi nhận' || order.payment_status === 'Chờ xử lý',
+    );
+    console.log('Can cancel:', canCancel);
+
+    if (!canCancel) {
+      return res.status(400).json({
+        message: 'Chỉ có thể hủy đơn hàng ở trạng thái chờ xử lý hoặc thanh toán khi nhận',
+        error: true,
+        success: false,
+      });
+    }
+
+    const productUpdates = [];
+    for (const order of orders) {
+      const quantity = order.product_details?.quantity || 1;
+      productUpdates.push({
+        productId: order.productId,
+        quantity: quantity,
+      });
+    }
+    console.log('Product updates:', productUpdates);
+
+    for (const update of productUpdates) {
+      const product = await ProductModel.findById(update.productId);
+      console.log('Updating product:', update.productId, product); 
+      if (!product) {
+        return res.status(404).json({
+          message: `Sản phẩm ${update.productId} không tồn tại`,
+          error: true,
+          success: false,
+        });
+      }
+      await ProductModel.findByIdAndUpdate(
+        update.productId,
+        {
+          $inc: {
+            stock: update.quantity,
+            sold: -update.quantity,
+          },
+        },
+      );
+    }
+
+    const deleteResult = await OrderModel.deleteMany({ orderId: orderId });
+    console.log('Delete result:', deleteResult); // Debug
+
+    return res.json({
+      message: 'Đơn hàng đã được hủy và xóa thành công',
+      success: true,
+      error: false,
+    });
+  } catch (error) {
+    console.error('Error in cancelOrderController:', error);
+    return res.status(500).json({
+      message: error.message || 'Có lỗi xảy ra khi hủy đơn hàng',
+      error: true,
+      success: false,
+    });
+  }
+};

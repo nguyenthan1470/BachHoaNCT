@@ -27,10 +27,11 @@ const DisplayCartItem = ({ close }) => {
 
     return (
         <section className='bg-neutral-900 fixed top-0 bottom-0 right-0 left-0 bg-opacity-80 z-50 backdrop-blur-sm'>
-            <div className='bg-white w-full max-w-md min-h-screen max-h-screen ml-auto shadow-2xl relative overflow-hidden'>
-
+            <div
+                className='bg-white fixed right-0 top-0 bottom-0 max-w-[600px] w-full h-screen shadow-2xl flex flex-col'
+            >
                 {/* Header */}
-                <div className='relative flex items-center p-6 shadow-lg gap-3 justify-between bg-white/95 backdrop-blur-sm border-b border-gray-100'>
+                <div className='flex items-center p-6 shadow-lg gap-3 justify-between bg-white/95 backdrop-blur-sm border-b border-gray-100'>
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-green-100 rounded-xl">
                             <FaShoppingCart className="text-green-600" size={20} />
@@ -46,8 +47,7 @@ const DisplayCartItem = ({ close }) => {
                 </div>
 
                 {/* Content */}
-<div className='min-h-[75vh] h-full max-h-[calc(100vh-200px)] p-4 flex flex-col gap-6 overflow-auto hide-scrollbar'>
-
+                <div className='flex-1 overflow-y-auto p-4 flex flex-col gap-6 hide-scrollbar'>
                     {cartItem.length > 0 ? (
                         <>
                             {/* Tiết kiệm */}
@@ -68,7 +68,7 @@ const DisplayCartItem = ({ close }) => {
                                     Sản phẩm đã chọn
                                 </h3>
                                 <div className="grid gap-6">
-                                    {cartItem.map((item, index) => (
+                                    {cartItem.map((item) => (
                                         <div key={item?._id} className='flex gap-4 p-4 rounded-xl bg-gray-50 border border-gray-100 hover:shadow-md'>
                                             <div className='w-20 h-20 bg-white border-2 border-gray-200 rounded-xl overflow-hidden'>
                                                 <img
@@ -164,7 +164,6 @@ const DisplayCartItem = ({ close }) => {
                     </div>
                 )}
             </div>
-
         </section>
     )
 }

@@ -233,7 +233,7 @@ const SummaryApi = {
     },
     cancelOrder: {
         url: '/api/order/cancel-order',
-        method: 'POST'
+        method: 'post'
     },
 
 }

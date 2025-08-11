@@ -4,7 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { CheckCircle, Package, Truck, MapPin, CreditCard, User, Phone, Mail, ArrowLeft, DollarSign, Clock, XCircle, RotateCcw, Map } from 'lucide-react';
 import Nodata from '../components/NoData';
 import SummaryApi from '../common/SummaryApi';
-import { toast } from 'react-toastify';
+import CancelOrderButton from "../components/CancelOrderButton"; // Import component mới (điều chỉnh path nếu cần)
 
 const orderStatuses = ['Chờ xử lý', 'Đã hủy', 'Đang giao', 'Đã giao', 'Hoàn trả'];
 
@@ -46,7 +46,6 @@ const MyOrdersDetail = () => {
     const { orderId } = useParams();
     const orders = useSelector((state) => state.orders.order);
     const order = orders.find((o) => o.orderId === orderId);
-    const [isCancelling, setIsCancelling] = useState(false);
     const [showMap, setShowMap] = useState(false);
     const [trackingData, setTrackingData] = useState(null);
 
@@ -69,46 +68,6 @@ const MyOrdersDetail = () => {
             }
         } catch (error) {
             console.error('Error fetching tracking data:', error);
-        }
-    };
-
-    const handleCancelOrder = async () => {
-        if (!order) return;
-
-        if (order.paymentId !== '' || order.payment_status !== 'Chờ xử lý') {
-            toast.error('Chỉ có thể hủy đơn hàng thanh toán khi nhận hàng trong trạng thái chờ xử lý');
-            return;
-        }
-
-        const confirmCancel = window.confirm('Bạn có chắc chắn muốn hủy đơn hàng này? Đơn hàng sẽ bị xóa.');
-        if (!confirmCancel) return;
-
-        setIsCancelling(true);
-        try {
-            const response = await fetch(SummaryApi.cancelOrder.url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify({
-                    orderId: order._id,
-                    cancellationReason: 'Khách hàng hủy đơn'
-                })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                toast.success('Đơn hàng đã được hủy và xóa!');
-                window.location.href = '/dashboard/myorders';
-            } else {
-                toast.error(data.message || 'Không thể hủy đơn hàng');
-            }
-        } catch (error) {
-            toast.error('Có lỗi xảy ra khi hủy đơn hàng');
-        } finally {
-            setIsCancelling(false);
         }
     };
 
@@ -197,8 +156,6 @@ const MyOrdersDetail = () => {
             };
         }),
     };
-    ;
-
 
     return (
         <div className="min-h-screen bg-gray-100 py-6 px-4 font-sans">
@@ -282,7 +239,7 @@ const MyOrdersDetail = () => {
                         </button>
                         {showMap && (
                             <div className="h-64 bg-gray-200 rounded-lg flex items-center justify-center">
-                                {/* This would typically integrate with a map API like Google Maps or Leaflet */}
+                               
                                 <p className="text-gray-600">Bản đồ hiển thị vị trí giao hàng: {trackingData?.location || 'Đang tải...'}</p>
                             </div>
                         )}
@@ -391,13 +348,10 @@ const MyOrdersDetail = () => {
                             </Link>
 
                             {order.payment_status === 'Chờ xử lý' && order.paymentId === '' && (
-                                <button
-                                    onClick={handleCancelOrder}
-                                    disabled={isCancelling}
-                                    className="w-full bg-red-500 text-white py-2 rounded-lg font-medium hover:bg-red-400 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    {isCancelling ? 'Đang hủy...' : 'Hủy đơn hàng'}
-                                </button>
+                                <CancelOrderButton 
+                                    orderId={order.orderId}
+                                    onCancelSuccess={() => window.location.href = '/dashboard/myorders'} 
+                                />
                             )}
 
                             {order.payment_status === 'Đang giao' && (
@@ -439,8 +393,12 @@ const MyOrdersDetail = () => {
                     </p>
                 </div>
             </div>
+            
         </div>
+        
     );
+    
 };
+
 
 export default MyOrdersDetail;

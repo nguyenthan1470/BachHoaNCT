@@ -19,7 +19,7 @@ const auth = (req, res, next) => {
       decode = jwt.verify(token, process.env.SECRET_KEY_ACCESS_TOKEN);
     } catch (jwtError) {
       return res.status(401).json({
-        message: 'Token không hợp lệ hoặc đã hết hạn',
+        message: 'Bạn cần đăng nhập',
         error: true,
         success: false,
         details: jwtError.message,
