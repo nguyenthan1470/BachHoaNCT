@@ -44,7 +44,7 @@ const Home = () => {
     <section className='bg-white'>
 
 
-      <div className="container mx-auto pt-8 px-4">
+      <div className="container mx-auto pt-8 px-4 ">
         <div
           className="relative w-full rounded-3xl overflow-hidden shadow-2xl bg-cover bg-center p-8 lg:p-12 min-h-96 mb-8"
           style={{ backgroundImage: `url(${bgBanner})` }}
@@ -167,19 +167,21 @@ const Home = () => {
       {/* Features Section */}
       <div className="container mx-auto px-4 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-green-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+          {/* Fast Delivery Card */}
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-blue-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
             <div className="flex items-center mb-4">
-              <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-full p-3 mr-4">
+              <div className="bg-gradient-to-r from-blue-500 to-blue-700 rounded-full p-3 mr-4">
                 <Truck className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-lg font-bold text-green-800">Giao hàng nhanh</h3>
+              <h3 className="text-lg font-bold text-blue-800">Giao hàng nhanh</h3>
             </div>
-            <p className="text-green-600">Giao hàng trong 2 giờ, đảm bảo về thời gian và chất lượng sản phẩm</p>
+            <p className="text-blue-600">Giao hàng trong 2 giờ, đảm bảo về thời gian và chất lượng sản phẩm</p>
           </div>
 
+          {/* Safety Card */}
           <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-green-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
             <div className="flex items-center mb-4">
-              <div className="bg-gradient-to-r from-lime-500 to-green-500 rounded-full p-3 mr-4">
+              <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-full p-3 mr-4">
                 <Shield className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-lg font-bold text-green-800">An toàn tuyệt đối</h3>
@@ -187,23 +189,22 @@ const Home = () => {
             <p className="text-green-600">Giao dịch an toàn, thanh toán tiện lợi, sản phẩm chất lượng</p>
           </div>
 
-          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-green-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+          {/* Return Policy Card */}
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-amber-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
             <div className="flex items-center mb-4">
-              <div className="bg-gradient-to-r from-lime-500 via-green-500 to-emerald-500 rounded-full p-3 mr-4 relative overflow-hidden animate-pulse-slow">
+              <div className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-full p-3 mr-4 relative overflow-hidden animate-pulse-slow">
                 <RefreshCw className="w-6 h-6 text-white relative z-10" />
                 <Shield className="w-4 h-4 text-white absolute -top-1 -right-1 opacity-50" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-green-800 transition-colors group-hover:text-lime-600">
+                <h3 className="text-lg font-bold text-amber-800 transition-colors group-hover:text-amber-600">
                   Cam kết đổi trả
                 </h3>
-
               </div>
             </div>
-            <p className="text-green-600 mt-2 leading-relaxed">
+            <p className="text-amber-600 mt-2 leading-relaxed">
               Đổi trả trong 7 ngày với quy trình nhanh chóng, miễn phí vận chuyển đổi trả.
             </p>
-
           </div>
         </div>
       </div>
@@ -216,10 +217,8 @@ const Home = () => {
 
           {/* Nội dung tiêu đề */}
           <div className="relative p-8 text-center">
-            <div>
 
-            </div>
-            <div className="flex items-center justify-center mb-6">
+            <div className="flex items-center justify-center mb-3">
               <div className="bg-green-100 p-2 rounded-full mr-3 animate-pulse">
 
               </div>
@@ -230,7 +229,7 @@ const Home = () => {
 
               </div>
             </div>
-            <div className="w-24 h-1 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full mx-auto"></div>
+            <div className="w-24 h-1 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full mx-auto animate-pulse-jump"></div>
           </div>
         </div>
       </div>
@@ -298,13 +297,13 @@ const Home = () => {
 
 
       {/* Hiển thị sản phẩm theo từng danh mục */}
-<div className="flex items-center justify-center mb-4">
-                            <div className="flex items-center">
-                                <div className="w-8 h-0.5 bg-gradient-to-r from-transparent to-gray-400 mr-3"></div>
-                                <span className="text-gray-800 font-semibold text-3xl">Khám phá thêm</span>
-                                <div className="w-8 h-0.5 bg-gradient-to-l from-transparent to-gray-400 ml-3"></div>
-                            </div>
-                        </div> 
+      <div className="flex items-center justify-center mb-4">
+        <div className="flex items-center">
+          <div className="w-8 h-0.5 bg-gradient-to-r from-transparent to-gray-400 mr-3"></div>
+          <span className="text-gray-800 font-semibold text-3xl">Khám phá thêm</span>
+          <div className="w-8 h-0.5 bg-gradient-to-l from-transparent to-gray-400 ml-3"></div>
+        </div>
+      </div>
       {
         categoryData.map((c) => (
           <CategoryWiseProductDisplay
@@ -314,7 +313,11 @@ const Home = () => {
           />
         ))
       }
-      <Chatbot />
+     
+        <Chatbot />
+      
+
+
 
 
     </section>

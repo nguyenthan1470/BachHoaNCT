@@ -61,16 +61,17 @@ const CardProduct = ({ data }) => {
         {/* Price and AddToCart */}
         <div className="flex flex-col   ">
           {/* Giá */}
-          <div className="flex flex-col">
+          <div className="flex flex-row md:flex-col items-center sm:items-start gap-1">
             {hasDiscount && (
-              <span className="text-xs text-gray-400 line-through ">
+              <span className="text-xs text-gray-400 line-through">
                 {DisplayPriceInVietnamDong(data.price)}
               </span>
             )}
-            <span className="font-semibold text-gray-900   text-red-700 text-base ">
+            <span className="font-semibold text-red-700 text-base">
               {DisplayPriceInVietnamDong(discountedPrice)}
             </span>
           </div>
+
 
           {/* Nút thêm vào giỏ */}
           <div>
@@ -80,7 +81,7 @@ const CardProduct = ({ data }) => {
                 className="font-semibold w-full cursor-not-allowed px-3 py-2 text-sm rounded border-gray-300 text-white bg-red-600 flex items-center justify-between"
               >  <MdRemoveShoppingCart className="text-lg" />
                 <span>Hết hàng</span>
-              
+
               </button>
 
             ) : (

@@ -7,7 +7,7 @@ import CardLoading from './CardLoading'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6'
 import CardProduct from './CardProduct'
 import { useSelector } from 'react-redux'
-import { valideURLConvert } from '../utils/valideURLConvert'; 
+import { valideURLConvert } from '../utils/valideURLConvert';
 
 const CategoryWiseProductDisplay = ({ id, name }) => {
     const [data, setData] = useState([])
@@ -75,7 +75,12 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
                             <CardLoading key={"CategorywiseProductDisplay123" + index} />
                         ))
                         : data.map((p, index) => (
-                            <CardProduct data={p} key={p._id + "CategorywiseProductDisplay" + index} />
+                            <div
+                                key={p._id + index}
+                                className="min-w-[70%] sm:min-w-[45%] md:min-w-[25%] lg:min-w-[16%] "
+                            >
+                                <CardProduct data={p} />
+                            </div>
                         ))}
                 </div>
 
@@ -92,4 +97,4 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
     )
 }
 
-    export default CategoryWiseProductDisplay
+export default CategoryWiseProductDisplay

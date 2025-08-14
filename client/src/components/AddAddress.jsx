@@ -92,7 +92,7 @@ const AddAddress = ({ close }) => {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className='p-6 space-y-5'>
+        <form onSubmit={handleSubmit(onSubmit)} className='p-6 space-y-5 '>
           <div className='grid md:grid-cols-2 gap-5'>
             <div className='space-y-2'>
               <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>

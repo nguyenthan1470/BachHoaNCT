@@ -145,7 +145,7 @@ export const checkPayment = async (req, res) => {
               price: totalPrice,
             },
             paymentId: query.vnp_TxnRef,
-            payment_status: 'Đã thanh toán',
+            payment_status: 'Chờ xử lý',
             delivery_address: addressId,
             subTotalAmt,
             totalAmt,

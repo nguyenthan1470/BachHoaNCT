@@ -130,7 +130,7 @@ const RecommendedProducts = () => {
                             <FaFire className="text-red-600 text-xl" />
                         </div>
                     </div>
-                    <div className="w-24 h-1 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full mx-auto"></div>
+                   <div className="w-24 h-1 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full mx-auto animate-pulse-jump"></div>
                 </div>
             </div>
 

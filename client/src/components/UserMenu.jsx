@@ -44,7 +44,7 @@ const UserMenu = ({ close }) => {
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="font-bold text-gray-800">Tài khoản của tôi</div>
-        <button onClick={handleClose} className="sm:hidden text-gray-500 hover:text-red-500 transition">
+        <button onClick={() => window.history.back()} className="sm:hidden text-neutral-800 hover:text-red-500 transition">
           <FiX size={20} />
         </button>
       </div>

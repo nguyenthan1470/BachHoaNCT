@@ -113,7 +113,7 @@ const AddToCartButton = ({ data }) => {
       setQty(parsedQuantity)
       updateCartItem(cartItemDetails?._id, parsedQuantity).then((response) => {
         if (response.success) {
-          toast.success("Đã cập nhật số lượng sản phẩm")
+
         }
       })
     }

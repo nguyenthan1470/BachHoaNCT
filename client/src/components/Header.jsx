@@ -59,19 +59,19 @@ const Header = () => {
     // },[cartItem])
 
     return (
-        <header className='h-24 lg:h-20 shadow-md sticky top-0 z-40 flex flex-col justify-center gap-1 bg-white'>
+        <header className='h-28 lg:h-20 shadow-md sticky top-0 z-40 flex flex-col justify-center gap-1 bg-white'>
             {
                 !(isSearchPage && isMobile) && (
                     <div className="container mx-auto flex items-center px-2 justify-between">
                         {/*logo */}
                         <Link to={"/"} className="h-full">
-                            <div className='h-full flex justify-center items-center '>
+                            <div className='h-full flex justify-center items-center mt-4 '>
                                 <img
                                     src={logo}
-                                    width={260}
-                                    height={90}
+                                    width={270}
+                                    height={100}
                                     alt='logo'
-                                    className='hidden lg:block'
+                                    className='hidden lg:block mb-9 '
                                 />
 
                                 <img
@@ -86,7 +86,7 @@ const Header = () => {
 
 
                         {/*Search */}
-                        <div className='hidden lg:block'>
+                        <div className='hidden lg:block  '>
                             <Search />
                         </div>
 
@@ -96,7 +96,7 @@ const Header = () => {
 
                         <div className=''>
                             {/* user icons display in only mobile version */}
-                            <div onClick={handleMobileUser} className='text-neutral-600 lg:hidden ' >
+                            <div onClick={handleMobileUser} className='text-neutral-600 lg:hidden mt-6 ' >
                                 <FaUserCircle size={26} />
                             </div>
 
@@ -158,10 +158,9 @@ const Header = () => {
                     </div>
                 )
             }
-            <div className='container mx-auto px-2 lg:hidden'>
-
-                <Search />
-            </div>
+           <div className='container mx-auto px-2 lg:hidden mb-10'>
+    <Search />
+</div>
 
              {
                 openCartSection && (

@@ -45,7 +45,7 @@ export async function CashOnDeliveryOrderController(request, response) {
                     price: discountedPrice,
                 },
                 paymentId: "",
-                payment_status: "Thanh toán khi nhận",
+                payment_status: "Chờ xử lý",
                 delivery_address: addressId,
                 subTotalAmt: subTotalAmt,
                 totalAmt: totalAmt,
@@ -57,9 +57,9 @@ export async function CashOnDeliveryOrderController(request, response) {
         // Cập nhật số lượng đã bán và giảm tồn kho cho từng sản phẩm
         for (const el of list_items) {
             await ProductModel.findByIdAndUpdate(el.productId._id, {
-                $inc: { 
+                $inc: {
                     sold: el.quantity,
-                    stock: -el.quantity 
+                    stock: -el.quantity
                 }
             })
         }
@@ -204,23 +204,23 @@ export async function webhookStripe(request, response) {
             const session = event.data.object;
             const lineItems = await Stripe.checkout.sessions.listLineItems(session.id)
             const userId = session.metadata.userId
-            const orderProduct = await getOrderProductItems(
-                {
-                    lineItems: lineItems,
-                    userId: userId,
-                    addressId: session.metadata.addressId,
-                    paymentId: session.payment_intent,
-                    payment_status: session.payment_status,
-                })
+                const orderProduct = await getOrderProductItems(
+                    {
+                        lineItems: lineItems,
+                        userId: userId,
+                        addressId: session.metadata.addressId,
+                        paymentId: session.payment_intent,
+                        payment_status: "Chờ xử lý",
+                    })
 
             const order = await OrderModel.insertMany(orderProduct)
 
             // Cập nhật số lượng đã bán và giảm tồn kho cho từng sản phẩm
             for (const item of order) {
                 await ProductModel.findByIdAndUpdate(item.productId, {
-                    $inc: { 
+                    $inc: {
                         sold: item.product_details.quantity,
-                        stock: -item.product_details.quantity 
+                        stock: -item.product_details.quantity
                     }
                 })
             }
@@ -393,98 +393,98 @@ export const getSalesStatistics = async (req, res) => {
     }
 
 }
-    // xử lí chức năng hủy đơn hàng
-  export const cancelOrderController = async (req, res) => {
-  try {
-    const { orderId, cancellationReason } = req.body;
-    const userId = req.userId;
-    console.log('Cancel request:', { orderId, userId, cancellationReason }); 
+// xử lí chức năng hủy đơn hàng
+export const cancelOrderController = async (req, res) => {
+    try {
+        const { orderId, cancellationReason } = req.body;
+        const userId = req.userId;
+        console.log('Cancel request:', { orderId, userId, cancellationReason });
 
-    if (!orderId) {
-      return res.status(400).json({
-        message: 'Vui lòng cung cấp mã đơn hàng',
-        error: true,
-        success: false,
-      });
-    }
+        if (!orderId) {
+            return res.status(400).json({
+                message: 'Vui lòng cung cấp mã đơn hàng',
+                error: true,
+                success: false,
+            });
+        }
 
-    const orders = await OrderModel.find({ orderId: orderId });
-    console.log('Found orders:', orders); 
+        const orders = await OrderModel.find({ orderId: orderId });
+        console.log('Found orders:', orders);
 
-    if (!orders || orders.length === 0) {
-      return res.status(404).json({
-        message: 'Không tìm thấy đơn hàng',
-        error: true,
-        success: false,
-      });
-    }
+        if (!orders || orders.length === 0) {
+            return res.status(404).json({
+                message: 'Không tìm thấy đơn hàng',
+                error: true,
+                success: false,
+            });
+        }
 
-    if (orders[0].userId.toString() !== userId) {
-      return res.status(403).json({
-        message: 'Bạn không có quyền hủy đơn hàng này',
-        error: true,
-        success: false,
-      });
-    }
+        if (orders[0].userId.toString() !== userId) {
+            return res.status(403).json({
+                message: 'Bạn không có quyền hủy đơn hàng này',
+                error: true,
+                success: false,
+            });
+        }
 
-    const canCancel = orders.every(order =>
-      order.payment_status === 'Thanh toán khi nhận' || order.payment_status === 'Chờ xử lý',
-    );
-    console.log('Can cancel:', canCancel);
+        const canCancel = orders.every(order =>
+            order.payment_status === 'Thanh toán khi nhận' || order.payment_status === 'Chờ xử lý',
+        );
+        console.log('Can cancel:', canCancel);
 
-    if (!canCancel) {
-      return res.status(400).json({
-        message: 'Chỉ có thể hủy đơn hàng ở trạng thái chờ xử lý hoặc thanh toán khi nhận',
-        error: true,
-        success: false,
-      });
-    }
+        if (!canCancel) {
+            return res.status(400).json({
+                message: 'Chỉ có thể hủy đơn hàng ở trạng thái chờ xử lý hoặc thanh toán khi nhận',
+                error: true,
+                success: false,
+            });
+        }
 
-    const productUpdates = [];
-    for (const order of orders) {
-      const quantity = order.product_details?.quantity || 1;
-      productUpdates.push({
-        productId: order.productId,
-        quantity: quantity,
-      });
-    }
-    console.log('Product updates:', productUpdates);
+        const productUpdates = [];
+        for (const order of orders) {
+            const quantity = order.product_details?.quantity || 1;
+            productUpdates.push({
+                productId: order.productId,
+                quantity: quantity,
+            });
+        }
+        console.log('Product updates:', productUpdates);
 
-    for (const update of productUpdates) {
-      const product = await ProductModel.findById(update.productId);
-      console.log('Updating product:', update.productId, product); 
-      if (!product) {
-        return res.status(404).json({
-          message: `Sản phẩm ${update.productId} không tồn tại`,
-          error: true,
-          success: false,
+        for (const update of productUpdates) {
+            const product = await ProductModel.findById(update.productId);
+            console.log('Updating product:', update.productId, product);
+            if (!product) {
+                return res.status(404).json({
+                    message: `Sản phẩm ${update.productId} không tồn tại`,
+                    error: true,
+                    success: false,
+                });
+            }
+            await ProductModel.findByIdAndUpdate(
+                update.productId,
+                {
+                    $inc: {
+                        stock: update.quantity,
+                        sold: -update.quantity,
+                    },
+                },
+            );
+        }
+
+        const deleteResult = await OrderModel.deleteMany({ orderId: orderId });
+        console.log('Delete result:', deleteResult); // Debug
+
+        return res.json({
+            message: 'Đơn hàng đã được hủy và xóa thành công',
+            success: true,
+            error: false,
         });
-      }
-      await ProductModel.findByIdAndUpdate(
-        update.productId,
-        {
-          $inc: {
-            stock: update.quantity,
-            sold: -update.quantity,
-          },
-        },
-      );
+    } catch (error) {
+        console.error('Error in cancelOrderController:', error);
+        return res.status(500).json({
+            message: error.message || 'Có lỗi xảy ra khi hủy đơn hàng',
+            error: true,
+            success: false,
+        });
     }
-
-    const deleteResult = await OrderModel.deleteMany({ orderId: orderId });
-    console.log('Delete result:', deleteResult); // Debug
-
-    return res.json({
-      message: 'Đơn hàng đã được hủy và xóa thành công',
-      success: true,
-      error: false,
-    });
-  } catch (error) {
-    console.error('Error in cancelOrderController:', error);
-    return res.status(500).json({
-      message: error.message || 'Có lỗi xảy ra khi hủy đơn hàng',
-      error: true,
-      success: false,
-    });
-  }
 };

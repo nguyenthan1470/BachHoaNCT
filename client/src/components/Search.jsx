@@ -5,16 +5,31 @@ import { TypeAnimation } from 'react-type-animation'
 import { FaArrowLeft } from "react-icons/fa";
 import useMobile from '../hooks/useMobile';
 
-
 const Search = () => {
     const navigate = useNavigate()
     const location = useLocation()
     const [isSearchPage, setIsSearchPage] = useState(false)
     const [isMobile] = useMobile()
-    const params = useLocation()
-    const searchText = params.search.slice(3)
+    // Lấy giá trị tìm kiếm từ query param 'q' (giữ nguyên dấu)
+    const searchParams = new URLSearchParams(location.search)
+    const searchText = searchParams.get('q') || ''
 
+const fetchData = async () => {
+    try {
+        const response = await Axios({
+            ...SummaryApi.searchProduct,
+            data: {
+                search: searchText,
+                page: page,
+                limit: 20,
+                filters: {} 
+            }
+        });
 
+    } catch (error) {
+        
+    }
+};
     useEffect(() => {
         const isSearch = location.pathname === "/search"
         setIsSearchPage(isSearch)
@@ -25,16 +40,15 @@ const Search = () => {
         navigate('/search')
     }
 
-    // console.log("search", isSearchPage)
 
     const handleOnChange = (e) => {
         const value = e.target.value
-        const url = `/search?q=${value}`
+        // Giữ nguyên giá trị có dấu khi tìm kiếm
+        const url = `/search?q=${encodeURIComponent(value)}`
         navigate(url)
-
     }
     return (
-        <div className='w-full min-w-[300px] lg:min-w-[420px] h-11 lg:h-12 rounded-lg border overflow-hidden flex items-center text-neutral-500 bg-slate-50 group  focus-within:border-primary-200'>
+        <div className='w-full min-w-[300px] lg:min-w-[420px] h-11 lg:h-12 rounded-lg border overflow-hidden flex items-center text-neutral-500 bg-slate-50 group  focus-within:border-primary-200 '>
             <div>
                 {
                     (isMobile && isSearchPage) ? (
@@ -47,7 +61,6 @@ const Search = () => {
                         </button>
                     )
                 }
-
             </div>
             <div className='w-full h-full'>
                 {
@@ -74,7 +87,6 @@ const Search = () => {
                                     1000,
                                     'Tìm kiếm "Nước mắm"',
                                     1000
-
                                 ]}
                                 wrapper="span"
                                 speed={50}
@@ -82,9 +94,7 @@ const Search = () => {
                             />
                         </div>
                     ) : (
-                        //when i was search page
-
-
+                  
                         <div className="w-full h-full">
                             <input
                                 type="text"
@@ -92,13 +102,14 @@ const Search = () => {
                                 autoFocus
                                 defaultValue={searchText}
                                 className='bg-transparent w-full h-full outline-none'
-                                onChange={handleOnChange} />
+                                onChange={handleOnChange}
+                               
+                                inputMode="text"
+                            />
                         </div>
-
                     )
                 }
             </div>
-
         </div>
     )
 }

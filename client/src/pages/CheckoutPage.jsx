@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { useGlobalContext } from '../provider/GlobalProvider';
 import { DisplayPriceInVietnamDong } from '../utils/DisplayPriceInVietnamDong';
-import { MapPin, Plus, Package, CheckCircle, Clock } from 'lucide-react';
+import { MapPin, Plus, Package, CheckCircle, Clock, Wallet, Truck, CreditCard } from 'lucide-react';
 import Axios from '../utils/Axios';
 import AxiosToastError from '../utils/AxiosToastError';
 import SummaryApi from '../common/SummaryApi';
@@ -181,9 +181,8 @@ const CheckoutPage = () => {
               {addressList.filter((addr) => addr.status !== false).map((address) => (
                 <label key={address._id}>
                   <div
-                    className={`border-2 rounded-xl p-4 cursor-pointer transition ${
-                      selectAddress === address._id ? 'border-green-500 bg-green-50 shadow-md' : 'border-gray-200 hover:border-green-300'
-                    }`}
+                    className={`border-2 rounded-xl p-4 cursor-pointer transition ${selectAddress === address._id ? 'border-green-500 bg-green-50 shadow-md' : 'border-gray-200 hover:border-green-300'
+                      }`}
                   >
                     <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-start">
                       <div className="sm:col-span-1">
@@ -302,26 +301,34 @@ const CheckoutPage = () => {
               </div>
             </div>
             <div className="space-y-2 sm:space-y-3">
+              {/* Thanh toán thẻ tín dụng */}
               <button
                 onClick={handleOnlinePayment}
                 disabled={!selectAddress}
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl transition"
+                className="w-full flex items-center justify-center gap-2 border-2 border-pink-600 text-pink-600 font-semibold py-2 px-4 rounded-xl hover:bg-pink-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Thanh toán thẻ tín dụng
+                <CreditCard size={20} />
+                <span>Thanh toán thẻ tín dụng</span>
               </button>
+
+              {/* VNPay */}
               <button
                 onClick={handleVnpayPayment}
                 disabled={!selectAddress}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-xl transition"
+                className="w-full flex items-center justify-center gap-2 border-2 border-blue-600 text-blue-600 font-semibold py-2 px-4 rounded-xl hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Thanh toán VNPAY
+                <Wallet size={20} />
+                <span>Thanh toán VNPAY</span>
               </button>
+
+              {/* COD */}
               <button
                 onClick={handleCashOnDelivery}
                 disabled={!selectAddress}
-                className="w-full border border-green-600 text-green-600 font-semibold py-2 rounded-xl hover:bg-green-600 hover:text-white transition"
+                className="w-full flex items-center justify-center gap-2 border-2 border-green-600 text-green-600 font-semibold py-2 px-4 rounded-xl hover:bg-green-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Thanh toán khi nhận hàng
+                <Package size={20} />
+                <span>Thanh toán khi nhận hàng</span>
               </button>
             </div>
           </div>

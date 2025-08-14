@@ -91,3 +91,17 @@ body {
   -ms-overflow-style: none; 
   scrollbar-width: none;     
 }
+
+@keyframes pulse-jump {
+  0%, 100% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scaleY(1.5);
+    opacity: 0.8;
+  }
+}
+.animate-pulse-jump {
+  animation: pulse-jump 1.5s ease-in-out infinite;
+}

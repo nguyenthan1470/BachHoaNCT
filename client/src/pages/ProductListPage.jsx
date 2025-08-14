@@ -61,7 +61,7 @@ const ProductListPage = () => {
 
   return (
     <section className='sticky top-24 lg:top-20 pt-1'>
-      <div className='container mx-auto grid grid-cols-[100px,1fr] md:grid-cols-[220px,1fr] lg:grid-cols-[240px,1fr] gap-4'>
+      <div className='container mx-auto grid grid-cols-[100px,1fr] md:grid-cols-[220px,1fr] lg:grid-cols-[240px,1fr] gap-4 mt-8 sm:mt-1'>
 
         {/* Sub Category Navigation */}
         <div className='h-[85vh] overflow-y-auto border rounded bg-white shadow scrollbarCustom'>
