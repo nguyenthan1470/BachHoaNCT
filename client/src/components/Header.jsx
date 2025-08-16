@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import logo from '../assets/logo1.png'
+// import logo from '../assets/logo1.png'
+import logo from '../assets/Logo.png'
 import Search from './Search'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FaUserCircle } from "react-icons/fa";
@@ -68,10 +69,10 @@ const Header = () => {
                             <div className='h-full flex justify-center items-center mt-4 '>
                                 <img
                                     src={logo}
-                                    width={270}
-                                    height={100}
+                                    width={250}
+                                    height={180}
                                     alt='logo'
-                                    className='hidden lg:block mb-9 '
+                                    className='hidden lg:block mb-9 brightness-90 contrast-125'
                                 />
 
                                 <img
@@ -79,7 +80,7 @@ const Header = () => {
                                     width={200}
                                     height={90}
                                     alt='logo'
-                                    className='lg:hidden'
+                                    className='lg:hidden brightness-90 contrast-125'
                                 />
                             </div>
                         </Link>
@@ -130,12 +131,12 @@ const Header = () => {
                                             }
                                         </div>
                                     ) : (
-                                        <button onClick={redirectToLoginPage} className='text-lg px-2' to={"/login"}>Đăng nhập</button>
+                                        <button onClick={redirectToLoginPage} className='text-lg px-2 hover:text-yellow-500 ' to={"/login"}>Đăng nhập</button>
 
                                     )
 
                                 }
-                                <button onClick={()=>setOpenCartSection(true)} className='flex items-center gap-2 bg-green-800 hover:bg-green-700 px-3 py-2 rounded text-white'>
+                                <button onClick={()=>setOpenCartSection(true)} className='flex items-center gap-2 bg-green-700 hover:bg-green-600 px-3 py-2 rounded text-white'>
                                     {/* add to cart icons */}
                                     <div className='animate-bounce'>
                                         < BsCart4 size={26} />
