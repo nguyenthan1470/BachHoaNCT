@@ -188,7 +188,7 @@ const AddAddress = ({ close }) => {
 
             <div className='space-y-2'>
               <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
-                <Mail className='w-4 h-4 text-emerald-500' /> Mã bưu điện
+                <Mail className='w-4 h-4 text-emerald-500' /> Mã bưu điện (nếu có)
               </label>
               <input
                 {...register('pincode')}

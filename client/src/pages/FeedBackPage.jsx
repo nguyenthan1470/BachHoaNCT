@@ -15,20 +15,28 @@ const FeedbackPage = () => {
     fetchFeedbacks();
   }, []);
 
-  const fetchFeedbacks = async () => {
-    try {
-      const response = await Axios({
-        ...SummaryApi.getFeedbacks,
-        method: 'GET',
-      });
+const fetchFeedbacks = async () => {
+  try {
+    const response = await Axios({
+      ...SummaryApi.getFeedbacks,
+      method: 'GET',
+    });
       if (response.status === 200) {
-        setFeedbacks(response.data);
-      }
-    } catch (error) {
-      console.error('Error fetching feedbacks:', error);
-      setShowError(true);
+        // Ensure feedbacks is always an array
+        let data = response.data;
+        if (Array.isArray(data)) {
+          setFeedbacks(data);
+        } else if (Array.isArray(data.data)) {
+          setFeedbacks(data.data);
+        } else {
+          setFeedbacks([]);
+        }
     }
-  };
+  } catch (error) {
+    console.error('Error fetching feedbacks:', error);
+    setShowError(true);
+  }
+};
 
   const handleReplySubmit = async (e) => {
     e.preventDefault();

@@ -235,7 +235,13 @@ const SummaryApi = {
         url: '/api/order/cancel-order',
         method: 'post'
     },
-   
+    // SummaryApi.js
+    setDefaultAddress: {
+        url: "/api/address/set-default",
+        method: "put",
+    },
+
+
 
 }
 

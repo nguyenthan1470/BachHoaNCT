@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, MessageCircle, X } from 'lucide-react';
+import { Send, MessageCircle, X, Bot, User } from 'lucide-react';
 import axios from '../utils/Axios';
 import SummaryApi from '../common/SummaryApi';
 
@@ -30,7 +30,10 @@ const Chatbot = () => {
       });
 
       const replyText = res.data.reply || 'Xin lỗi, tôi chưa hiểu câu hỏi.';
-      setMessages([...newMessages, { role: 'model', parts: [{ text: replyText }] }]);
+      setMessages([
+        ...newMessages,
+        { role: 'model', parts: [{ text: replyText }] },
+      ]);
     } catch (err) {
       setMessages([
         ...newMessages,
@@ -47,71 +50,161 @@ const Chatbot = () => {
   return (
     <>
       {/* Floating Button */}
-      <div className="fixed bottom-4 right-4 z-50">
-  {!open && (
-    <button
-      className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white p-3 md:p-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105"
-      onClick={() => setOpen(true)}
-    >
-      <MessageCircle size={20} className="md:size-6" />
-    </button>
-  )}
-</div>
+      <div className="fixed bottom-6 right-6 z-50">
+        {!open && (
+          <button
+            className="group relative bg-gradient-to-br from-emerald-500 via-green-500 to-teal-600 hover:from-emerald-600 hover:via-green-600 hover:to-teal-700 text-white p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-3 border-2 border-white/20"
+            onClick={() => setOpen(true)}
+          >
+            <MessageCircle size={24} className="group-hover:animate-pulse" />
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-bounce"></div>
+            <div className="absolute inset-0 rounded-full bg-white/20 animate-ping"></div>
+          </button>
+        )}
+      </div>
 
-{open && (
-  <div className="fixed bottom-4 right-4 z-50 w-[90%] sm:w-80 md:w-96 h-[70vh] sm:h-[500px] bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden border border-gray-200">
-    {/* Header */}
-    <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-3 flex justify-between items-center">
-      <span className="font-semibold text-sm sm:text-base md:text-lg">Bách Hóa NCT Hỗ trợ 24/7</span>
-      <button
-        onClick={() => setOpen(false)}
-        className="text-white hover:text-gray-200 transition-colors"
-      >
-        <X size={18} className="md:size-5" />
-      </button>
-    </div>
+      {/* Chat Window */}
+      {open && (
+        <div className="fixed bottom-6 right-6 z-50 w-[95%] sm:w-96 h-[80vh] sm:h-[600px] max-w-md">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/95 via-white/90 to-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/50"></div>
+          <div className="relative h-full flex flex-col overflow-hidden rounded-2xl">
+            {/* Header */}
+            <div className="relative bg-gradient-to-r from-emerald-500 via-green-500 to-teal-600 text-white px-6 py-4">
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:20px_20px]"></div>
+              </div>
+              <div className="relative flex justify-between items-center">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <Bot size={20} className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg">Bách Hóa NCT</h3>
+                    <p className="text-sm text-green-100">Hỗ trợ 24/7 • Online</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setOpen(false)}
+                  className="text-white/80 hover:text-white hover:bg-white/20 p-2 rounded-full transition-all duration-200"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
 
-    {/* Chat Messages */}
-    <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 bg-gray-50 text-sm scrollbar-thin scrollbar-thumb-green-300 scrollbar-track-gray-100">
-      {messages.map((msg, i) => (
-        <div
-          key={i}
-          className={`max-w-[85%] p-3 rounded-lg ${
-            msg.role === 'user'
-              ? 'ml-auto bg-green-100 text-right'
-              : 'bg-white border border-gray-200 text-left'
-          } shadow-md`}
-        >
-          {msg.parts[0]?.text}
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 bg-gradient-to-b from-gray-50/50 to-white/50 scrollbar-thin scrollbar-thumb-green-300/50 scrollbar-track-transparent">
+              {messages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`flex items-start space-x-2 ${
+                    msg.role === 'user'
+                      ? 'flex-row-reverse space-x-reverse'
+                      : ''
+                  }`}
+                >
+                  <div
+                    className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                      msg.role === 'user'
+                        ? 'bg-gradient-to-br from-blue-500 to-purple-600'
+                        : 'bg-gradient-to-br from-emerald-500 to-teal-600'
+                    }`}
+                  >
+                    {msg.role === 'user' ? (
+                      <User size={14} className="text-white" />
+                    ) : (
+                      <Bot size={14} className="text-white" />
+                    )}
+                  </div>
+                  <div
+                    className={`max-w-[75%] px-4 py-3 rounded-2xl shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-xl ${
+                      msg.role === 'user'
+                        ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-br-md'
+                        : 'bg-white/80 border border-gray-200/50 text-gray-800 rounded-bl-md'
+                    }`}
+                  >
+                    <p className="text-sm leading-relaxed">
+                      {msg.parts[0]?.text}
+                    </p>
+                  </div>
+                </div>
+              ))}
+
+              {/* Loading */}
+              {loading && (
+                <div className="flex items-start space-x-2">
+                  <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center">
+                    <Bot size={14} className="text-white" />
+                  </div>
+                  <div className="bg-white/80 border border-gray-200/50 px-4 py-3 rounded-2xl rounded-bl-md shadow-lg backdrop-blur-sm">
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                      <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                      <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Input */}
+            <div className="relative border-t border-gray-200/50 bg-white/80 backdrop-blur-sm p-4">
+              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent"></div>
+              <div className="relative flex items-center space-x-3">
+                <div className="flex-1 relative">
+                  <input
+                    type="text"
+                    className="w-full pl-4 pr-12 py-3 text-sm bg-gray-100/80 border-2 border-transparent rounded-full focus:outline-none focus:bg-white focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 transition-all duration-300 placeholder-gray-500"
+                    placeholder="Nhập tin nhắn của bạn..."
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                  />
+                  <MessageCircle
+                    size={16}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  />
+                </div>
+                <button
+                  onClick={handleSend}
+                  disabled={loading || !input.trim()}
+                  className="relative bg-gradient-to-br from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 disabled:from-gray-400 disabled:to-gray-500 text-white p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed group overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <Send
+                    size={16}
+                    className={`relative z-10 transition-transform duration-200 ${
+                      loading ? 'animate-pulse' : 'group-hover:translate-x-0.5'
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {/* Quick Actions */}
+              <div className="flex space-x-2 mt-3">
+                <button
+                  onClick={() => setInput('Giờ mở cửa là bao giờ?')}
+                  className="px-3 py-1.5 text-xs bg-emerald-100 text-emerald-700 rounded-full hover:bg-emerald-200 transition-colors duration-200"
+                >
+                  Giờ mở cửa
+                </button>
+                <button
+                  onClick={() => setInput('Có những sản phẩm gì?')}
+                  className="px-3 py-1.5 text-xs bg-blue-100 text-blue-700 rounded-full hover:bg-blue-200 transition-colors duration-200"
+                >
+                  Sản phẩm
+                </button>
+                <button
+                  onClick={() => setInput('Địa chỉ cửa hàng')}
+                  className="px-3 py-1.5 text-xs bg-purple-100 text-purple-700 rounded-full hover:bg-purple-200 transition-colors duration-200"
+                >
+                  Địa chỉ
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      ))}
-      {loading && (
-        <div className="text-gray-500 italic text-center">Đang trả lời...</div>
       )}
-    </div>
-
-    {/* Input */}
-    <div className="flex items-center border-t border-gray-200 px-3 py-2 bg-white">
-      <input
-        type="text"
-        className="flex-1 p-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-200 placeholder-gray-500"
-        placeholder="Nhập câu hỏi của bạn..."
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-      />
-      <button
-        onClick={handleSend}
-        className="ml-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white p-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105 disabled:opacity-50"
-        disabled={loading}
-      >
-        <Send size={16} className="md:size-4" />
-      </button>
-    </div>
-  </div>
-)}
-
-      
     </>
   );
 };

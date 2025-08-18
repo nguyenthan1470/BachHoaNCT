@@ -123,3 +123,35 @@ export const deleteAddressController = async (req, res) => {
         )
     }
 }
+
+export const setDefaultAddress = async (req, res) => {
+  try {
+    const { _id } = req.body;
+    const userId = req.userId; 
+
+    if (!_id) {
+      return res.status(400).json({ success: false, message: "Thiếu ID địa chỉ" });
+    }
+
+    // Kiểm tra xem địa chỉ có thuộc user không
+    const address = await AddressModel.findOne({ _id, userId });
+    if (!address) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy địa chỉ" });
+    }
+
+    // Gỡ mặc định các địa chỉ khác
+    await AddressModel.updateMany(
+      { userId },
+      { $set: { isDefault: false } }
+    );
+
+    // Cập nhật địa chỉ được chọn thành mặc định
+    address.isDefault = true;
+    await address.save();
+
+    return res.json({ success: true, message: "Đã đặt làm địa chỉ mặc định" });
+  } catch (error) {
+    console.error("setDefaultAddress error:", error);
+    return res.status(500).json({ success: false, message: "Lỗi server" });
+  }
+};

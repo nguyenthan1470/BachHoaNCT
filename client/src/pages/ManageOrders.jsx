@@ -85,9 +85,7 @@ const ManageOrders = () => {
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-lg">
-              <Package className="w-8 h-8 text-white" />
-            </div>
+            
             <div>
               <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
                 Quản lý đơn hàng

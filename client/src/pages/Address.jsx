@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import AddAddress from '../components/AddAddress';
-import { MdDelete, MdEdit } from 'react-icons/md';
+import { MdDelete, MdEdit, MdAdd, MdLocationOn, MdPhone, MdEmail, MdPerson, MdCheck } from 'react-icons/md';
 import EditAddressDetails from '../components/EditAddressDetails';
 import Axios from '../utils/Axios';
 import SummaryApi from '../common/SummaryApi';
@@ -12,7 +12,7 @@ import toast from 'react-hot-toast';
 const Address = () => {
   const addressList = useSelector(state => state.addresses.addressList);
   const [openAddress, setOpenAddress] = useState(false);
-  const [OpenEdit, setOpenEdit] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [editData, setEditData] = useState({});
   const { fetchAddress } = useGlobalContext();
 
@@ -20,7 +20,7 @@ const Address = () => {
     try {
       const response = await Axios({
         ...SummaryApi.disableAddress,
-        data: { _id: id }
+        data: { _id: id },
       });
       if (response.data.success) {
         toast.success('Đã xóa địa chỉ');
@@ -33,65 +33,159 @@ const Address = () => {
     }
   };
 
+  const handleSetDefaultAddress = async (id) => {
+    try {
+      const response = await Axios({
+        ...SummaryApi.setDefaultAddress,
+        data: { _id: id },
+      });
+      if (response.data.success) {
+        toast.success('Đã đặt làm địa chỉ mặc định');
+        if (fetchAddress) {
+          fetchAddress();
+        }
+      }
+    } catch (error) {
+      AxiosToastError(error);
+    }
+  };
+
+  const activeAddresses = addressList.filter(address => address.status);
+
   return (
-    <div className='p-2 md:p-4'>
-      <div className='bg-white shadow px-2 py-2 flex justify-between items-center'>
-        <h2 className='font-semibold text-lg md:text-xl'>Địa chỉ</h2>
-        <button
-          onClick={() => setOpenAddress(true)}
-          className='border border-primary-200 text-primary-200 px-2 md:px-3 text-sm md:text-base hover:bg-primary-200 hover:text-black py-1 rounded-full'
-        >
-          Thêm địa chỉ
-        </button>
-      </div>
-
-      <div className='bg-blue-50 p-2 grid gap-3 md:gap-4'>
-        {addressList.map((address, index) => (
-          <div
-            key={index}
-            className={`border rounded p-3 flex flex-col md:flex-row md:gap-3 bg-white ${!address.status && 'hidden'}`}
-          >
-            <div className='text-sm md:text-base leading-relaxed w-full'>
-              <p><span className='font-semibold'>Họ tên: </span>{address.fullname}</p>
-              <p><span className='font-semibold'>Email: </span>{address.email}</p>
-              <p><span className='font-semibold'>Địa chỉ cụ thể: </span>{address.address_line}, {address.state}, {address.district}, {address.city}, {address.country}</p>
-              <p><span className='font-semibold'>Mã bưu điện: </span>{address.pincode}</p>
-              <p><span className='font-semibold'>Số điện thoại: </span>{address.mobile}</p>
-            </div>
-            <div className='flex md:flex-col justify-end gap-4 mt-2 md:mt-0'>
-              <button
-                onClick={() => {
-                  setOpenEdit(true);
-                  setEditData(address);
-                }}
-                className='bg-green-200 p-2 rounded hover:text-white hover:bg-green-600'
-              >
-                <MdEdit size={18} />
-              </button>
-              <button
-                onClick={() => handleDisableAddress(address._id)}
-                className='bg-red-200 p-2 rounded hover:text-white hover:bg-red-600'
-              >
-                <MdDelete size={18} />
-              </button>
-            </div>
+    <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
+      {/* Header Section */}
+      <div className="max-w-6xl mx-auto mb-6">
+        <div className="flex flex-col justify-between gap-4 bg-white p-4 rounded-lg md:flex-row md:items-center">
+          <div>
+            <h1 className="text-xl font-semibold text-gray-800 md:text-2xl">Quản lý địa chỉ</h1>
+            <p className="text-sm text-gray-500 mt-1">{activeAddresses.length} địa chỉ đã lưu</p>
           </div>
-        ))}
-
-        <div
-          onClick={() => setOpenAddress(true)}
-          className='h-14 bg-blue-50 border-2 border-dashed flex justify-center items-center cursor-pointer text-sm md:text-base'
-        >
-          Thêm địa chỉ
+          <button
+            onClick={() => setOpenAddress(true)}
+            className="flex items-center gap-2 bg-yellow-400 text-gray-800 px-4 py-2 rounded-md text-sm font-medium hover:bg-yellow-500 transition-colors duration-200 md:text-base"
+          >
+            <MdAdd size={20} />
+            Thêm địa chỉ mới
+          </button>
         </div>
       </div>
 
-      {openAddress && (
-        <AddAddress close={() => setOpenAddress(false)} />
-      )}
-      {OpenEdit && (
-        <EditAddressDetails data={editData} close={() => setOpenEdit(false)} />
-      )}
+      {/* Addresses Grid */}
+      <div className="max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {activeAddresses.map((address, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-lg border border-gray-200 p-4 hover:bg-gray-50 transition-colors duration-200"
+            >
+              {/* Address Header */}
+              <div className="flex justify-between items-start mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                    Địa chỉ #{index + 1}
+                  </span>
+                  {address.isDefault && (
+                    <span className="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded">
+                      Mặc định
+                    </span>
+                  )}
+                </div>
+                <div className="flex gap-2">
+                  {!address.isDefault && (
+                    <button
+                      onClick={() => handleSetDefaultAddress(address._id)}
+                      className="p-1.5 bg-yellow-100 text-yellow-600 rounded hover:bg-yellow-200 transition-colors duration-200"
+                      aria-label="Đặt làm địa chỉ mặc định"
+                      title="Đặt làm mặc định"
+                    >
+                      <MdCheck size={16} />
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      setOpenEdit(true);
+                      setEditData(address);
+                    }}
+                    className="p-1.5 bg-green-100 text-green-600 rounded hover:bg-green-200 transition-colors duration-200"
+                    aria-label="Chỉnh sửa địa chỉ"
+                    title="Chỉnh sửa"
+                  >
+                    <MdEdit size={16} />
+                  </button>
+                  <button
+                    onClick={() => handleDisableAddress(address._id)}
+                    className="p-1.5 bg-red-100 text-red-600 rounded hover:bg-red-200 transition-colors duration-200"
+                    aria-label="Xóa địa chỉ"
+                    title="Xóa"
+                  >
+                    <MdDelete size={16} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Address Details */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <MdPerson className="text-gray-400 text-base" />
+                  <p className="text-sm font-medium text-gray-800">{address.fullname}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MdEmail className="text-gray-400 text-base" />
+                  <p className="text-sm text-gray-600 truncate">{address.email}</p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <MdLocationOn className="text-gray-400 text-base mt-0.5" />
+                  <div>
+                    <p className="text-sm text-gray-600">{address.address_line}</p>
+                    <p className="text-sm text-gray-500">
+                      {address.district}, {address.city}, {address.state}, {address.country}
+                    </p>
+                    <p className="text-sm text-gray-500">Mã bưu điện: {address.pincode}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MdPhone className="text-gray-400 text-base" />
+                  <p className="text-sm text-gray-600">{address.mobile}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {/* Add New Address Card */}
+          <div
+            onClick={() => setOpenAddress(true)}
+            className="flex items-center justify-center bg-white border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-50 transition-colors duration-200 cursor-pointer"
+          >
+            <div className="text-center">
+              <MdAdd className="mx-auto h-8 w-8 text-yellow-400" />
+              <p className="mt-2 text-sm font-medium text-gray-700">Thêm địa chỉ mới</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Empty State */}
+        {activeAddresses.length === 0 && (
+          <div className="text-center py-12">
+            <MdLocationOn className="mx-auto h-12 w-12 text-yellow-400" />
+            <h3 className="text-lg font-medium text-gray-800 mt-4">Chưa có địa chỉ nào</h3>
+            <p className="text-sm text-gray-500 mt-2 max-w-md mx-auto">
+              Bạn chưa thêm địa chỉ nào. Hãy thêm địa chỉ đầu tiên để bắt đầu!
+            </p>
+            <button
+              onClick={() => setOpenAddress(true)}
+              className="mt-4 inline-flex items-center gap-2 bg-yellow-400 text-gray-800 px-4 py-2 rounded-md text-sm font-medium hover:bg-yellow-500 transition-colors duration-200"
+            >
+              <MdAdd size={20} />
+              Thêm địa chỉ đầu tiên
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Modals */}
+      {openAddress && <AddAddress close={() => setOpenAddress(false)} />}
+      {openEdit && <EditAddressDetails data={editData} close={() => setOpenEdit(false)} />}
     </div>
   );
 };
