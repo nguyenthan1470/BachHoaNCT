@@ -314,7 +314,7 @@ const Home = () => {
         ))
       }
      
-        <Chatbot />
+      
       
 
 

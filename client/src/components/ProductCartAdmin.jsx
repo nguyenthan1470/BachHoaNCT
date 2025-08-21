@@ -6,6 +6,7 @@ import SummaryApi from '../common/SummaryApi';
 import AxiosToastError from '../utils/AxiosToastError';
 import toast from 'react-hot-toast';
 import { MdEdit, MdDelete } from 'react-icons/md';
+import { IoClose } from 'react-icons/io5';
 
 const ProductCardAdmin = ({ data, fetchProductData }) => {
   const [editOpen, setEditOpen] = useState(false);

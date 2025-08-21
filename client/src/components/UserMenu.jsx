@@ -95,19 +95,6 @@ const UserMenu = ({ close }) => {
               <Layers className="w-4 h-4" />
               <span>Danh mục phụ</span>
             </Link>
-
-            <Link
-              onClick={handleClose}
-              to="/dashboard/upload-product"
-              className={`flex items-center gap-2 px-3 py-2 rounded transition text-gray-700 ${isActive('/dashboard/upload-product') ? 'bg-green-100 border-l-4 border-green-600' : 'hover:bg-green-100'
-                }`}
-              aria-label="Tải lên sản phẩm"
-              aria-current={isActive('/dashboard/upload-product') ? 'page' : undefined}
-            >
-              <Upload className="w-4 h-4" />
-              <span>Tải lên sản phẩm</span>
-            </Link>
-
             <Link
               onClick={handleClose}
               to="/dashboard/product"
@@ -117,8 +104,21 @@ const UserMenu = ({ close }) => {
               aria-current={isActive('/dashboard/product') ? 'page' : undefined}
             >
               <Package className="w-4 h-4" />
-              <span>Sản phẩm</span>
+              <span>Quản lí sản phẩm</span>
             </Link>
+            {/* <Link
+              onClick={handleClose}
+              to="/dashboard/upload-product"
+              className={`flex items-center gap-2 px-3 py-2 rounded transition text-gray-700 ${isActive('/dashboard/upload-product') ? 'bg-green-100 border-l-4 border-green-600' : 'hover:bg-green-100'
+                }`}
+              aria-label="Tải lên sản phẩm"
+              aria-current={isActive('/dashboard/upload-product') ? 'page' : undefined}
+            >
+              <Upload className="w-4 h-4" />
+              <span>Tải lên sản phẩm</span>
+            </Link> */}
+
+
 
             <Link
               onClick={handleClose}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Upload, X, Plus, Package, ImagePlus, Trash2, Tag, DollarSign, FileText, Save } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Upload, X, Plus, Package, ImagePlus, ArrowLeft, Tag, DollarSign, FileText, Save } from 'lucide-react';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { IoClose } from 'react-icons/io5';
@@ -198,14 +199,18 @@ const UploadProduct = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col gap-4 mb-6">
+            <Link
+              to="/dashboard/product"
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium transition-colors hover:bg-green-600 hover:text-white flex items-center gap-2 w-fit"
+            >
+              <ArrowLeft size={16} />
+              Trở về
+            </Link>
             <div>
               <h1 className="text-2xl font-bold text-gray-800">Tải lên sản phẩm mới</h1>
               <p className="text-gray-600">Thêm sản phẩm vào cửa hàng của bạn</p>
             </div>
-            {/* <div className="bg-green-100 p-3 rounded-full">
-              <Upload className="text-green-600" size={24} />
-            </div> */}
           </div>
 
           {/* Progress Steps */}
@@ -481,7 +486,7 @@ const UploadProduct = () => {
                         className="flex items-center gap-2 text-green-600 hover:text-green-700 font-medium"
                       >
                         <Plus size={16} />
-                        Thêm thông tin mới
+                        Th，成为
                       </button>
                     </div>
                   </div>

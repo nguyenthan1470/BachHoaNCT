@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SummaryApi from '../common/SummaryApi';
 import AxiosToastError from '../utils/AxiosToastError';
 import Axios from '../utils/Axios';
@@ -15,6 +16,7 @@ const ProductAdmin = () => {
   const [totalPageCount, setTotalPageCount] = useState(1);
   const [search, setSearch] = useState('');
   const [viewMode, setViewMode] = useState('grid'); // grid or list
+  const navigate = useNavigate();
 
   const fetchProductData = async () => {
     try {
@@ -148,10 +150,7 @@ const ProductAdmin = () => {
 
               {/* Add Product Button */}
               <button
-                onClick={() => {
-                  /* Replace with actual add product modal logic */
-                  alert('Chức năng thêm sản phẩm chưa được triển khai');
-                }}
+                onClick={() => navigate('/dashboard/upload-product')}
                 className="flex items-center gap-2 bg-yellow-400 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium hover:bg-yellow-500 transition-colors duration-200"
                 aria-label="Thêm sản phẩm mới"
               >
@@ -202,10 +201,7 @@ const ProductAdmin = () => {
                     : 'Hãy thêm sản phẩm đầu tiên để bắt đầu quản lý.'}
                 </p>
                 <button
-                  onClick={() => {
-                    /* Replace with actual add product modal logic */
-                    alert('Chức năng thêm sản phẩm chưa được triển khai');
-                  }}
+                  onClick={() => navigate('/dashboard/upload-product')}
                   className="mt-4 inline-flex items-center gap-2 bg-yellow-400 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium hover:bg-yellow-500 transition-colors duration-200"
                   aria-label="Thêm sản phẩm đầu tiên"
                 >

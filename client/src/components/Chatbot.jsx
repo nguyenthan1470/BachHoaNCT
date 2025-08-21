@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Send, MessageCircle, X, Bot, User } from 'lucide-react';
 import axios from '../utils/Axios';
 import SummaryApi from '../common/SummaryApi';
+import { Link } from "react-router-dom";
 
 const Chatbot = () => {
+  const [visible, setVisible] = useState(true);
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([
@@ -13,6 +15,12 @@ const Chatbot = () => {
     },
   ]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const handler = (e) => setVisible(e.detail);
+    window.addEventListener('toggle-chatbot', handler);
+    return () => window.removeEventListener('toggle-chatbot', handler);
+  }, []);
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -39,7 +47,7 @@ const Chatbot = () => {
         ...newMessages,
         {
           role: 'model',
-          parts: [{ text: 'Lỗi máy chủ. Vui lòng thử lại sau.' }],
+          parts: [{ text: 'Rất tiếc, có lỗi xảy ra. Vui lòng thử lại hoặc liên hệ qua hotline 0214.653.783!' }],
         },
       ]);
     } finally {
@@ -47,7 +55,31 @@ const Chatbot = () => {
     }
   };
 
-  return (
+  // Hàm định dạng chính sách đổi trả
+  const formatMessage = (text) => {
+    if (text.toLowerCase().includes('chính sách đổi trả')) {
+      const lines = text.split('\n').filter(line => line.trim());
+      return (
+        <div className="space-y-1">
+          <p className="font-semibold">Chính sách đổi trả:</p>
+          <ul className="list-disc pl-5">
+            {lines.slice(1).map((line, index) => (
+              <li key={index} className="text-sm">{line.replace('-', '').trim()}</li>
+            ))}
+          </ul>
+          <Link
+            to="/contact"
+            className="text-emerald-600 hover:underline text-sm"
+          >
+            Liên hệ ngay để được hỗ trợ!
+          </Link>
+        </div>
+      );
+    }
+    return <p className="text-sm leading-relaxed">{text}</p>;
+  };
+
+  return visible ? (
     <>
       {/* Floating Button */}
       <div className="fixed bottom-6 right-6 z-50">
@@ -123,9 +155,7 @@ const Chatbot = () => {
                         : 'bg-white/80 border border-gray-200/50 text-gray-800 rounded-bl-md'
                     }`}
                   >
-                    <p className="text-sm leading-relaxed">
-                      {msg.parts[0]?.text}
-                    </p>
+                    {formatMessage(msg.parts[0]?.text)}
                   </div>
                 </div>
               ))}
@@ -200,13 +230,19 @@ const Chatbot = () => {
                 >
                   Địa chỉ
                 </button>
+                <button
+                  onClick={() => setInput('Chính sách đổi trả ra sao?')}
+                  className="px-3 py-1.5 text-xs bg-yellow-100 text-yellow-700 rounded-full hover:bg-yellow-200 transition-colors duration-200"
+                >
+                  Đổi trả
+                </button>
               </div>
             </div>
           </div>
         </div>
       )}
     </>
-  );
+  ) : null;
 };
 
 export default Chatbot;

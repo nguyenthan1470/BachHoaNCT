@@ -85,7 +85,7 @@ const UploadCategoryModel = ({ close, fetchData }) => {
                         <label id='categoryName'>Tên</label>
                         <input type="text"
                             id='categoryName'
-                            placeholder='Enter category name'
+                            placeholder='Nhập tên danh mục'
                             value={data.name}
                             name='name'
                             onChange={handleOnChange}

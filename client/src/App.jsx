@@ -10,6 +10,7 @@ import { setAllCategory, setAllSubCategory, setLoadingCategory } from "./store/p
 import { useDispatch } from 'react-redux'
 import SummaryApi from './common/SummaryApi.jsx'
 import Axios from './utils/Axios.js'
+import Chatbot from './components/Chatbot';
 
 import GlobalProvider from './provider/GlobalProvider.jsx'
 import CartMobileLink from './components/CartMobile.jsx'
@@ -77,25 +78,25 @@ function App() {
 
 
   return (
-    // ở đây là nơi chứa bố cục trang web
     <GoogleOAuthProvider clientId={clientId}>
       <GlobalProvider>
         <Header />
-        <main className='min-h-[78vh]' >
+        <main className='min-h-[78vh]'>
           <Outlet />
         </main>
-
         <Footer />
-
         <Toaster />
-        {
-          location.pathname !== '/checkout' && (
-            <CartMobileLink />
-          )
-        }
+
+        {location.pathname !== '/checkout' && <CartMobileLink />}
+
+        {/* Chatbot chỉ hiển thị khi KHÔNG ở cart hoặc checkout */}
+        {location.pathname !== '/cart' && location.pathname !== '/checkout' && (
+          <Chatbot />
+        )}
       </GlobalProvider>
-     </GoogleOAuthProvider>
-  )
+    </GoogleOAuthProvider>
+  );
 }
+
 
 export default App
