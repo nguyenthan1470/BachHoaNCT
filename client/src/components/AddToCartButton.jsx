@@ -17,12 +17,12 @@ const AddToCartButton = ({ data }) => {
   const [qty, setQty] = useState(0)
   const [cartItemDetails, setCartItemDetails] = useState()
 
-  // Handle adding item to cart with specified quantity
+  // Xử lý việc thêm sản phẩm vào giỏ hàng với số lượng đã chỉ định
   const handleAddToCart = async (e) => {
     e.preventDefault()
     e.stopPropagation()
 
-    // Validate quantity against stock
+    // Xác thực số lượng so với kho
     if (data.quantity < 1) {
       toast.error("Số lượng phải lớn hơn hoặc bằng 1!")
       return
@@ -38,7 +38,7 @@ const AddToCartButton = ({ data }) => {
         ...SummaryApi.addToCart,
         data: {
           productId: data?._id,
-          quantity: data.quantity // Use quantity from ProductDisplayPage
+          quantity: data.quantity
         }
       })
 
@@ -57,7 +57,7 @@ const AddToCartButton = ({ data }) => {
     }
   }
 
-  // Handle quantity increase
+  
   const increaseQty = async (e) => {
     e.preventDefault()
     e.stopPropagation()
@@ -76,7 +76,7 @@ const AddToCartButton = ({ data }) => {
     }
   }
 
-  // Handle quantity decrease
+  
   const decreaseQty = async (e) => {
     e.preventDefault()
     e.stopPropagation()
@@ -94,7 +94,7 @@ const AddToCartButton = ({ data }) => {
     }
   }
 
-  // Handle manual quantity input
+  
   const handleQuantityChange = (newQuantity) => {
     const parsedQuantity = Math.floor(Number(newQuantity))
 
@@ -119,7 +119,7 @@ const AddToCartButton = ({ data }) => {
     }
   }
 
-  // Check if item is in cart and update qty
+  // Kiểm tra xem sản phẩm có trong giỏ hàng không và cập nhật số lượng
   useEffect(() => {
     const checkingItem = cartItem.some(item => item.productId._id === data._id)
     setIsAvailableCart(checkingItem)

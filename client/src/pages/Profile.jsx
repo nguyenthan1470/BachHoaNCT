@@ -235,7 +235,7 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Trạng thái */}
+        {/* status */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mt-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Thống kê</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

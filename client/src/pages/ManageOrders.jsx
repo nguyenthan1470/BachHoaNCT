@@ -9,11 +9,11 @@ import {
   Search, Download, Filter, ArrowUpDown
 } from 'lucide-react'
 
-const orderStatuses = ['Thanh Toán Khi Nhận', 'Chờ xử lý', 'Đang giao', 'Đã giao', 'Đã hủy', 'Hoàn trả']
+const orderStatuses = [ 'Chờ xử lý', 'Đang giao', 'Đã giao', 'Đã hủy', 'Hoàn trả']
 
 const getStatusIcon = (status) => {
   switch (status) {
-    case 'Thanh Toán Khi Nhận': return <DollarSign className="w-4 h-4" />
+  
     case 'Chờ xử lý': return <Clock className="w-4 h-4" />
     case 'Đang giao': return <Truck className="w-4 h-4" />
     case 'Đã giao': return <CheckCircle className="w-4 h-4" />
@@ -25,7 +25,7 @@ const getStatusIcon = (status) => {
 
 const getStatusColor = (status) => {
   switch (status) {
-    case 'Thanh Toán Khi Nhận': return 'bg-blue-100 text-blue-800 border-blue-200'
+    
     case 'Chờ xử lý': return 'bg-yellow-100 text-yellow-800 border-yellow-200'
     case 'Đang giao': return 'bg-purple-100 text-purple-800 border-purple-200'
     case 'Đã giao': return 'bg-green-100 text-green-800 border-green-200'

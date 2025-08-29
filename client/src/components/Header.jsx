@@ -49,7 +49,7 @@ const Header = () => {
     navigate('/user');
   };
 
-  // Close user menu when clicking outside
+  //Đóng menu người dùng khi nhấp vào bên ngoài
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest('.user-menu-container')) {

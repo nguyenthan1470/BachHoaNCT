@@ -103,7 +103,7 @@ const ProductDisplayPage = () => {
     }
     try {
       const res = await Axios({
-        ...SummaryApi.toggleLike, // Assuming an API endpoint for toggling likes
+        ...SummaryApi.toggleLike,
         data: {
           productId: productId,
           userId: user._id,
@@ -118,7 +118,7 @@ const ProductDisplayPage = () => {
     }
   };
 
-  // New function to handle sharing
+// Chức năng mới để xử lý việc chia sẻ
   const handleShare = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url)
@@ -133,12 +133,12 @@ const ProductDisplayPage = () => {
   useEffect(() => {
     fetchProductDetails();
     fetchReviews();
-    // Optionally fetch like status for the user
+    // Tùy chọn lấy trạng thái như của người dùng
     const fetchLikeStatus = async () => {
       if (user?.email) {
         try {
           const res = await Axios({
-            ...SummaryApi.getLikeStatus, // Assuming an API endpoint to check like status
+            ...SummaryApi.getLikeStatus, 
             data: {
               productId: productId,
               userId: user._id,
@@ -217,7 +217,7 @@ const ProductDisplayPage = () => {
               {/* Quick Actions */}
               <div className="absolute top-4 right-4 flex flex-col gap-2">
                 {/* Nút Like */}
-                <button
+                {/* <button
                   onClick={handleLikeToggle}
                   className={`group p-2 rounded-full bg-white/80 transition-all duration-300 hover:bg-red-50 hover:shadow-md ${isLiked ? 'text-red-500' : 'text-gray-700'}`}
                 >
@@ -225,7 +225,7 @@ const ProductDisplayPage = () => {
                   <span className="absolute left-full ml-2 px-2 py-1 text-xs rounded  text-white opacity-0 group-hover:opacity-100 transition-opacity">
                     {isLiked ? 'Bỏ thích' : 'Thích sản phẩm'}
                   </span>
-                </button>
+                </button> */}
 
                 {/* Nút Share */}
                 <button

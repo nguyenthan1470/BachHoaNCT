@@ -486,7 +486,7 @@ const UploadProduct = () => {
                         className="flex items-center gap-2 text-green-600 hover:text-green-700 font-medium"
                       >
                         <Plus size={16} />
-                        Th，成为
+                        Thêm thông tin bổ sung mới
                       </button>
                     </div>
                   </div>

@@ -106,20 +106,7 @@ const UserMenu = ({ close }) => {
               <Package className="w-4 h-4" />
               <span>Quản lí sản phẩm</span>
             </Link>
-            {/* <Link
-              onClick={handleClose}
-              to="/dashboard/upload-product"
-              className={`flex items-center gap-2 px-3 py-2 rounded transition text-gray-700 ${isActive('/dashboard/upload-product') ? 'bg-green-100 border-l-4 border-green-600' : 'hover:bg-green-100'
-                }`}
-              aria-label="Tải lên sản phẩm"
-              aria-current={isActive('/dashboard/upload-product') ? 'page' : undefined}
-            >
-              <Upload className="w-4 h-4" />
-              <span>Tải lên sản phẩm</span>
-            </Link> */}
-
-
-
+           
             <Link
               onClick={handleClose}
               to="/dashboard/manage-orders"

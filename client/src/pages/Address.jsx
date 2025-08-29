@@ -61,13 +61,13 @@ const Address = () => {
             <h1 className="text-xl font-semibold text-gray-800 md:text-2xl">Quản lý địa chỉ</h1>
             <p className="text-sm text-gray-500 mt-1">{activeAddresses.length} địa chỉ đã lưu</p>
           </div>
-          <button
+          {/* <button
             onClick={() => setOpenAddress(true)}
             className="flex items-center gap-2 bg-yellow-400 text-gray-800 px-4 py-2 rounded-md text-sm font-medium hover:bg-yellow-500 transition-colors duration-200 md:text-base"
           >
             <MdAdd size={20} />
             Thêm địa chỉ mới
-          </button>
+          </button> */}
         </div>
       </div>
 

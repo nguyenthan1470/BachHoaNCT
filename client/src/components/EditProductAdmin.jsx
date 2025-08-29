@@ -145,7 +145,6 @@ const EditProductAdmin = ({ close ,data : propsData,fetchProductData}) => {
       AxiosToastError(error)
     }
 
-
   }
 
   return (
@@ -210,7 +209,7 @@ const EditProductAdmin = ({ close ,data : propsData,fetchProductData}) => {
                       onChange={handleUploadImage}
                     />
                   </label>
-                  {/**display uploded image*/}
+                  {/**display upload image*/}
                   <div className='flex flex-wrap gap-4'>
                     {
                       data.image.map((img, index) => {
